@@ -20,7 +20,7 @@ import negocio.interfaces.UsuarioDAO;
  */
 public class UsuarioDAOImpl implements UsuarioDAO{
 
-    private ConexionBD db;
+    private final ConexionBD db;
 
     public UsuarioDAOImpl() {
         db = new ConexionBD();
@@ -145,7 +145,7 @@ public class UsuarioDAOImpl implements UsuarioDAO{
     }
 
     @Override
-    public Usuario verUsuario(int usuario_id) {
+    public Usuario getUsuario(int usuario_id) {
         try {
             db.conectar();
 
@@ -156,7 +156,7 @@ public class UsuarioDAOImpl implements UsuarioDAO{
                     "apellido, " +
                     "ci, " +
                     "email, " +
-                    "visble " +
+                    "visible " +
                     "FROM usuario "+
                     "WHERE id = " + usuario_id;
 
@@ -182,16 +182,6 @@ public class UsuarioDAOImpl implements UsuarioDAO{
         }
         return null;
     }
-    
 
-    public static void main(String[] args) {
-        UsuarioDAO ud = new UsuarioDAOImpl();
-        System.out.println("" + ud.listarUsuarios().size());
-
-        
-        
-        
-        
-    }
 
 }
