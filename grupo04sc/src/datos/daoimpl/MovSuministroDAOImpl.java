@@ -160,11 +160,5 @@ public class MovSuministroDAOImpl implements MovSuministroDAO {
         }
         return null;
     }
-    
-    public static void main(String[] args) {
-        MovSuministro m = new MovSuministro("Salida", LocalDate.now());
-        MovSuministroDAO md = new MovSuministroDAOImpl();
-        m.setId(1);
-        System.out.println(md.listarSuministros().size());
-    }
+
 }

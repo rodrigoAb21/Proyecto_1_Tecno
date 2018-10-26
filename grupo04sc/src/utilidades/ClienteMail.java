@@ -6,6 +6,7 @@
 package utilidades;
 
 import config.VariablesConf;
+import datos.daoimpl.UsuarioDAOImpl;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,8 +39,7 @@ public class ClienteMail {
     }
 
 
-    public List<Mensaje> obtenerMensajes(){
-        List<Mensaje> mensajes = new ArrayList<>();
+    public Mensaje obtenerMensajes(){
 
         try {
 
@@ -63,11 +63,17 @@ public class ClienteMail {
                 System.out.println("Sent Date : " + messages[i].getSentDate());
                 System.out.println();
 
-                Mensaje mensaje = new Mensaje();
-                mensaje.setCuenta(getCuenta(""+messages[i].getFrom()[0]));
-                mensaje.setAsunto(messages[i].getSubject());
+                String correo = getCuenta(""+messages[i].getFrom()[0]);
+                if (esValido(correo)){
 
-                mensajes.add(mensaje);
+                    Mensaje mensaje = new Mensaje();
+                    mensaje.setCuenta(correo);
+                    mensaje.setAsunto(messages[i].getSubject());
+
+                    return mensaje;
+                }
+
+
 
             }
 
@@ -77,24 +83,8 @@ public class ClienteMail {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        return mensajes;
-    }
 
-    private String getCuenta(String cadena) {
-        String cuenta = "";
-        if (cadena.contains("<")){
-            for (char c : cadena.toCharArray()){
-                if (c == '>')
-                    break;
-                cuenta = cuenta + c;
-                if (c == '<')
-                    cuenta = "";
-            }
-            return cuenta;
-        }
-
-        return cadena;
-
+        return null;
     }
 
 
@@ -196,6 +186,29 @@ public class ClienteMail {
         } catch (IOException io) {
             io.printStackTrace();
         }
+    }
+
+
+
+    private String getCuenta(String cadena) {
+        String cuenta = "";
+        if (cadena.contains("<")){
+            for (char c : cadena.toCharArray()){
+                if (c == '>')
+                    break;
+                cuenta = cuenta + c;
+                if (c == '<')
+                    cuenta = "";
+            }
+            return cuenta;
+        }
+
+        return cadena;
+
+    }
+
+    private boolean esValido(String cuentaCorreo){
+        return new UsuarioDAOImpl().validarCorreo(cuentaCorreo);
     }
 
 

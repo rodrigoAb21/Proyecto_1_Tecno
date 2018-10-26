@@ -184,5 +184,28 @@ public class UsuarioDAOImpl implements UsuarioDAO{
         return null;
     }
 
+    @Override
+    public boolean validarCorreo(String correo) {
+        try {
+            db.conectar();
 
+            String query ="SELECT  * FROM " + TABLA + " WHERE email = \'" + correo + "\' ";
+
+            PreparedStatement ps = db.getConexion().prepareStatement(query);
+            ResultSet resultSet = ps.executeQuery();
+
+            db.desconectar();
+
+            if (resultSet.next()){
+                return true;
+            }
+
+
+        } catch (SQLException e) {
+             System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
+    
 }
