@@ -15,6 +15,7 @@ public class Usuario {
     private String apellido;
     private String ci;
     private String email;
+    private boolean visible;
 
     public Usuario(){
         
@@ -25,6 +26,7 @@ public class Usuario {
         this.apellido = apellido;
         this.ci = ci;
         this.email = email;
+        this.visible = true;
     }
 
     public int getId() {
@@ -66,6 +68,12 @@ public class Usuario {
     public void setEmail(String email) {
         this.email = email;
     }
-    
-    
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
 }

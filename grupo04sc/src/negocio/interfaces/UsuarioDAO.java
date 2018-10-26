@@ -15,7 +15,7 @@ import java.util.List;
 public interface UsuarioDAO {
     public List<Usuario> listarUsuarios();
     public boolean registrarUsuario(Usuario usuario);
-    public boolean actualizarUsuario(Usuario usuario);
+    public boolean editarUsuario(Usuario usuario);
     public boolean eliminarUsuario(int usuario_id);
     public Usuario verUsuario(int usuario_id);
 }
