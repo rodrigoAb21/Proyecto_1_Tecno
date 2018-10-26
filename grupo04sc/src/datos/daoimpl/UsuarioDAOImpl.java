@@ -21,6 +21,7 @@ import negocio.interfaces.UsuarioDAO;
 public class UsuarioDAOImpl implements UsuarioDAO{
 
     private final ConexionBD db;
+    private static final String TABLA = "usuario";
 
     public UsuarioDAOImpl() {
         db = new ConexionBD();
@@ -42,7 +43,7 @@ public class UsuarioDAOImpl implements UsuarioDAO{
                     "ci, " +
                     "email, " +
                     "visible " +
-                    "FROM usuario";
+                    "FROM " + TABLA;
 
             PreparedStatement ps = db.getConexion().prepareStatement(query);
             ResultSet resultSet = ps.executeQuery();
@@ -74,7 +75,7 @@ public class UsuarioDAOImpl implements UsuarioDAO{
         try {
             db.conectar();
             
-            String query = "INSERT INTO usuario(nombre, apellido, ci, email) VALUES (?, ?, ?, ?)";
+            String query = "INSERT INTO " + TABLA +"(nombre, apellido, ci, email) VALUES (?, ?, ?, ?)";
             PreparedStatement ps = db.getConexion().prepareStatement(query);
             ps.setString(1, usuario.getNombre());
             ps.setString(2, usuario.getApellido());
@@ -98,7 +99,7 @@ public class UsuarioDAOImpl implements UsuarioDAO{
         try {
             db.conectar();
 
-            String query ="UPDATE usuario SET " +
+            String query ="UPDATE " + TABLA + " SET " +
                     "nombre = ?, " +
                     "apellido = ?, " +
                     "ci = ?, " +
@@ -129,7 +130,7 @@ public class UsuarioDAOImpl implements UsuarioDAO{
         try {
             db.conectar();
 
-            String query ="UPDATE usuario SET visible = false WHERE usuario.id = " + usuario_id;
+            String query ="UPDATE " + TABLA + " SET visible = false WHERE id = " + usuario_id;
 
             PreparedStatement ps = db.getConexion().prepareStatement(query);
             int i = ps.executeUpdate();
@@ -157,8 +158,8 @@ public class UsuarioDAOImpl implements UsuarioDAO{
                     "ci, " +
                     "email, " +
                     "visible " +
-                    "FROM usuario "+
-                    "WHERE id = " + usuario_id;
+                    "FROM " + TABLA +
+                    " WHERE id = " + usuario_id;
 
             PreparedStatement ps = db.getConexion().prepareStatement(query);
             ResultSet resultSet = ps.executeQuery();

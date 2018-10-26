@@ -13,6 +13,7 @@ import java.util.List;
 public class UnidadMedidaDAOImpl implements UnidadMedidaDAO {
 
     private final ConexionBD db;
+    private static final String TABLA = "unidad_medida";
 
     public UnidadMedidaDAOImpl() {
         db = new ConexionBD();
@@ -29,7 +30,7 @@ public class UnidadMedidaDAOImpl implements UnidadMedidaDAO {
                     "id, " +
                     "nombre, " +
                     "visible " +
-                    "FROM unidad_medida";
+                    "FROM " + TABLA;
 
             PreparedStatement ps = db.getConexion().prepareStatement(query);
             ResultSet resultSet = ps.executeQuery();
@@ -58,7 +59,7 @@ public class UnidadMedidaDAOImpl implements UnidadMedidaDAO {
         try {
             db.conectar();
 
-            String query = "INSERT INTO unidad_medida(nombre) VALUES (?)";
+            String query = "INSERT INTO " + TABLA +"(nombre) VALUES (?)";
             PreparedStatement ps = db.getConexion().prepareStatement(query);
             ps.setString(1, unidadMedida.getNombre());
 
@@ -79,7 +80,7 @@ public class UnidadMedidaDAOImpl implements UnidadMedidaDAO {
         try {
             db.conectar();
 
-            String query ="UPDATE unidad_medida SET " +
+            String query ="UPDATE " + TABLA + " SET " +
                     "nombre = ? " +
                     "WHERE id = ?";
 
@@ -104,7 +105,7 @@ public class UnidadMedidaDAOImpl implements UnidadMedidaDAO {
         try {
             db.conectar();
 
-            String query ="UPDATE unidad_medida SET visible = false WHERE id = " + unidadM_id;
+            String query ="UPDATE " + TABLA + " SET visible = false WHERE id = " + unidadM_id;
 
             PreparedStatement ps = db.getConexion().prepareStatement(query);
             int i = ps.executeUpdate();
@@ -129,8 +130,8 @@ public class UnidadMedidaDAOImpl implements UnidadMedidaDAO {
             String query ="SELECT " +
                     "nombre, " +
                     "visible " +
-                    "FROM unidad_medida "+
-                    "WHERE id = " + unidadM_id;
+                    "FROM " + TABLA +
+                    " WHERE id = " + unidadM_id;
 
             PreparedStatement ps = db.getConexion().prepareStatement(query);
             ResultSet resultSet = ps.executeQuery();
@@ -151,5 +152,6 @@ public class UnidadMedidaDAOImpl implements UnidadMedidaDAO {
         }
         return null;
     }
-    
+
+
 }
