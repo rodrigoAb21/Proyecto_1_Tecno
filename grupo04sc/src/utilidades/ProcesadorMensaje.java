@@ -1,8 +1,5 @@
 package utilidades;
 
-import datos.daoimpl.UsuarioDAOImpl;
-
-
 public class ProcesadorMensaje {
 
     public ProcesadorMensaje() {

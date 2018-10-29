@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="262c07b5-647a-4e86-81b0-e5733c9decd0" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utilidades/ClienteMail.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/utilidades/ClienteMail.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utilidades/HiloCorreo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/utilidades/HiloCorreo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utilidades/ProcesadorMensaje.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/utilidades/ProcesadorMensaje.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -77,48 +75,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/utilidades/ProcesadorMensaje.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="10" column="16" selection-start-line="10" selection-start-column="16" selection-end-line="10" selection-end-column="16" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/utilidades/HiloCorreo.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="15" column="54" selection-start-line="15" selection-start-column="54" selection-end-line="15" selection-end-column="54" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/utilidades/HiloAtencion.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="14" column="36" lean-forward="true" selection-start-line="14" selection-start-column="36" selection-end-line="14" selection-end-column="36" />
-              <folding>
-                <element signature="e#141#142#0" expanded="true" />
-                <element signature="e#179#180#0" expanded="true" />
-                <element signature="e#371#372#0" expanded="true" />
-                <element signature="e#442#443#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/utilidades/ClienteMail.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="432">
-              <caret line="142" selection-start-line="142" selection-end-line="142" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="method#enviar#0;class#ClienteMail#0" />
-              </folding>
+            <state relative-caret-position="18">
+              <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
             </state>
           </provider>
         </entry>
@@ -156,10 +117,10 @@
         <option value="$PROJECT_DIR$/src/negocio/interfaces/UsuarioDAO.java" />
         <option value="$PROJECT_DIR$/src/datos/daoimpl/UsuarioDAOImpl.java" />
         <option value="$PROJECT_DIR$/src/utilidades/Comandos.java" />
-        <option value="$PROJECT_DIR$/src/utilidades/ProcesadorMensaje.java" />
         <option value="$PROJECT_DIR$/src/utilidades/ClienteMail.java" />
         <option value="$PROJECT_DIR$/src/utilidades/HiloAtencion.java" />
         <option value="$PROJECT_DIR$/src/utilidades/HiloCorreo.java" />
+        <option value="$PROJECT_DIR$/src/utilidades/ProcesadorMensaje.java" />
       </list>
     </option>
   </component>
@@ -306,12 +267,12 @@
       <option name="presentableId" value="Default" />
       <updated>1540521344681</updated>
       <workItem from="1540521346161" duration="29996000" />
-      <workItem from="1540774040424" duration="6834000" />
+      <workItem from="1540774040424" duration="7455000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="36830000" />
+    <option name="totallyTimeSpent" value="37451000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -499,13 +460,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/utilidades/ProcesadorMensaje.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="10" column="16" selection-start-line="10" selection-start-column="16" selection-end-line="10" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/utilidades/ClienteMail.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="432">
@@ -520,7 +474,7 @@
     <entry file="file://$PROJECT_DIR$/src/utilidades/HiloAtencion.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="252">
-          <caret line="14" column="36" lean-forward="true" selection-start-line="14" selection-start-column="36" selection-end-line="14" selection-end-column="36" />
+          <caret line="14" column="36" selection-start-line="14" selection-start-column="36" selection-end-line="14" selection-end-column="36" />
           <folding>
             <element signature="e#141#142#0" expanded="true" />
             <element signature="e#179#180#0" expanded="true" />
@@ -532,8 +486,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/utilidades/HiloCorreo.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="15" column="54" selection-start-line="15" selection-start-column="54" selection-end-line="15" selection-end-column="54" />
+        <state relative-caret-position="306">
+          <caret line="17" column="9" selection-start-line="17" selection-start-column="9" selection-end-line="17" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/utilidades/ProcesadorMensaje.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="18">
+          <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
         </state>
       </provider>
     </entry>
