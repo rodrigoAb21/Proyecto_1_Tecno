@@ -8,10 +8,22 @@ public class HiloCorreo extends Thread {
         System.out.println("Se inicio el hilo del corrreo");
         while (estado){
             // Verificar si existe correo nuevo extraigo el primero y elimino
+            Mensaje mensaje = new ClienteMail().obtemerPrimerMensaje();
+            if (mensaje != null){
+                new HiloAtencion(mensaje).start();
+            }
 
             // si existe, crear un nuevo hilo atencion
+            intervaloEspera();
+        }
+        System.out.println("Saliendo del while infinito");
+    }
 
-            // intervalo de espera
+    public void intervaloEspera(){
+        try {
+            sleep(10 * 1000);
+        }catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }

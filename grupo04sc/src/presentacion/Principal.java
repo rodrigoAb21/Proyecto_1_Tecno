@@ -5,12 +5,16 @@
  */
 package presentacion;
 
+import utilidades.HiloCorreo;
+
 /**
  *
  * @author KAKU
  */
 public class Principal extends javax.swing.JFrame {
 
+    HiloCorreo hilo;
+    
     /**
      * Creates new form Principal
      */
@@ -79,12 +83,15 @@ public class Principal extends javax.swing.JFrame {
 
     private void btn_iniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_iniciarActionPerformed
         // Habilitar boton detener
+        hilo = new HiloCorreo();
+        hilo.start();
         btn_detener.setEnabled(true);
         btn_iniciar.setEnabled(false);
     }//GEN-LAST:event_btn_iniciarActionPerformed
 
     private void btn_detenerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_detenerActionPerformed
         // Habilitar boton iniciar y deshabilitar detener
+        hilo.estado = false;
         btn_iniciar.setEnabled(true);
         btn_detener.setEnabled(false);
     }//GEN-LAST:event_btn_detenerActionPerformed
