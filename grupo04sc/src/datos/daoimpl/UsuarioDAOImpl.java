@@ -187,6 +187,7 @@ public class UsuarioDAOImpl implements UsuarioDAO{
     @Override
     public boolean validarCorreo(String correo) {
         try {
+            
             db.conectar();
 
             String query ="SELECT  * FROM " + TABLA + " WHERE email = \'" + correo + "\' ";
