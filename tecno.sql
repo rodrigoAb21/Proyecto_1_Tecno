@@ -20,3 +20,14 @@ create table movimiento_suministro (
 	tipo varchar(50) not null,
 	visible boolean not null default true
 );
+
+create table categoria (
+	id serial primary key,
+	nombre varchar(50) not null,
+	codigo varchar(50) not null,
+	categoria_sup int
+	visible boolean not null default true,
+);
+
+alter table categoria add constraint fk_categoria foreign key (categoria_sup) references categoria(id);
+
