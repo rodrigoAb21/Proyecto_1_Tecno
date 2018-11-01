@@ -6,14 +6,9 @@
 package utilidades;
 
 import config.VariablesConf;
-import datos.daoimpl.UsuarioDAOImpl;
 
 import java.util.Date;
 import java.util.Properties;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import javax.mail.*;
 
 import javax.mail.internet.InternetAddress;
@@ -48,7 +43,7 @@ public class ClienteMail {
             properties.put("mail.pop3s.port", "995");
             properties.put("mail.pop3.starttls.enable", "true");
 
-            Session emailSession = Session.getDefaultInstance(properties);
+            Session emailSession = Session.getInstance(properties);
 
             Store store = emailSession.getStore("pop3");
             store.connect(host, user, password);
@@ -71,7 +66,9 @@ public class ClienteMail {
             // expunges the folder to remove messages which are marked deleted
             emailFolder.close(true);
             store.close();
-
+            
+            
+            
             if (sw) return mensaje;
             else return null;
 
@@ -90,16 +87,15 @@ public class ClienteMail {
             String subject = asunto;
             String messageText = mensaje;
             boolean sessionDebug = false;
-
-            Properties props = System.getProperties();
-
-
+            
+            Properties props = new Properties();
 
             props.put("mail.smtp.host", host);
             props.put("mail.smtp.port", "25");
 
             java.security.Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
-            Session mailSession = Session.getDefaultInstance(props, null);
+//            Session mailSession = Session.getDefaultInstance(props);
+            Session mailSession = Session.getInstance(props);
             mailSession.setDebug(sessionDebug);
             Message msg = new MimeMessage(mailSession);
             msg.setFrom(new InternetAddress(cuenta));
@@ -140,6 +136,6 @@ public class ClienteMail {
         return cadena;
 
     }
-
+    
 
 }

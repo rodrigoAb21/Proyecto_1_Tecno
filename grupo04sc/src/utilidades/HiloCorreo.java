@@ -10,6 +10,7 @@ public class HiloCorreo extends Thread {
             // Verificar si existe correo nuevo extraigo el primero y elimino
             Mensaje mensaje = new ClienteMail().obtemerPrimerMensaje();
             if (mensaje != null){
+                System.out.println("Iniciando el hilo atencion");
                 new HiloAtencion(mensaje).start();
             }
 
