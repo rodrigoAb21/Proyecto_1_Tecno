@@ -138,6 +138,40 @@ public class RevaluoDAOImpl implements RevaluoDAO {
 
     @Override
     public Revaluo getRevaluo(int revaluo_id) {
+        try {
+            db.conectar();
+
+            String query ="SELECT " +
+                    "id, " +
+                    "detalle, " +
+                    "fecha, " +
+                    "tipo, " +
+                    "activo_fijo_id, " +
+                    "visible " +
+                    "FROM " + TABLA + " WHERE id = " + revaluo_id;
+
+            PreparedStatement ps = db.getConexion().prepareStatement(query);
+            ResultSet resultSet = ps.executeQuery();
+
+            db.desconectar();
+
+            while (resultSet.next()){
+
+                Revaluo revaluo = new Revaluo();
+                revaluo.setId(resultSet.getInt("id"));
+                revaluo.setDetalle(resultSet.getString("detalle"));
+                revaluo.setFecha(resultSet.getObject("fecha", LocalDate.class));
+                revaluo.setTipo(resultSet.getString("tipo"));
+                revaluo.setActivo_fijo_id(resultSet.getInt("activo_fijo_id"));
+                revaluo.setVisible(resultSet.getBoolean("visible"));
+
+                return revaluo;
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
         return null;
     }
 }
