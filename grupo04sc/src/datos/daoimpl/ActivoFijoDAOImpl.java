@@ -27,8 +27,9 @@ public class ActivoFijoDAOImpl implements ActivoFijoDAO {
 
             String query ="SELECT " +
                     "id, " +
-                    "stock_minimo, " +
-                    "stock_maximo, " +
+                    "estado, " +
+                    "disponible, " +
+                    "codigo, " +
                     "producto_id, " +
                     "visible " +
                     "FROM " + TABLA;
@@ -140,10 +141,10 @@ public class ActivoFijoDAOImpl implements ActivoFijoDAO {
 
             String query ="SELECT " +
                     "id, " +
-                    "nombre, " +
-                    "tipo, " +
+                    "estado, " +
+                    "disponible, " +
                     "codigo, " +
-                    "cantidad, " +
+                    "producto_id, " +
                     "visible " +
                     "FROM " + TABLA + " WHERE id = " + activoFijo_id;
 
