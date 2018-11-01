@@ -48,6 +48,36 @@ create table producto (
 	foreign key (categoria_id) references categoria(id) on update cascade on delete cascade
 );
 
+create table suministro (
+	id serial primary key,
+	stock_minimo int not null,
+	stock_maximo int not null,
+	producto_id int not null,
+	visible boolean not null default true,
+	foreign key (producto_id) references producto(id) on delete cascade on update cascade
+);
+
+create table activo_fijo (
+	id serial primary key,
+	estado varchar(50) not null,
+	disponible boolean not null,
+	codigo varchar(50) not null,
+	producto_id int not null,
+	visible boolean not null default true,
+	foreign key (producto_id) references producto(id) on delete cascade on update cascade
+);
+
+create table revaluo (
+	id serial primary key,
+	detalle varchar(50) not null,
+	fecha date not null,
+	tipo varchar(50) not null,
+	activo_fijo_id int not null,
+	visible boolean not null default true,
+	foreign key (activo_fijo_id) references activo_fijo(id) on delete cascade on update cascade
+);
+
+
 
 
 
