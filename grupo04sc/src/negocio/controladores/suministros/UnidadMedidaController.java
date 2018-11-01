@@ -16,4 +16,8 @@ public class UnidadMedidaController {
         return dao.registrarUnidadMedida(new UnidadMedida(nombre));
     }
 
+    public void editar(String antNombre, String nuevoNombre){
+       //
+    }
+
 }

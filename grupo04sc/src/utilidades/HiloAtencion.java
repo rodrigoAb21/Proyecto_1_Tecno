@@ -13,6 +13,9 @@ public class HiloAtencion extends Thread{
     public void run() {
         if (esValido(mensaje.getCuenta()))
             new ProcesadorMensaje().procesar(mensaje);
+        else
+            System.out.println("correo invalido");
+
     }
 
     private boolean esValido(String cuentaCorreo){

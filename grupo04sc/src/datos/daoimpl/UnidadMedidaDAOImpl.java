@@ -153,5 +153,31 @@ public class UnidadMedidaDAOImpl implements UnidadMedidaDAO {
         return null;
     }
 
+    @Override
+    public int getIdUnidadMedida(String nombre) {
+        try {
+            db.conectar();
+
+            String query ="SELECT " +
+                    "id " +
+                    "FROM " + TABLA +
+                    " WHERE nombre = " + "'"+nombre+"'";
+
+            PreparedStatement ps = db.getConexion().prepareStatement(query);
+            ResultSet resultSet = ps.executeQuery();
+
+            db.desconectar();
+
+            if (resultSet.next()){
+
+                return resultSet.getInt("id");
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return -1;
+    }
+
 
 }
