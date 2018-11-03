@@ -27,10 +27,10 @@ public class UsuarioController {
     public boolean editarUsuario(int id, String nombre, String apellido, String carnet, String email){
         Usuario usuario = dao.getUsuario(id);
         if (usuario != null){
-            if (nombre != "_") usuario.setNombre(nombre);
-            if (apellido != "_") usuario.setApellido(apellido);
-            if (carnet != "_") usuario.setCi(carnet);
-            if (email != "_") usuario.setEmail(email);
+            if (!nombre.equals("_")) usuario.setNombre(nombre);
+            if (!apellido.equals("_")) usuario.setApellido(apellido);
+            if (!carnet.equals("_")) usuario.setCi(carnet);
+            if (!email.equals("_")) usuario.setEmail(email);
 
             return dao.editarUsuario(usuario);
         }

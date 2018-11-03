@@ -82,10 +82,10 @@ public class ClienteMail {
 
 
 
-    public boolean enviar(String destinatario, String asunto, String mensaje){
+    public boolean enviar(Mensaje mensaje){
         try{
-            String subject = asunto;
-            String messageText = mensaje;
+            String subject = mensaje.getMensaje();
+            String messageText = mensaje.getMensaje();
             boolean sessionDebug = false;
             
             Properties props = new Properties();
@@ -99,7 +99,7 @@ public class ClienteMail {
             mailSession.setDebug(sessionDebug);
             Message msg = new MimeMessage(mailSession);
             msg.setFrom(new InternetAddress(cuenta));
-            InternetAddress[] address = {new InternetAddress(destinatario)};
+            InternetAddress[] address = {new InternetAddress(mensaje.getCuenta())};
             msg.setRecipients(Message.RecipientType.TO, address);
             msg.setSubject(subject); msg.setSentDate(new Date());
             msg.setText(messageText);

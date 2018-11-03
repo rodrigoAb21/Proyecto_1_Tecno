@@ -1,6 +1,9 @@
 package utilidades;
 
+import datos.modelos.Usuario;
+import java.util.List;
 import negocio.controladores.suministros.UnidadMedidaController;
+import negocio.controladores.usuarios.UsuarioController;
 
 import java.util.regex.Pattern;
 
@@ -11,7 +14,7 @@ public class Copia {
 
     public void procesar(Mensaje mensaje){
 
-        String texto =  "(\\s*[^:_]+\\s*)+";
+        String texto =  "(\\s*[^://]+\\s*)+";
         String textoLetras =  "\\s*[a-zA-Z]+\\s*";
         String numero = "\\s*[0-9]+\\s*";
         String numeroM1 = "\\s*[1-9][0-9]*\\s*";
@@ -19,6 +22,7 @@ public class Copia {
         String esp = "\\s*";
 
         String mensajeI = mensaje.getAsunto();
+        
 
         if(Pattern.matches(textoLetras+":.*", mensajeI)){
             System.out.println("entro");
@@ -28,62 +32,10 @@ public class Copia {
             String parametroC;
             System.out.println(comandoI);
             switch (comandoI) {
-                case ("ingresarsuministro"):
-
-                    parametroC = texto + "_" + numeroM1 + "_";
-                    if (Pattern.matches(parametroC, parametroI)) {
-                        String[] parametros = parametroI.split("[_]");
-                        String nombre = parametros[0];
-                        Integer cantidad = Integer.parseInt(parametros[1]);
-                        //ingresarSuministro(nombre, cantidad);
-                        break;
-                    }
-
-                    parametroC = texto + "_" + numeroM1 + "_" + texto + "_";
-                    if (Pattern.matches(parametroC, parametroI)) {
-                        String[] parametros = parametroI.split("[_]");
-                        String nombre = parametros[0];
-                        Integer cantidad = Integer.parseInt(parametros[1]);
-                        String descripcion = parametros[2];
-                        //ingresarSuministro(nombre, cantidad, descripcion);
-                        break;
-                    }
-                    /*
-                    parametroC = texto+"_"+numeroM1+"_"+texto+"_";
-                    if(Pattern.matches(parametroC, parametroI)){
-                        String [] parametros = parametroI.split("[_]");
-                        String nombre = parametros[0];
-                        String cantidad = parametros[1];
-                        String descripcion = parametros[2];
-                        //ingresarSuministro(nombre, cantidad, descripcion);
-                        System.out.println(nombre);
-                        break;
-                    }
-                    */
-
-                    //enviar mensaje de error al ingresar los parametros
-                    //mostrar lista de instrucciones válidas pertenecientes a este comando
-                    break;
-
-                case ("suministrar"):
-                    break;
-
-
-                case ("editarsuministro"):
-                    break;
-
-                case ("bajasuministro"):
-                    break;
-
-                case ("listarsuministros"):
-                    break;
-
-                case ("movimientodesuministros"):
-                    break;
 
                 case ("registrarunidadmedida"):
                     System.out.println("comando valido");
-                    parametroC = texto + "_";
+                    parametroC = texto + "//";
                     if (Pattern.matches(parametroC, parametroI)) {
                         String[] parametros = parametroI.split("[_]");
                         String nombre = parametros[0];
@@ -107,16 +59,178 @@ public class Copia {
 
                 case ("registrarusuario"):
                     System.out.println("comando valido");
-                    parametroC = texto + "//" + texto + texto ;
+                    parametroC = textoLetras + "//" + textoLetras + "//" + numero + "//" + texto + "//" ;
                     if (Pattern.matches(parametroC, parametroI)) {
-                        String[] parametros = parametroI.split("[_]");
+                        System.out.println("Entre!");
+                        String[] parametros = parametroI.split("[//]");
                         String nombre = parametros[0];
+                        String apellido = parametros[2];
+                        String carnet = parametros[4];
+                        String email = parametros[6];
 
-                        new UnidadMedidaController().registrar(nombre);
-                        break;
+                        Mensaje respuesta = new Mensaje();
+                        respuesta.setCuenta(mensaje.getCuenta());
+                        respuesta.setAsunto("Respuesta registrar usuario");
+                        if (new UsuarioController().registrarUsuario(nombre, apellido, carnet, email)){
+                            System.out.println("OK");
+//                            respuesta.setMensaje("Es usuario " + nombre + " " +apellido +" fue registrado correctamente");
+                        }else {
+                            System.out.println("Prrr!");
+//                            respuesta.setMensaje("No se pudo registrar el usuario " + nombre + " " + apellido + " revise" +
+//                                    " haber escrito correctamente.");
+                        }
+//                        new CorreoGmail().enviar(respuesta);
                     }
+                    
+                    
+                    
+                    
                     break;
 
+                case ("editarusuario"):
+                    System.out.println("comando valido");
+                    parametroC = numero + "//" + texto + "//" + texto + "//" + texto + "//" + texto + "//" ;
+                    if (Pattern.matches(parametroC, parametroI)) {
+                        System.out.println("Entre!");
+                        String[] parametros = parametroI.split("[//]");
+                        int id = Integer.parseInt(parametros[0]);
+                        String nombre = parametros[2];
+                        String apellido = parametros[4];
+                        String carnet = parametros[6];
+                        String email = parametros[8];
+
+                        Mensaje respuesta = new Mensaje();
+                        respuesta.setCuenta(mensaje.getCuenta());
+                        respuesta.setAsunto("Respuesta registrar usuario");
+                        if (new UsuarioController().editarUsuario(id, nombre, apellido, carnet, email)){
+                            System.out.println("OK");
+//                            respuesta.setMensaje("Es usuario " + nombre + " " +apellido +" fue registrado correctamente");
+                        }else {
+                            System.out.println("Prrr!");
+//                            respuesta.setMensaje("No se pudo registrar el usuario " + nombre + " " + apellido + " revise" +
+//                                    " haber escrito correctamente.");
+                        }
+//                        new CorreoGmail().enviar(respuesta);
+                    }else{
+                        System.out.println("Revisar parametros!");
+                    }
+
+
+                    break;
+
+                    
+                case("eliminarusuario"):
+                    System.out.println("comando valido");
+                    parametroC = numero + "//";
+                    if (Pattern.matches(parametroC, parametroI)) {
+                        System.out.println("Entre!");
+                        String[] parametros = parametroI.split("[//]");
+                        int id = Integer.parseInt(parametros[0]);
+
+                        Mensaje respuesta = new Mensaje();
+                        respuesta.setCuenta(mensaje.getCuenta());
+                        respuesta.setAsunto("Respuesta registrar usuario");
+                        if (new UsuarioController().eliminarUsuario(id)){
+                            System.out.println("OK");
+//                            respuesta.setMensaje("Es usuario " + nombre + " " +apellido +" fue registrado correctamente");
+                        }else {
+                            System.out.println("Prrr!");
+//                            respuesta.setMensaje("No se pudo registrar el usuario " + nombre + " " + apellido + " revise" +
+//                                    " haber escrito correctamente.");
+                        }
+//                        new CorreoGmail().enviar(respuesta);
+                    }else{
+                        System.out.println("Revisar parametros!");
+                    }
+                    
+                    
+                    break;
+                    
+                    
+
+                case("obtenerusuario"):
+                    System.out.println("comando valido");
+                    parametroC = numero + "//";
+                    if (Pattern.matches(parametroC, parametroI)) {
+                        System.out.println("Entre!");
+                        String[] parametros = parametroI.split("[//]");
+                        int id = Integer.parseInt(parametros[0]);
+
+                        Mensaje respuesta = new Mensaje();
+                        respuesta.setCuenta(mensaje.getCuenta());
+                        respuesta.setAsunto("Respuesta registrar usuario");
+                        Usuario u = new UsuarioController().getUsuario(id);
+                        if (u != null){
+                            System.out.println("OK");
+                            System.out.println(u.getId());
+                            System.out.println(u.getNombre());
+                            System.out.println(u.getApellido());
+        //                            respuesta.setMensaje("Es usuario " + nombre + " " +apellido +" fue registrado correctamente");
+                        }else {
+                            System.out.println("Prrr!");
+        //                            respuesta.setMensaje("No se pudo registrar el usuario " + nombre + " " + apellido + " revise" +
+        //                                    " haber escrito correctamente.");
+                        }
+        //                        new CorreoGmail().enviar(respuesta);
+                    }else{
+                        parametroC = texto + "//";
+                        if (Pattern.matches(parametroC, parametroI)) {
+                            System.out.println("Entre!");
+                        String[] parametros = parametroI.split("[//]");
+                        String email = parametros[0];
+
+                        Mensaje respuesta = new Mensaje();
+                        respuesta.setCuenta(mensaje.getCuenta());
+                        respuesta.setAsunto("Respuesta registrar usuario");
+                        Usuario u = new UsuarioController().getUsuario(email);
+                        if (u != null){
+                            System.out.println("OK");
+                            System.out.println(u.getId());
+                            System.out.println(u.getNombre());
+                            System.out.println(u.getApellido());
+        //                            respuesta.setMensaje("Es usuario " + nombre + " " +apellido +" fue registrado correctamente");
+                        }else {
+                            System.out.println("Prrr!");
+        //                            respuesta.setMensaje("No se pudo registrar el usuario " + nombre + " " + apellido + " revise" +
+        //                                    " haber escrito correctamente.");
+                        }
+        //                        new CorreoGmail().enviar(respuesta);
+                        }else{
+                        System.out.println("Revisar parametros!");
+                        }
+                    }
+
+
+                    break;
+                    
+                    
+                    
+                    case("listarusuarios"):
+                        System.out.println("comando valido");
+                        List<Usuario> usuarios = new UsuarioController().listarUsuarios();
+                        if (usuarios.size() > 0) {
+                            System.out.println("Hay!");
+                            //formar un mensaje con todos los usuarios
+                        }else{
+                            System.out.println("No hay");
+                        }
+
+
+                        break;
+
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
 
                 default:
                     //mostrar mensaje indicando que el comando no es válido
@@ -131,5 +245,13 @@ public class Copia {
 
 
 
+    }
+    
+    public static void main(String[] args) {
+        Copia c = new Copia();
+        Mensaje m = new Mensaje();
+        m.setCuenta("rodrigo.abasto21@gmail.com");
+        m.setAsunto("listarusuarios:");
+        c.procesar(m);
     }
 }
