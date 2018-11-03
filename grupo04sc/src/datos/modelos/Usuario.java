@@ -15,7 +15,6 @@ public class Usuario {
     private String apellido;
     private String ci;
     private String email;
-    private String password;
     private boolean visible;
 
     public Usuario(){
@@ -27,7 +26,6 @@ public class Usuario {
         this.apellido = apellido;
         this.ci = ci;
         this.email = email;
-        this.visible = true;
     }
 
     public int getId() {
@@ -76,13 +74,5 @@ public class Usuario {
 
     public void setVisible(boolean visible) {
         this.visible = visible;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }

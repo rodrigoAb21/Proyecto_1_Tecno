@@ -40,7 +40,6 @@ public class UsuarioDAOImpl implements UsuarioDAO{
                     "apellido, " +
                     "ci, " +
                     "email, " +
-                    "password, " +
                     "visible " +
                     "FROM " + TABLA;
 
@@ -57,7 +56,6 @@ public class UsuarioDAOImpl implements UsuarioDAO{
                 usuario.setApellido(resultSet.getString("apellido"));
                 usuario.setCi(resultSet.getString("ci"));
                 usuario.setEmail(resultSet.getString("email"));
-                usuario.setPassword(resultSet.getString("password"));
                 usuario.setVisible(resultSet.getBoolean("visible"));
 
                 usuarios.add(usuario);
@@ -75,13 +73,12 @@ public class UsuarioDAOImpl implements UsuarioDAO{
         try {
             db.conectar();
             
-            String query = "INSERT INTO " + TABLA +"(nombre, apellido, ci, email, password) VALUES (?, ?, ?, ?, ?)";
+            String query = "INSERT INTO " + TABLA +"(nombre, apellido, ci, email) VALUES (?, ?, ?, ?)";
             PreparedStatement ps = db.getConexion().prepareStatement(query);
             ps.setString(1, usuario.getNombre());
             ps.setString(2, usuario.getApellido());
             ps.setString(3, usuario.getCi());
             ps.setString(4, usuario.getEmail());
-            ps.setString(5, usuario.getPassword());
 
             int i = ps.executeUpdate();
             
@@ -104,8 +101,7 @@ public class UsuarioDAOImpl implements UsuarioDAO{
                     "nombre = ?, " +
                     "apellido = ?, " +
                     "ci = ?, " +
-                    "email = ?, " +
-                    "password = ? " +
+                    "email = ? " +
                     "WHERE usuario.id = ?";
 
             PreparedStatement ps = db.getConexion().prepareStatement(query);
@@ -113,8 +109,7 @@ public class UsuarioDAOImpl implements UsuarioDAO{
             ps.setString(2, usuario.getApellido());
             ps.setString(3, usuario.getCi());
             ps.setString(4, usuario.getEmail());
-            ps.setString(5, usuario.getEmail());
-            ps.setInt(6, usuario.getId());
+            ps.setInt(5, usuario.getId());
 
             int i = ps.executeUpdate();
 
@@ -160,7 +155,6 @@ public class UsuarioDAOImpl implements UsuarioDAO{
                     "apellido, " +
                     "ci, " +
                     "email, " +
-                    "password, " +
                     "visible " +
                     "FROM " + TABLA +
                     " WHERE id = " + usuario_id;
@@ -177,7 +171,46 @@ public class UsuarioDAOImpl implements UsuarioDAO{
                 usuario.setApellido(resultSet.getString("apellido"));
                 usuario.setCi(resultSet.getString("ci"));
                 usuario.setEmail(resultSet.getString("email"));
-                usuario.setPassword(resultSet.getString("password"));
+                usuario.setVisible(resultSet.getBoolean("visible"));
+
+                return usuario;
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    public Usuario getUsuario(String email) {
+        try {
+            db.conectar();
+
+            Usuario usuario = new Usuario();
+
+            String query ="SELECT " +
+                    "id, " +
+                    "nombre, " +
+                    "apellido, " +
+                    "ci, " +
+                    "email, " +
+                    "visible " +
+                    "FROM " + TABLA +
+                    " WHERE email = \'" + email + "\'";
+
+            PreparedStatement ps = db.getConexion().prepareStatement(query);
+            ResultSet resultSet = ps.executeQuery();
+
+            db.desconectar();
+
+            if (resultSet.next()){
+
+                usuario.setId(resultSet.getInt("id"));
+                usuario.setNombre(resultSet.getString("nombre"));
+                usuario.setApellido(resultSet.getString("apellido"));
+                usuario.setCi(resultSet.getString("ci"));
+                usuario.setEmail(resultSet.getString("email"));
                 usuario.setVisible(resultSet.getBoolean("visible"));
 
                 return usuario;
@@ -212,5 +245,5 @@ public class UsuarioDAOImpl implements UsuarioDAO{
         return false;
     }
 
-    
+
 }

@@ -10,6 +10,7 @@ public interface UsuarioDAO {
     boolean editarUsuario(Usuario usuario);
     boolean eliminarUsuario(int usuario_id);
     Usuario getUsuario(int usuario_id);
+    Usuario getUsuario(String email);
 
-    boolean validarCorreo(String correo);
+    boolean validarCorreo(String email);
 }

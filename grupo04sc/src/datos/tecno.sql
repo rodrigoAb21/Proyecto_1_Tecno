@@ -4,7 +4,6 @@ create table usuario (
 	apellido varchar(50) not null,
 	ci varchar(20) not null,
 	email varchar(50) not null,
-	password varchar(255) not null,
 	visible boolean not null default true
 );
 
