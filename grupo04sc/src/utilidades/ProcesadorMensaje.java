@@ -109,13 +109,15 @@ public class ProcesadorMensaje {
 
                 case ("registrarusuario"):
                     break;
-
+                case ("otrocase"):
+                    break;
 
                 default:
                     //mostrar mensaje indicando que el comando no es válido
                     //mostrar lista de todos los comandos permitidos
                     System.out.println("comando invalido");
                     break;
+                    
             }
         }else{
             System.out.println("formato de comando invalido");
