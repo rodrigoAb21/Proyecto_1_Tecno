@@ -23,7 +23,9 @@ public class Copia {
         String esp = "\\s*";
 
         String mensajeI = mensaje.getAsunto();
-        
+
+        Mensaje respuesta = new Mensaje();
+        respuesta.setCuenta(mensaje.getCuenta());
 
         if(Pattern.matches(textoLetras+":.*", mensajeI)){
             System.out.println("entro");
@@ -34,70 +36,84 @@ public class Copia {
             System.out.println(comandoI);
             switch (comandoI) {
 
-                case ("registrarunidadmedida"):
-                    System.out.println("comando valido");
+                //-------------------------------- UNIDAD DE MEDIDA ----------------------------------------------
+
+                case ("RegistrarUnidadMedida"):
                     parametroC = texto + "//";
                     if (Pattern.matches(parametroC, parametroI)) {
                         String[] parametros = parametroI.split("[//]");
                         String nombre = parametros[0];
 
                         if (new UnidadMedidaController().registrar(nombre)){
-                            System.out.println("Ok");
+                            respuesta.setAsunto("Se registro la unidad de medida.");
+                            respuesta.setMensaje(Respuesta.unidadMedida(new UnidadMedidaController()
+                                    .getUnidadMedida(nombre)));
                         }else {
-                            System.out.println("prr");
+                            respuesta.setAsunto("No se pudo registrar la unidad de medida.");
                         }
                     }else{
-                        System.out.println("Revisar parametros!");
+                        respuesta.setAsunto("Parametros incorrectos al registrar la unidad de medida.");
+                        respuesta.setMensaje(Ejemplo.RegistrarUnidadMedida);
                     }
+                    new ClienteMail().enviar(respuesta);
                     break;
 
-                case ("editarunidadmedida"):
+                case ("EditarUnidadMedida"):
                     System.out.println("comando valido");
-                    parametroC = texto + "//" + texto + "//";
+                    parametroC = numero + "//" + texto + "//";
                     if (Pattern.matches(parametroC, parametroI)) {
                         String[] parametros = parametroI.split("[//]");
-                        String antiguo = parametros[0];
+                        int id = Integer.parseInt(parametros[0]);
                         String nuevo = parametros[2];
 
-                        if (new UnidadMedidaController().editar(antiguo, nuevo)){
-                            System.out.println("Ok");
+                        if (new UnidadMedidaController().editar(id, nuevo)){
+                            respuesta.setAsunto("Se edito la unidad de medida.");
+                            respuesta.setMensaje(Respuesta.unidadMedida(new UnidadMedidaController()
+                                    .getUnidadMedida(nuevo)));
                         }else {
-                            System.out.println("prr");
+                            respuesta.setAsunto("No se pudo editar la unidad de medida");
                         }
 
                     }else{
-                        System.out.println("Revisar parametros!");
+                        respuesta.setAsunto("Parametros incorrectos al editar la unidad de medida.");
+                        respuesta.setMensaje(Ejemplo.EditarUnidadMedida);
                     }
+                    new ClienteMail().enviar(respuesta);
                     break;
 
-                case ("eliminarunidadmedida"):
-                    System.out.println("comando valido");
-                    parametroC = texto + "//";
+                case ("EliminarUnidadMedida"):
+                    parametroC = numero + "//";
                     if (Pattern.matches(parametroC, parametroI)) {
                         String[] parametros = parametroI.split("[//]");
-                        String nombre = parametros[0];
+                        int id = Integer.parseInt(parametros[0]);
 
-                        if (new UnidadMedidaController().eliminar(nombre)){
-                            System.out.println("Ok");
+                        if (new UnidadMedidaController().eliminar(id)){
+                            respuesta.setAsunto("Se elimino la unidad de medida.");
                         }else {
-                            System.out.println("prr");
+                            respuesta.setAsunto("No se pudo eliminar la unidad de medida.");
                         }
                     }else{
-                        System.out.println("Revisar parametros!");
+                        respuesta.setAsunto("Parametros incorrectos al eliminar la unidad de medida.");
+                        respuesta.setMensaje(Ejemplo.EliminarUnidadMedida);
                     }
-                    
+
+                    new ClienteMail().enviar(respuesta);
                     break;
 
                 case ("listarunidadmedida"):
-                    System.out.println("comando valido");
                     List<UnidadMedida> unidadMedidas = new UnidadMedidaController().listarUnidades();
+                    respuesta.setAsunto("Lista de unidades de medida.");
                     if (unidadMedidas.size() > 0 ){
-                        System.out.println("Hay");
+                        respuesta.setMensaje(Respuesta.listaUnidadMedida(unidadMedidas));
                     }else {
-                        System.out.println("vacio");
+                        respuesta.setMensaje("Lista vacia.");
                     }
 
                     break;
+
+
+
+                //-------------------------------- USUARIO ----------------------------------------------
 
                 case ("registrarusuario"):
                     System.out.println("comando valido");
@@ -110,8 +126,6 @@ public class Copia {
                         String carnet = parametros[4];
                         String email = parametros[6];
 
-                        Mensaje respuesta = new Mensaje();
-                        respuesta.setCuenta(mensaje.getCuenta());
                         respuesta.setAsunto("Respuesta registrar usuario");
                         if (new UsuarioController().registrarUsuario(nombre, apellido, carnet, email)){
                             System.out.println("OK");
@@ -141,8 +155,6 @@ public class Copia {
                         String carnet = parametros[6];
                         String email = parametros[8];
 
-                        Mensaje respuesta = new Mensaje();
-                        respuesta.setCuenta(mensaje.getCuenta());
                         respuesta.setAsunto("Respuesta registrar usuario");
                         if (new UsuarioController().editarUsuario(id, nombre, apellido, carnet, email)){
                             System.out.println("OK");
@@ -169,9 +181,6 @@ public class Copia {
                         String[] parametros = parametroI.split("[//]");
                         int id = Integer.parseInt(parametros[0]);
 
-                        Mensaje respuesta = new Mensaje();
-                        respuesta.setCuenta(mensaje.getCuenta());
-                        respuesta.setAsunto("Respuesta registrar usuario");
                         if (new UsuarioController().eliminarUsuario(id)){
                             System.out.println("OK");
 //                            respuesta.setMensaje("Es usuario " + nombre + " " +apellido +" fue registrado correctamente");
@@ -198,8 +207,6 @@ public class Copia {
                         String[] parametros = parametroI.split("[//]");
                         int id = Integer.parseInt(parametros[0]);
 
-                        Mensaje respuesta = new Mensaje();
-                        respuesta.setCuenta(mensaje.getCuenta());
                         respuesta.setAsunto("Respuesta registrar usuario");
                         Usuario u = new UsuarioController().getUsuario(id);
                         if (u != null){
@@ -221,8 +228,6 @@ public class Copia {
                         String[] parametros = parametroI.split("[//]");
                         String email = parametros[0];
 
-                        Mensaje respuesta = new Mensaje();
-                        respuesta.setCuenta(mensaje.getCuenta());
                         respuesta.setAsunto("Respuesta registrar usuario");
                         Usuario u = new UsuarioController().getUsuario(email);
                         if (u != null){

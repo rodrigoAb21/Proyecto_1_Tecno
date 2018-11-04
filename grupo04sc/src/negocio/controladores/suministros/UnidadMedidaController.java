@@ -19,8 +19,8 @@ public class UnidadMedidaController {
         return dao.registrarUnidadMedida(new UnidadMedida(nombre));
     }
 
-    public boolean editar(String antNombre, String nuevoNombre){
-       UnidadMedida unidadMedida = dao.getUnidadMedida(antNombre);
+    public boolean editar(int id, String nuevoNombre){
+       UnidadMedida unidadMedida = dao.getUnidadMedida(id);
        if (unidadMedida != null){
            unidadMedida.setNombre(nuevoNombre);
            return dao.actualizarUnidadMedida(unidadMedida);
@@ -28,15 +28,15 @@ public class UnidadMedidaController {
        return false;
     }
 
-    public boolean eliminar(String nombre) {
-        UnidadMedida unidadMedida = dao.getUnidadMedida(nombre);
-        if (unidadMedida != null){
-            return dao.eliminarUnidadMedida(unidadMedida.getId());
-        }
-        return false;
+    public boolean eliminar(int id) {
+        return dao.eliminarUnidadMedida(id);
     }
 
     public List<UnidadMedida> listarUnidades(){
         return dao.listarUnidadesM();
+    }
+
+    public UnidadMedida getUnidadMedida(String nombre){
+        return dao.getUnidadMedida(nombre);
     }
 }

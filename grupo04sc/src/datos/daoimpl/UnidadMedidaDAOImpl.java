@@ -30,7 +30,7 @@ public class UnidadMedidaDAOImpl implements UnidadMedidaDAO {
                     "id, " +
                     "nombre, " +
                     "visible " +
-                    "FROM " + TABLA;
+                    "FROM " + TABLA + " WHERE visible = true ORDER BY id ASC";
 
             PreparedStatement ps = db.getConexion().prepareStatement(query);
             ResultSet resultSet = ps.executeQuery();
