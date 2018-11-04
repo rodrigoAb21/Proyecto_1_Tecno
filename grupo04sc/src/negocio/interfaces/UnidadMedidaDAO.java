@@ -10,5 +10,5 @@ public interface UnidadMedidaDAO {
     boolean actualizarUnidadMedida(UnidadMedida unidadMedida);
     boolean eliminarUnidadMedida(int unidadM_id);
     UnidadMedida getUnidadMedida(int unidadM_id);
-    int getIdUnidadMedida(String nombre);
+    UnidadMedida getUnidadMedida(String nombre);
 }

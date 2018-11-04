@@ -1,5 +1,6 @@
 package utilidades;
 
+import datos.modelos.UnidadMedida;
 import datos.modelos.Usuario;
 import java.util.List;
 import negocio.controladores.suministros.UnidadMedidaController;
@@ -37,24 +38,65 @@ public class Copia {
                     System.out.println("comando valido");
                     parametroC = texto + "//";
                     if (Pattern.matches(parametroC, parametroI)) {
-                        String[] parametros = parametroI.split("[_]");
+                        String[] parametros = parametroI.split("[//]");
                         String nombre = parametros[0];
 
-                        new UnidadMedidaController().registrar(nombre);
-                        break;
+                        if (new UnidadMedidaController().registrar(nombre)){
+                            System.out.println("Ok");
+                        }else {
+                            System.out.println("prr");
+                        }
+                    }else{
+                        System.out.println("Revisar parametros!");
                     }
                     break;
 
                 case ("editarunidadmedida"):
+                    System.out.println("comando valido");
+                    parametroC = texto + "//" + texto + "//";
+                    if (Pattern.matches(parametroC, parametroI)) {
+                        String[] parametros = parametroI.split("[//]");
+                        String antiguo = parametros[0];
+                        String nuevo = parametros[2];
+
+                        if (new UnidadMedidaController().editar(antiguo, nuevo)){
+                            System.out.println("Ok");
+                        }else {
+                            System.out.println("prr");
+                        }
+
+                    }else{
+                        System.out.println("Revisar parametros!");
+                    }
                     break;
 
                 case ("eliminarunidadmedida"):
+                    System.out.println("comando valido");
+                    parametroC = texto + "//";
+                    if (Pattern.matches(parametroC, parametroI)) {
+                        String[] parametros = parametroI.split("[//]");
+                        String nombre = parametros[0];
+
+                        if (new UnidadMedidaController().eliminar(nombre)){
+                            System.out.println("Ok");
+                        }else {
+                            System.out.println("prr");
+                        }
+                    }else{
+                        System.out.println("Revisar parametros!");
+                    }
+                    
                     break;
 
                 case ("listarunidadmedida"):
-                    break;
+                    System.out.println("comando valido");
+                    List<UnidadMedida> unidadMedidas = new UnidadMedidaController().listarUnidades();
+                    if (unidadMedidas.size() > 0 ){
+                        System.out.println("Hay");
+                    }else {
+                        System.out.println("vacio");
+                    }
 
-                case ("bajaunidadmedida"):
                     break;
 
                 case ("registrarusuario"):
@@ -251,7 +293,7 @@ public class Copia {
         Copia c = new Copia();
         Mensaje m = new Mensaje();
         m.setCuenta("rodrigo.abasto21@gmail.com");
-        m.setAsunto("listarusuarios:");
+        m.setAsunto("listarunidadmedida: Unidad//Unidad//");
         c.procesar(m);
     }
 }

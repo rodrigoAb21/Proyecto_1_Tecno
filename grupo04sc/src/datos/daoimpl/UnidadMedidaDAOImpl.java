@@ -154,14 +154,18 @@ public class UnidadMedidaDAOImpl implements UnidadMedidaDAO {
     }
 
     @Override
-    public int getIdUnidadMedida(String nombre) {
+    public UnidadMedida getUnidadMedida(String nombre) {
         try {
             db.conectar();
 
+            UnidadMedida unidadMedida = new UnidadMedida();
+
             String query ="SELECT " +
-                    "id " +
+                    "id, " +
+                    "nombre, " +
+                    "visible " +
                     "FROM " + TABLA +
-                    " WHERE nombre = " + "'"+nombre+"'";
+                    " WHERE nombre = \'" + nombre + "\' ";
 
             PreparedStatement ps = db.getConexion().prepareStatement(query);
             ResultSet resultSet = ps.executeQuery();
@@ -170,13 +174,17 @@ public class UnidadMedidaDAOImpl implements UnidadMedidaDAO {
 
             if (resultSet.next()){
 
-                return resultSet.getInt("id");
+                unidadMedida.setId(resultSet.getInt("id"));
+                unidadMedida.setNombre(resultSet.getString("nombre"));
+                unidadMedida.setVisible(resultSet.getBoolean("visible"));
+
+                return unidadMedida;
             }
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return -1;
+        return null;
     }
 
 }
