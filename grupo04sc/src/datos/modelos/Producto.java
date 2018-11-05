@@ -5,6 +5,7 @@ public class Producto {
     private String nombre;
     private String codigo;
     private String descripcion;
+    private int categoria_id;
     private boolean visible;
 
 
@@ -49,5 +50,13 @@ public class Producto {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public int getCategoria_id() {
+        return categoria_id;
+    }
+
+    public void setCategoria_id(int categoria_id) {
+        this.categoria_id = categoria_id;
     }
 }

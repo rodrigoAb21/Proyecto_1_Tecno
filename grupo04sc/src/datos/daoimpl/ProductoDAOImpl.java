@@ -30,6 +30,7 @@ public class ProductoDAOImpl implements ProductoDAO {
                     "nombre, " +
                     "codigo, " +
                     "descripcion, " +
+                    "categoria_id, " +
                     "visible " +
                     "FROM " + TABLA  + " WHERE visible = true ";
 
@@ -45,6 +46,7 @@ public class ProductoDAOImpl implements ProductoDAO {
                 producto.setNombre(resultSet.getString("nombre"));
                 producto.setCodigo(resultSet.getString("codigo"));
                 producto.setDescripcion(resultSet.getString("descripcion"));
+                producto.setCategoria_id(resultSet.getInt("categoria_id"));
                 producto.setVisible(resultSet.getBoolean("visible"));
 
                 productos.add(producto);
@@ -62,12 +64,12 @@ public class ProductoDAOImpl implements ProductoDAO {
         try {
             db.conectar();
 
-            String query = "INSERT INTO " + TABLA +"(nombre, codigo, descripcion) VALUES (?, ?, ?)";
+            String query = "INSERT INTO " + TABLA +"(nombre, codigo, descripcion, categoria_id) VALUES (?, ?, ?, ?)";
             PreparedStatement ps = db.getConexion().prepareStatement(query);
             ps.setString(1, producto.getNombre());
             ps.setString(2, producto.getCodigo());
             ps.setString(3, producto.getDescripcion());
-
+            ps.setInt(4, producto.getCategoria_id());
 
             int i = ps.executeUpdate();
 
@@ -90,13 +92,15 @@ public class ProductoDAOImpl implements ProductoDAO {
                     "nombre = ?, " +
                     "codigo = ?, " +
                     "descripcion = ?, " +
+                    "categoria_id = ?, " +
                     "WHERE id = ?";
 
             PreparedStatement ps = db.getConexion().prepareStatement(query);
             ps.setString(1, producto.getNombre());
             ps.setString(2, producto.getCodigo());
             ps.setString(3, producto.getDescripcion());
-            ps.setInt(4, producto.getId());
+            ps.setInt(4, producto.getCategoria_id());
+            ps.setInt(5, producto.getId());
 
             int i = ps.executeUpdate();
 
@@ -140,6 +144,7 @@ public class ProductoDAOImpl implements ProductoDAO {
                     "nombre, " +
                     "codigo, " +
                     "descripcion, " +
+                    "categoria_id, " +
                     "visible " +
                     "FROM " + TABLA + " WHERE id = " + producto_id + " AND visible = true ";
 
@@ -155,6 +160,7 @@ public class ProductoDAOImpl implements ProductoDAO {
                 producto.setNombre(resultSet.getString("nombre"));
                 producto.setCodigo(resultSet.getString("codigo"));
                 producto.setDescripcion(resultSet.getString("descripcion"));
+                producto.setCategoria_id(resultSet.getInt("categoria_id"));
                 producto.setVisible(resultSet.getBoolean("visible"));
 
                 return producto;
