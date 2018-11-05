@@ -30,8 +30,8 @@ create table categoria (
 	id serial primary key,
 	nombre varchar(50) not null,
 	codigo varchar(50) not null,
-	categoria_sup int
-	visible boolean not null default true,
+	categoria_sup int,
+	visible boolean not null default true
 );
 
 alter table categoria add constraint fk_categoria foreign key (categoria_sup) references categoria(id);
@@ -39,9 +39,8 @@ alter table categoria add constraint fk_categoria foreign key (categoria_sup) re
 create table producto (
 	id serial primary key,
 	nombre varchar(50) not null,
-	tipo varchar(50) not null,
 	codigo varchar(50) not null,
-	cantidad int not null,
+	descripcion varchar(255),
 	categoria_id int not null,
 	visible boolean not null default true,
 	foreign key (categoria_id) references categoria(id) on update cascade on delete cascade
@@ -51,9 +50,25 @@ create table suministro (
 	id serial primary key,
 	stock_minimo int not null,
 	stock_maximo int not null,
+	stock int not null,
 	producto_id int not null,
+	unidad_medida_id int not null,
 	visible boolean not null default true,
-	foreign key (producto_id) references producto(id) on delete cascade on update cascade
+	foreign key (producto_id) references producto(id) on delete cascade on update cascade,
+	foreign key (unidad_medida_id) references unidad_medida(id) on delete cascade on update cascade
+);
+
+create table detalle_suministrar(
+  id serial primary key,
+  cantidad int not null,
+  dpto varchar(50) not null,
+  encargado varchar(50) not null,
+  observacion varchar(255),
+  suministro_id int not null,
+  movimiento_suministro_id int not null,
+  visible boolean not null default true,
+  foreign key (suministro_id) references suministro(id) on delete cascade on update cascade,
+  foreign key (movimiento_suministro_id) references movimiento_suministro(id) on delete cascade on update cascade
 );
 
 create table activo_fijo (
@@ -75,26 +90,5 @@ create table revaluo (
 	visible boolean not null default true,
 	foreign key (activo_fijo_id) references activo_fijo(id) on delete cascade on update cascade
 );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

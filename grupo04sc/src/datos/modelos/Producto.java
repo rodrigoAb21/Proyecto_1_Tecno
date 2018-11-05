@@ -3,19 +3,12 @@ package datos.modelos;
 public class Producto {
     private int id;
     private String nombre;
-    private String tipo;
     private String codigo;
-    private int cantidad;
+    private String descripcion;
     private boolean visible;
 
-    public Producto() {
-    }
 
-    public Producto(String nombre, String tipo, String codigo, int cantidad) {
-        this.nombre = nombre;
-        this.tipo = tipo;
-        this.codigo = codigo;
-        this.cantidad = cantidad;
+    public Producto() {
     }
 
     public int getId() {
@@ -34,14 +27,6 @@ public class Producto {
         this.nombre = nombre;
     }
 
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
     public String getCodigo() {
         return codigo;
     }
@@ -50,19 +35,19 @@ public class Producto {
         this.codigo = codigo;
     }
 
-    public int getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
-    }
-
     public boolean isVisible() {
         return visible;
     }
 
     public void setVisible(boolean visible) {
         this.visible = visible;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 }

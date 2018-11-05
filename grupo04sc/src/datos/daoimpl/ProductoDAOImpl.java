@@ -28,11 +28,10 @@ public class ProductoDAOImpl implements ProductoDAO {
             String query ="SELECT " +
                     "id, " +
                     "nombre, " +
-                    "tipo, " +
                     "codigo, " +
-                    "cantidad, " +
+                    "descripcion, " +
                     "visible " +
-                    "FROM " + TABLA;
+                    "FROM " + TABLA  + " WHERE visible = true ";
 
             PreparedStatement ps = db.getConexion().prepareStatement(query);
             ResultSet resultSet = ps.executeQuery();
@@ -44,9 +43,8 @@ public class ProductoDAOImpl implements ProductoDAO {
                 Producto producto = new Producto();
                 producto.setId(resultSet.getInt("id"));
                 producto.setNombre(resultSet.getString("nombre"));
-                producto.setTipo(resultSet.getString("tipo"));
                 producto.setCodigo(resultSet.getString("codigo"));
-                producto.setCantidad(resultSet.getInt("cantidad"));
+                producto.setDescripcion(resultSet.getString("descripcion"));
                 producto.setVisible(resultSet.getBoolean("visible"));
 
                 productos.add(producto);
@@ -64,12 +62,12 @@ public class ProductoDAOImpl implements ProductoDAO {
         try {
             db.conectar();
 
-            String query = "INSERT INTO " + TABLA +"(nombre, tipo, codigo, cantidad) VALUES (?, ?, ?, ?)";
+            String query = "INSERT INTO " + TABLA +"(nombre, codigo, descripcion) VALUES (?, ?, ?)";
             PreparedStatement ps = db.getConexion().prepareStatement(query);
             ps.setString(1, producto.getNombre());
-            ps.setString(2, producto.getTipo());
-            ps.setString(3, producto.getCodigo());
-            ps.setInt(4, producto.getCantidad());
+            ps.setString(2, producto.getCodigo());
+            ps.setString(3, producto.getDescripcion());
+
 
             int i = ps.executeUpdate();
 
@@ -90,17 +88,15 @@ public class ProductoDAOImpl implements ProductoDAO {
 
             String query ="UPDATE " + TABLA + " SET " +
                     "nombre = ?, " +
-                    "tipo= ?, " +
                     "codigo = ?, " +
-                    "cantidad = ? " +
+                    "descripcion = ?, " +
                     "WHERE id = ?";
 
             PreparedStatement ps = db.getConexion().prepareStatement(query);
             ps.setString(1, producto.getNombre());
-            ps.setString(2, producto.getTipo());
-            ps.setString(3, producto.getCodigo());
-            ps.setInt(4, producto.getCantidad());
-            ps.setInt(5, producto.getId());
+            ps.setString(2, producto.getCodigo());
+            ps.setString(3, producto.getDescripcion());
+            ps.setInt(4, producto.getId());
 
             int i = ps.executeUpdate();
 
@@ -142,11 +138,10 @@ public class ProductoDAOImpl implements ProductoDAO {
             String query ="SELECT " +
                     "id, " +
                     "nombre, " +
-                    "tipo, " +
                     "codigo, " +
-                    "cantidad, " +
+                    "descripcion, " +
                     "visible " +
-                    "FROM " + TABLA + " WHERE id = " + producto_id;
+                    "FROM " + TABLA + " WHERE id = " + producto_id + " AND visible = true ";
 
             PreparedStatement ps = db.getConexion().prepareStatement(query);
             ResultSet resultSet = ps.executeQuery();
@@ -158,9 +153,8 @@ public class ProductoDAOImpl implements ProductoDAO {
                 Producto producto = new Producto();
                 producto.setId(resultSet.getInt("id"));
                 producto.setNombre(resultSet.getString("nombre"));
-                producto.setTipo(resultSet.getString("tipo"));
                 producto.setCodigo(resultSet.getString("codigo"));
-                producto.setCantidad(resultSet.getInt("cantidad"));
+                producto.setDescripcion(resultSet.getString("descripcion"));
                 producto.setVisible(resultSet.getBoolean("visible"));
 
                 return producto;

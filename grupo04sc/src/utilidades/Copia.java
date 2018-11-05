@@ -115,7 +115,7 @@ public class Copia {
 
                 //-------------------------------- USUARIO ----------------------------------------------
 
-                case ("registrarusuario"):
+                case ("RegistrarUsuario"):
                     parametroC = textoLetras + "//" + textoLetras + "//" + numero + "//" + texto + "//" ;
                     if (Pattern.matches(parametroC, parametroI)) {
                         System.out.println("Entre!");
@@ -127,26 +127,22 @@ public class Copia {
 
                         respuesta.setAsunto("Respuesta registrar usuario");
                         if (new UsuarioController().registrarUsuario(nombre, apellido, carnet, email)){
-                            System.out.println(Respuesta.usuario(new UsuarioController().getUsuario(email)));
-//                            respuesta.setMensaje("Es usuario " + nombre + " " +apellido +" fue registrado correctamente");
+                            respuesta.setAsunto("Se registro un nuevo usuario");
+                            respuesta.setMensaje(Respuesta.usuario(new UsuarioController().getUsuario(email)));
                         }else {
-                            System.out.println("Prrr!");
-//                            respuesta.setMensaje("No se pudo registrar el usuario " + nombre + " " + apellido + " revise" +
-//                                    " haber escrito correctamente.");
+                            respuesta.setAsunto("No se pudo registrar el usuario.");
                         }
-//                        new CorreoGmail().enviar(respuesta);
+                    }else{
+                        respuesta.setAsunto("Parametros incorrectos al registrar un nuevo usuario.");
+                        respuesta.setMensaje(Ejemplo.RegistrarUsuario);
                     }
-                    
-                    
-                    
-                    
+                    new CorreoGmail().enviar(respuesta);
+
                     break;
 
-                case ("editarusuario"):
-                    System.out.println("comando valido");
+                case ("EditarUsuario"):
                     parametroC = numero + "//" + texto + "//" + texto + "//" + texto + "//" + texto + "//" ;
                     if (Pattern.matches(parametroC, parametroI)) {
-                        System.out.println("Entre!");
                         String[] parametros = parametroI.split("[//]");
                         int id = Integer.parseInt(parametros[0]);
                         String nombre = parametros[2];
@@ -154,129 +150,78 @@ public class Copia {
                         String carnet = parametros[6];
                         String email = parametros[8];
 
-                        respuesta.setAsunto("Respuesta registrar usuario");
                         if (new UsuarioController().editarUsuario(id, nombre, apellido, carnet, email)){
-                            System.out.println("OK");
-//                            respuesta.setMensaje("Es usuario " + nombre + " " +apellido +" fue registrado correctamente");
+                            respuesta.setAsunto("Se edito al usuario con id: " + id);
+                            respuesta.setMensaje(Respuesta.usuario(new UsuarioController().getUsuario(id)));
                         }else {
-                            System.out.println("Prrr!");
-//                            respuesta.setMensaje("No se pudo registrar el usuario " + nombre + " " + apellido + " revise" +
-//                                    " haber escrito correctamente.");
+                            respuesta.setAsunto("No se pudo editar el usuario.");
                         }
-//                        new CorreoGmail().enviar(respuesta);
                     }else{
-                        System.out.println("Revisar parametros!");
+                        respuesta.setAsunto("Parametros incorrectos al editar el usuario.");
+                        respuesta.setMensaje(Ejemplo.EditarUsuario);
                     }
-
+                    new CorreoGmail().enviar(respuesta);
 
                     break;
 
                     
-                case("eliminarusuario"):
-                    System.out.println("comando valido");
+                case("EliminarUsuario"):
                     parametroC = numero + "//";
                     if (Pattern.matches(parametroC, parametroI)) {
-                        System.out.println("Entre!");
                         String[] parametros = parametroI.split("[//]");
                         int id = Integer.parseInt(parametros[0]);
 
                         if (new UsuarioController().eliminarUsuario(id)){
-                            System.out.println("OK");
-//                            respuesta.setMensaje("Es usuario " + nombre + " " +apellido +" fue registrado correctamente");
+                            respuesta.setAsunto("Se elimino al usuario con id: " + id);
                         }else {
-                            System.out.println("Prrr!");
-//                            respuesta.setMensaje("No se pudo registrar el usuario " + nombre + " " + apellido + " revise" +
-//                                    " haber escrito correctamente.");
+                            respuesta.setAsunto("No se pudo eliminar al usuario.");
                         }
-//                        new CorreoGmail().enviar(respuesta);
                     }else{
-                        System.out.println("Revisar parametros!");
+                        respuesta.setAsunto("Parametros incorrectos al eliminar al usuario.");
+                        respuesta.setMensaje(Ejemplo.EliminarUsuario);
                     }
                     
                     
                     break;
-                    
-                    
 
-                case("obtenerusuario"):
-                    System.out.println("comando valido");
-                    parametroC = numero + "//";
-                    if (Pattern.matches(parametroC, parametroI)) {
-                        System.out.println("Entre!");
-                        String[] parametros = parametroI.split("[//]");
-                        int id = Integer.parseInt(parametros[0]);
 
-                        respuesta.setAsunto("Respuesta registrar usuario");
-                        Usuario u = new UsuarioController().getUsuario(id);
-                        if (u != null){
-                            System.out.println("OK");
-                            System.out.println(u.getId());
-                            System.out.println(u.getNombre());
-                            System.out.println(u.getApellido());
-        //                            respuesta.setMensaje("Es usuario " + nombre + " " +apellido +" fue registrado correctamente");
-                        }else {
-                            System.out.println("Prrr!");
-        //                            respuesta.setMensaje("No se pudo registrar el usuario " + nombre + " " + apellido + " revise" +
-        //                                    " haber escrito correctamente.");
-                        }
-        //                        new CorreoGmail().enviar(respuesta);
+                case("ListarUsuarios"):
+                    List<Usuario> usuarios = new UsuarioController().listarUsuarios();
+                    respuesta.setAsunto("Lista de usuarios");
+                    if (usuarios.size() > 0) {
+                        respuesta.setMensaje(Respuesta.listaUsuario(usuarios));
                     }else{
-                        parametroC = texto + "//";
-                        if (Pattern.matches(parametroC, parametroI)) {
-                            System.out.println("Entre!");
-                        String[] parametros = parametroI.split("[//]");
-                        String email = parametros[0];
-
-                        respuesta.setAsunto("Respuesta registrar usuario");
-                        Usuario u = new UsuarioController().getUsuario(email);
-                        if (u != null){
-                            System.out.println("OK");
-                            System.out.println(u.getId());
-                            System.out.println(u.getNombre());
-                            System.out.println(u.getApellido());
-        //                            respuesta.setMensaje("Es usuario " + nombre + " " +apellido +" fue registrado correctamente");
-                        }else {
-                            System.out.println("Prrr!");
-        //                            respuesta.setMensaje("No se pudo registrar el usuario " + nombre + " " + apellido + " revise" +
-        //                                    " haber escrito correctamente.");
-                        }
-        //                        new CorreoGmail().enviar(respuesta);
-                        }else{
-                        System.out.println("Revisar parametros!");
-                        }
+                        respuesta.setMensaje("Lista vacia.");
                     }
 
-
                     break;
-                    
-                    
-                    
-                    case("listarusuarios"):
-                        System.out.println("comando valido");
-                        List<Usuario> usuarios = new UsuarioController().listarUsuarios();
-                        if (usuarios.size() > 0) {
-                            System.out.println("Hay!");
-                            //formar un mensaje con todos los usuarios
-                        }else{
-                            System.out.println("No hay");
-                        }
 
 
-                        break;
 
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
+
+                //-------------------------------- SUMINISTRO ----------------------------------------------
+
+
+                case("IngresoNuevoSuministro"):
+                    break;
+
+                case("IngresoSuministro"):
+                    break;
+
+                case("SalidaSuministro"):
+                    break;
+
+                case("DevolucionSuministro"):
+                    break;
+
+                case("EditarSuministro"):
+                    break;
+
+                case("EliminarSuministro"):
+                    break;
+
+                case("InventarioSuministro"):
+                    break;
 
                 default:
                     //mostrar mensaje indicando que el comando no es válido
