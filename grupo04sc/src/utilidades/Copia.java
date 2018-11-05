@@ -116,7 +116,6 @@ public class Copia {
                 //-------------------------------- USUARIO ----------------------------------------------
 
                 case ("registrarusuario"):
-                    System.out.println("comando valido");
                     parametroC = textoLetras + "//" + textoLetras + "//" + numero + "//" + texto + "//" ;
                     if (Pattern.matches(parametroC, parametroI)) {
                         System.out.println("Entre!");
@@ -128,7 +127,7 @@ public class Copia {
 
                         respuesta.setAsunto("Respuesta registrar usuario");
                         if (new UsuarioController().registrarUsuario(nombre, apellido, carnet, email)){
-                            System.out.println("OK");
+                            System.out.println(Respuesta.usuario(new UsuarioController().getUsuario(email)));
 //                            respuesta.setMensaje("Es usuario " + nombre + " " +apellido +" fue registrado correctamente");
                         }else {
                             System.out.println("Prrr!");
@@ -298,7 +297,7 @@ public class Copia {
         Copia c = new Copia();
         Mensaje m = new Mensaje();
         m.setCuenta("rodrigo.abasto21@gmail.com");
-        m.setAsunto("listarunidadmedida: Unidad//Unidad//");
+        m.setAsunto("registrarusuario:Mateo//Kuljkis//8181035//mateo@gmail.com//");
         c.procesar(m);
     }
 }

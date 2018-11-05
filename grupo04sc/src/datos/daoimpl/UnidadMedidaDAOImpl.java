@@ -131,7 +131,7 @@ public class UnidadMedidaDAOImpl implements UnidadMedidaDAO {
                     "nombre, " +
                     "visible " +
                     "FROM " + TABLA +
-                    " WHERE id = " + unidadM_id;
+                    " WHERE id = " + unidadM_id + " AND visible = true ";
 
             PreparedStatement ps = db.getConexion().prepareStatement(query);
             ResultSet resultSet = ps.executeQuery();
@@ -165,7 +165,7 @@ public class UnidadMedidaDAOImpl implements UnidadMedidaDAO {
                     "nombre, " +
                     "visible " +
                     "FROM " + TABLA +
-                    " WHERE nombre = \'" + nombre + "\' ";
+                    " WHERE nombre = \'" + nombre + "\'  AND visible = true ";
 
             PreparedStatement ps = db.getConexion().prepareStatement(query);
             ResultSet resultSet = ps.executeQuery();
