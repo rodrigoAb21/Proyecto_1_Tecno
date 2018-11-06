@@ -62,8 +62,8 @@ create table suministro (
 create table detalle_suministrar(
   id serial primary key,
   cantidad int not null,
-  dpto varchar(50) not null,
-  encargado varchar(50) not null,
+  dpto varchar(50),
+  encargado varchar(50),
   observacion varchar(255),
   suministro_id int not null,
   movimiento_suministro_id int not null,

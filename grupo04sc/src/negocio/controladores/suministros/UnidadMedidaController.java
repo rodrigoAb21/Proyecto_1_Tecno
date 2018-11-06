@@ -15,7 +15,7 @@ public class UnidadMedidaController {
     }
 
 
-    public boolean registrar(String nombre){
+    public int registrar(String nombre){
         return dao.registrarUnidadMedida(new UnidadMedida(nombre));
     }
 
@@ -38,5 +38,9 @@ public class UnidadMedidaController {
 
     public UnidadMedida getUnidadMedida(String nombre){
         return dao.getUnidadMedida(nombre);
+    }
+
+    public UnidadMedida getUnidadMedida(int id){
+        return dao.getUnidadMedida(id);
     }
 }

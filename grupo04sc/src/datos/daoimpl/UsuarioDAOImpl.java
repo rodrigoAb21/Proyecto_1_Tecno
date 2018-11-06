@@ -10,6 +10,7 @@ import datos.modelos.Usuario;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import negocio.interfaces.UsuarioDAO;
@@ -110,12 +111,12 @@ public class UsuarioDAOImpl implements UsuarioDAO{
     }
 
     @Override
-    public boolean registrarUsuario(Usuario usuario) {
+    public int registrarUsuario(Usuario usuario) {
         try {
             db.conectar();
-            
+
             String query = "INSERT INTO " + TABLA +"(nombre, apellido, ci, email, password) VALUES (?, ?, ?, ?, ?)";
-            PreparedStatement ps = db.getConexion().prepareStatement(query);
+            PreparedStatement ps = db.getConexion().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, usuario.getNombre());
             ps.setString(2, usuario.getApellido());
             ps.setString(3, usuario.getCi());
@@ -123,15 +124,19 @@ public class UsuarioDAOImpl implements UsuarioDAO{
             ps.setString(5, usuario.getCi());
 
             int i = ps.executeUpdate();
-            
             db.desconectar();
-            
-            return (i > 0);
-            
+            if (i > 0){
+                ResultSet generateKeys = ps.getGeneratedKeys();
+                if (generateKeys.next()) {
+                    return generateKeys.getInt(1);
+                }
+            }
+
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return false;
+        return -1;
     }
 
     @Override
@@ -308,6 +313,8 @@ public class UsuarioDAOImpl implements UsuarioDAO{
         }
         return false;
     }
+
+
 
 
 }

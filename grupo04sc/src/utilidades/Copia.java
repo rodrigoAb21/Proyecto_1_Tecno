@@ -43,11 +43,11 @@ public class Copia {
                     if (Pattern.matches(parametroC, parametroI)) {
                         String[] parametros = parametroI.split("[//]");
                         String nombre = parametros[0];
-
-                        if (new UnidadMedidaController().registrar(nombre)){
+                        int id = new UnidadMedidaController().registrar(nombre);
+                        if (id > 0){
                             respuesta.setAsunto("Se registro la unidad de medida.");
                             respuesta.setMensaje(Respuesta.unidadMedida(new UnidadMedidaController()
-                                    .getUnidadMedida(nombre)));
+                                    .getUnidadMedida(id)));
                         }else {
                             respuesta.setAsunto("No se pudo registrar la unidad de medida.");
                         }
@@ -126,9 +126,10 @@ public class Copia {
                         String email = parametros[6];
 
                         respuesta.setAsunto("Respuesta registrar usuario");
-                        if (new UsuarioController().registrarUsuario(nombre, apellido, carnet, email)){
+                        int id = new UsuarioController().registrarUsuario(nombre, apellido, carnet, email);
+                        if (id > 0){
                             respuesta.setAsunto("Se registro un nuevo usuario");
-                            respuesta.setMensaje(Respuesta.usuario(new UsuarioController().getUsuario(email)));
+                            respuesta.setMensaje(Respuesta.usuario(new UsuarioController().getUsuario(id)));
                         }else {
                             respuesta.setAsunto("No se pudo registrar el usuario.");
                         }

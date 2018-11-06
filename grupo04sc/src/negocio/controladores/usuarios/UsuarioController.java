@@ -14,7 +14,7 @@ public class UsuarioController {
         dao = new UsuarioDAOImpl();
     }
 
-    public boolean registrarUsuario(String nombre, String apellido, String carnet, String email){
+    public int registrarUsuario(String nombre, String apellido, String carnet, String email){
         Usuario usuario =  new Usuario();
         usuario.setNombre(nombre);
         usuario.setApellido(apellido);

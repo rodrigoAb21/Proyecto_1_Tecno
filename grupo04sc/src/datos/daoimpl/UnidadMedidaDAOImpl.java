@@ -55,7 +55,7 @@ public class UnidadMedidaDAOImpl implements UnidadMedidaDAO {
     }
 
     @Override
-    public boolean registrarUnidadMedida(UnidadMedida unidadMedida) {
+    public int registrarUnidadMedida(UnidadMedida unidadMedida) {
         try {
             db.conectar();
 
@@ -64,15 +64,18 @@ public class UnidadMedidaDAOImpl implements UnidadMedidaDAO {
             ps.setString(1, unidadMedida.getNombre());
 
             int i = ps.executeUpdate();
-
             db.desconectar();
-
-            return (i > 0);
+            if (i > 0){
+                ResultSet generateKeys = ps.getGeneratedKeys();
+                if (generateKeys.next()) {
+                    return generateKeys.getInt(1);
+                }
+            }
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return false;
+        return -1;
     }
 
     @Override

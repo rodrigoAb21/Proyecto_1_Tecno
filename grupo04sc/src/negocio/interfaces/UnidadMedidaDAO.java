@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface UnidadMedidaDAO {
     List<UnidadMedida> listarUnidadesM();
-    boolean registrarUnidadMedida(UnidadMedida unidadMedida);
+    int registrarUnidadMedida(UnidadMedida unidadMedida);
     boolean actualizarUnidadMedida(UnidadMedida unidadMedida);
     boolean eliminarUnidadMedida(int unidadM_id);
     UnidadMedida getUnidadMedida(int unidadM_id);
