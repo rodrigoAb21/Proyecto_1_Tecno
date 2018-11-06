@@ -190,14 +190,14 @@ public class Copia {
                         String[] parametros = parametroI.split("[//]");
                         int id = Integer.parseInt(parametros[0]);
 
-                        if (new UsuarioController().eliminarUsuario(id)){
-                            respuesta.setAsunto("Se elimino al usuario con id: " + id);
+                        if (new UsuarioController().recuperarUsuario(id)){
+                            respuesta.setAsunto("Se recupero al usuario con id: " + id);
                         }else {
-                            respuesta.setAsunto("No se pudo eliminar al usuario.");
+                            respuesta.setAsunto("No se pudo recuperar al usuario.");
                         }
                     }else{
-                        respuesta.setAsunto("Parametros incorrectos al eliminar al usuario.");
-                        respuesta.setMensaje(Ejemplo.EliminarUsuario);
+                        respuesta.setAsunto("Parametros incorrectos al recuperar al usuario.");
+                        respuesta.setMensaje(Ejemplo.RecuperarUsuario);
                     }
 
 
@@ -216,7 +216,7 @@ public class Copia {
                     break;
 
                 case("ListarUsuariosEliminados"):
-                    List<Usuario> eliminados = new UsuarioController().listarUsuarios();
+                    List<Usuario> eliminados = new UsuarioController().listarUsuariosEliminados();
                     respuesta.setAsunto("Lista de usuarios");
                     if (eliminados.size() > 0) {
                         respuesta.setMensaje(Respuesta.listaUsuario(eliminados));

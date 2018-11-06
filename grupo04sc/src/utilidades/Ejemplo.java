@@ -30,6 +30,9 @@ public class Ejemplo {
     public static String EliminarUsuario = "EliminarUsuario:id//" +
             "\nEjemplo -> EliminarUsuario:3//";
 
+    public static String RecuperarUsuario = "RecuperarUsuario:id//" +
+            "\nEjemplo -> RecuperarUsuario:3//";
+
     public static String ListarUsuario = "ListarUsuario:" +
             "\nEjemplo -> ListarUsuario:";
 

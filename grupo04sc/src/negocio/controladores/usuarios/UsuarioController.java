@@ -53,6 +53,14 @@ public class UsuarioController {
         return dao.listarUsuarios();
     }
 
+    public List<Usuario> listarUsuariosEliminados(){
+        return dao.listarUsuariosEliminados();
+    }
+
+    public boolean recuperarUsuario(int id){
+        return dao.recuperarUsuario(id);
+    }
+
 
 
 
