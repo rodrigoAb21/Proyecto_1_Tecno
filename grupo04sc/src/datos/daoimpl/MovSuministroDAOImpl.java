@@ -7,6 +7,7 @@ import negocio.interfaces.MovSuministroDAO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,25 +59,28 @@ public class MovSuministroDAOImpl implements MovSuministroDAO {
     }
 
     @Override
-    public boolean registrarMovSuministro(MovSuministro movSuministro) {
+    public int registrarMovSuministro(MovSuministro movSuministro) {
         try {
             db.conectar();
 
             String query = "INSERT INTO " + TABLA +"(tipo, fecha) VALUES (?, ?)";
-            PreparedStatement ps = db.getConexion().prepareStatement(query);
+            PreparedStatement ps = db.getConexion().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, movSuministro.getTipo());
             ps.setObject(2, movSuministro.getFecha());
 
             int i = ps.executeUpdate();
-
             db.desconectar();
-
-            return (i > 0);
+            if (i > 0){
+                ResultSet generateKeys = ps.getGeneratedKeys();
+                if (generateKeys.next()) {
+                    return generateKeys.getInt(1);
+                }
+            }
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return false;
+        return -1;
     }
 
     @Override

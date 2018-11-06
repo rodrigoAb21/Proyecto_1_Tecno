@@ -7,6 +7,7 @@ import negocio.interfaces.ProductoDAO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,27 +61,30 @@ public class ProductoDAOImpl implements ProductoDAO {
     }
 
     @Override
-    public boolean registrarProducto(Producto producto) {
+    public int registrarProducto(Producto producto) {
         try {
             db.conectar();
 
             String query = "INSERT INTO " + TABLA +"(nombre, codigo, descripcion, categoria_id) VALUES (?, ?, ?, ?)";
-            PreparedStatement ps = db.getConexion().prepareStatement(query);
+            PreparedStatement ps = db.getConexion().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, producto.getNombre());
             ps.setString(2, producto.getCodigo());
             ps.setString(3, producto.getDescripcion());
             ps.setInt(4, producto.getCategoria_id());
 
             int i = ps.executeUpdate();
-
             db.desconectar();
-
-            return (i > 0);
+            if (i > 0){
+                ResultSet generateKeys = ps.getGeneratedKeys();
+                if (generateKeys.next()) {
+                    return generateKeys.getInt(1);
+                }
+            }
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return false;
+        return -1;
     }
 
     @Override

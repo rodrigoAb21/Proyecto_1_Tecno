@@ -4,16 +4,12 @@ public class Suministro {
     private int id;
     private int stock_minimo;
     private int stock_maximo;
+    private int stock;
     private int producto_id;
+    private int unidad_medida_id;
     private boolean visible;
 
     public Suministro() {
-    }
-
-    public Suministro(int stock_minimo, int stock_maximo, int producto_id) {
-        this.stock_minimo = stock_minimo;
-        this.stock_maximo = stock_maximo;
-        this.producto_id = producto_id;
     }
 
     public int getId() {
@@ -54,5 +50,21 @@ public class Suministro {
 
     public void setVisible(boolean visible) {
         this.visible = visible;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+
+    public int getUnidad_medida_id() {
+        return unidad_medida_id;
+    }
+
+    public void setUnidad_medida_id(int unidad_medida_id) {
+        this.unidad_medida_id = unidad_medida_id;
     }
 }

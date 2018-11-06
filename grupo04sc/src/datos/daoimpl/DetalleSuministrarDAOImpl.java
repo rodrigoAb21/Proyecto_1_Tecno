@@ -12,8 +12,8 @@ public class DetalleSuministrarDAOImpl implements DetalleSuministrarDAO {
     }
 
     @Override
-    public boolean registrarDetalle(DetalleSuministrar detalleSuministrar) {
-        return false;
+    public int registrarDetalle(DetalleSuministrar detalleSuministrar) {
+        return -1;
     }
 
     @Override

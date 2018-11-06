@@ -7,6 +7,7 @@ import negocio.interfaces.UnidadMedidaDAO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,7 +61,7 @@ public class UnidadMedidaDAOImpl implements UnidadMedidaDAO {
             db.conectar();
 
             String query = "INSERT INTO " + TABLA +"(nombre) VALUES (?)";
-            PreparedStatement ps = db.getConexion().prepareStatement(query);
+            PreparedStatement ps = db.getConexion().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, unidadMedida.getNombre());
 
             int i = ps.executeUpdate();

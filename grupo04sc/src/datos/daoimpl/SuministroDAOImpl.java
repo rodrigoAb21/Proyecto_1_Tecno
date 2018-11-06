@@ -7,6 +7,7 @@ import negocio.interfaces.SuministroDAO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,26 +60,29 @@ public class SuministroDAOImpl implements SuministroDAO {
     }
 
     @Override
-    public boolean registrarSuministro(Suministro suministro) {
+    public int registrarSuministro(Suministro suministro) {
         try {
             db.conectar();
 
             String query = "INSERT INTO " + TABLA +"(stock_minimo, stock_maximo, producto_id) VALUES (?, ?, ?)";
-            PreparedStatement ps = db.getConexion().prepareStatement(query);
+            PreparedStatement ps = db.getConexion().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, suministro.getStock_minimo());
             ps.setInt(2, suministro.getStock_maximo());
             ps.setInt(3, suministro.getProducto_id());
 
             int i = ps.executeUpdate();
-
             db.desconectar();
-
-            return (i > 0);
+            if (i > 0){
+                ResultSet generateKeys = ps.getGeneratedKeys();
+                if (generateKeys.next()) {
+                    return generateKeys.getInt(1);
+                }
+            }
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return false;
+        return -1;
     }
 
     @Override
