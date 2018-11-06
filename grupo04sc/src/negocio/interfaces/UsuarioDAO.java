@@ -6,9 +6,11 @@ import java.util.List;
 
 public interface UsuarioDAO {
     List<Usuario> listarUsuarios();
+    List<Usuario> listarUsuariosEliminados();
     boolean registrarUsuario(Usuario usuario);
     boolean editarUsuario(Usuario usuario);
     boolean eliminarUsuario(int usuario_id);
+    boolean recuperarUsuario(int usuario_id);
     Usuario getUsuario(int usuario_id);
     Usuario getUsuario(String email);
 

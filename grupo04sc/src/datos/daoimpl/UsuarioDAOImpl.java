@@ -41,7 +41,48 @@ public class UsuarioDAOImpl implements UsuarioDAO{
                     "ci, " +
                     "email, " +
                     "visible " +
-                    "FROM " + TABLA;
+                    "FROM " + TABLA + " WHERE visible = true ";
+
+            PreparedStatement ps = db.getConexion().prepareStatement(query);
+            ResultSet resultSet = ps.executeQuery();
+
+            db.desconectar();
+
+            while (resultSet.next()){
+
+                Usuario usuario = new Usuario();
+                usuario.setId(resultSet.getInt("id"));
+                usuario.setNombre(resultSet.getString("nombre"));
+                usuario.setApellido(resultSet.getString("apellido"));
+                usuario.setCi(resultSet.getString("ci"));
+                usuario.setEmail(resultSet.getString("email"));
+                usuario.setVisible(resultSet.getBoolean("visible"));
+
+                usuarios.add(usuario);
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return usuarios;
+    }
+
+    @Override
+    public List<Usuario> listarUsuariosEliminados() {
+        List<Usuario> usuarios = new ArrayList<>();
+
+        try {
+            db.conectar();
+
+            String query ="SELECT " +
+                    "id, " +
+                    "nombre, " +
+                    "apellido, " +
+                    "ci, " +
+                    "email, " +
+                    "visible " +
+                    "FROM " + TABLA + " WHERE visible = false";
 
             PreparedStatement ps = db.getConexion().prepareStatement(query);
             ResultSet resultSet = ps.executeQuery();
@@ -73,12 +114,13 @@ public class UsuarioDAOImpl implements UsuarioDAO{
         try {
             db.conectar();
             
-            String query = "INSERT INTO " + TABLA +"(nombre, apellido, ci, email) VALUES (?, ?, ?, ?)";
+            String query = "INSERT INTO " + TABLA +"(nombre, apellido, ci, email, password) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement ps = db.getConexion().prepareStatement(query);
             ps.setString(1, usuario.getNombre());
             ps.setString(2, usuario.getApellido());
             ps.setString(3, usuario.getCi());
             ps.setString(4, usuario.getEmail());
+            ps.setString(5, usuario.getCi());
 
             int i = ps.executeUpdate();
             
@@ -101,7 +143,8 @@ public class UsuarioDAOImpl implements UsuarioDAO{
                     "nombre = ?, " +
                     "apellido = ?, " +
                     "ci = ?, " +
-                    "email = ? " +
+                    "email = ?, " +
+                    "password = ? " +
                     "WHERE usuario.id = ?";
 
             PreparedStatement ps = db.getConexion().prepareStatement(query);
@@ -109,7 +152,8 @@ public class UsuarioDAOImpl implements UsuarioDAO{
             ps.setString(2, usuario.getApellido());
             ps.setString(3, usuario.getCi());
             ps.setString(4, usuario.getEmail());
-            ps.setInt(5, usuario.getId());
+            ps.setString(5, usuario.getCi());
+            ps.setInt(6, usuario.getId());
 
             int i = ps.executeUpdate();
 
@@ -129,6 +173,26 @@ public class UsuarioDAOImpl implements UsuarioDAO{
             db.conectar();
 
             String query ="UPDATE " + TABLA + " SET visible = false WHERE id = " + usuario_id;
+
+            PreparedStatement ps = db.getConexion().prepareStatement(query);
+            int i = ps.executeUpdate();
+
+            db.desconectar();
+
+            return (i > 0);
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
+    @Override
+    public boolean recuperarUsuario(int usuario_id) {
+        try {
+            db.conectar();
+
+            String query ="UPDATE " + TABLA + " SET visible = true WHERE id = " + usuario_id;
 
             PreparedStatement ps = db.getConexion().prepareStatement(query);
             int i = ps.executeUpdate();
@@ -228,7 +292,7 @@ public class UsuarioDAOImpl implements UsuarioDAO{
             
             db.conectar();
 
-            String query ="SELECT  * FROM " + TABLA + " WHERE email = \'" + correo + "\' ";
+            String query ="SELECT  * FROM " + TABLA + " WHERE email = \'" + correo + "\' AND visible = true";
 
             PreparedStatement ps = db.getConexion().prepareStatement(query);
             ResultSet resultSet = ps.executeQuery();

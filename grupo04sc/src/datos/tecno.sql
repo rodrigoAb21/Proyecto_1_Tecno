@@ -3,7 +3,8 @@ create table usuario (
 	nombre varchar(50) not null,
 	apellido varchar(50) not null,
 	ci varchar(20) not null,
-	email varchar(50) not null,
+	email varchar(50) unique not null,
+	password varchar(255) not null,
 	visible boolean not null default true
 );
 

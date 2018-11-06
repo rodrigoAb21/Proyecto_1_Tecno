@@ -184,12 +184,42 @@ public class Copia {
                     
                     break;
 
+                case("RecuperarUsuario"):
+                    parametroC = numero + "//";
+                    if (Pattern.matches(parametroC, parametroI)) {
+                        String[] parametros = parametroI.split("[//]");
+                        int id = Integer.parseInt(parametros[0]);
+
+                        if (new UsuarioController().eliminarUsuario(id)){
+                            respuesta.setAsunto("Se elimino al usuario con id: " + id);
+                        }else {
+                            respuesta.setAsunto("No se pudo eliminar al usuario.");
+                        }
+                    }else{
+                        respuesta.setAsunto("Parametros incorrectos al eliminar al usuario.");
+                        respuesta.setMensaje(Ejemplo.EliminarUsuario);
+                    }
+
+
+                    break;
+
 
                 case("ListarUsuarios"):
                     List<Usuario> usuarios = new UsuarioController().listarUsuarios();
                     respuesta.setAsunto("Lista de usuarios");
                     if (usuarios.size() > 0) {
                         respuesta.setMensaje(Respuesta.listaUsuario(usuarios));
+                    }else{
+                        respuesta.setMensaje("Lista vacia.");
+                    }
+
+                    break;
+
+                case("ListarUsuariosEliminados"):
+                    List<Usuario> eliminados = new UsuarioController().listarUsuarios();
+                    respuesta.setAsunto("Lista de usuarios");
+                    if (eliminados.size() > 0) {
+                        respuesta.setMensaje(Respuesta.listaUsuario(eliminados));
                     }else{
                         respuesta.setMensaje("Lista vacia.");
                     }
