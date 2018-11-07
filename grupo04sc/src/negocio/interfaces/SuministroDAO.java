@@ -5,7 +5,7 @@ import datos.modelos.Suministro;
 import java.util.List;
 
 public interface SuministroDAO {
-    List<Suministro> listarSuministros();
+    List<String> listarSuministros();
     int registrarSuministro(Suministro suministro);
     boolean actualizarSuministro(Suministro suministro);
     boolean eliminarSuministro(int suministro_id);

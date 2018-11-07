@@ -6,7 +6,11 @@ public class MovSuministro {
     private int id;
     private String tipo;
     private LocalDate fecha;
-    private boolean visible;
+    private String dpto;
+    private String encargado;
+    private String observacion;
+    private String estado;
+
 
     public MovSuministro() {
     }
@@ -40,11 +44,35 @@ public class MovSuministro {
         this.fecha = fecha;
     }
 
-    public boolean isVisible() {
-        return visible;
+    public String getEstado() {
+        return estado;
     }
 
-    public void setVisible(boolean visible) {
-        this.visible = visible;
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public String getDpto() {
+        return dpto;
+    }
+
+    public void setDpto(String dpto) {
+        this.dpto = dpto;
+    }
+
+    public String getEncargado() {
+        return encargado;
+    }
+
+    public void setEncargado(String encargado) {
+        this.encargado = encargado;
+    }
+
+    public String getObservacion() {
+        return observacion;
+    }
+
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
     }
 }

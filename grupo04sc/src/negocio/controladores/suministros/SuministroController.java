@@ -5,7 +5,7 @@ import datos.modelos.*;
 import negocio.interfaces.*;
 
 import java.time.LocalDate;
-import java.util.Date;
+import java.util.List;
 
 public class SuministroController {
     private ProductoDAO prodDAO;
@@ -58,6 +58,7 @@ public class SuministroController {
                         movimiento.setTipo("Ingreso");
                         movimiento.setFecha(LocalDate.now());
 
+
                         int mov_id = movDAO.registrarMovSuministro(movimiento);
                         if (mov_id > 0){
                             //si se creo bien el movimiento proseguimos en crear el detalle y retornamos su id
@@ -109,6 +110,9 @@ public class SuministroController {
         MovSuministro movimiento = new MovSuministro();
         movimiento.setTipo("Salida");
         movimiento.setFecha(LocalDate.now());
+        movimiento.setEncargado(encargado);
+        movimiento.setDpto(dpto);
+        movimiento.setObservacion(observacion);
         int mov_id = movDAO.registrarMovSuministro(movimiento);
         if (mov_id > 0){
             //si se creo bien el movimiento proseguimos en crear el detalle y retornamos su id
@@ -116,9 +120,7 @@ public class SuministroController {
             detalle.setCantidad(cantidad);
             detalle.setSuministro_id(suministro_id);
             detalle.setMovimiento_suministro_id(mov_id);
-            detalle.setEncargado(encargado);
-            detalle.setDpto(dpto);
-            detalle.setObservacion(observacion);
+
 
             int detalle_id = detaDAO.registrarDetalle(detalle);
             if (detalle_id > 0){
@@ -134,6 +136,9 @@ public class SuministroController {
         MovSuministro movimiento = new MovSuministro();
         movimiento.setTipo("Devolucion");
         movimiento.setFecha(LocalDate.now());
+        movimiento.setEncargado(encargado);
+        movimiento.setDpto(dpto);
+        movimiento.setObservacion(observacion);
         int mov_id = movDAO.registrarMovSuministro(movimiento);
         if (mov_id > 0){
             //si se creo bien el movimiento proseguimos en crear el detalle y retornamos su id
@@ -141,9 +146,6 @@ public class SuministroController {
             detalle.setCantidad(cantidad);
             detalle.setSuministro_id(suministro_id);
             detalle.setMovimiento_suministro_id(mov_id);
-            detalle.setEncargado(encargado);
-            detalle.setDpto(dpto);
-            detalle.setObservacion(observacion);
 
             int detalle_id = detaDAO.registrarDetalle(detalle);
             if (detalle_id > 0){
@@ -163,6 +165,42 @@ public class SuministroController {
         }
         return false;
     }
+
+
+    List<String> listarMovimientos(){
+        List<String> lista = sumiDAO.listarSuministros();
+        return lista;
+    }
+
+
+    boolean eliminarMovimiento(int id){
+        MovSuministro movimiento = movDAO.getMovSuministro(id);
+        DetalleSuministrar detalle = detaDAO.getDetalle(id);
+        if (movimiento.getTipo().equals("Salida")){
+            actualizarStock(detalle.getSuministro_id(), detalle.getCantidad());
+            return movDAO.cancelarMovimiento(id);
+        }else{
+            actualizarStock(detalle.getSuministro_id(), detalle.getCantidad() * -1);
+            return movDAO.cancelarMovimiento(id);
+        }
+
+    }
+
+    boolean restablecerMovimiento(int id){
+        MovSuministro movimiento = movDAO.getMovSuministro(id);
+        DetalleSuministrar detalle = detaDAO.getDetalle(id);
+        if (movimiento.getTipo().equals("Salida")){
+            actualizarStock(detalle.getSuministro_id(), detalle.getCantidad() * -1);
+            return movDAO.restablecerMovimiento(id);
+        }else{
+            actualizarStock(detalle.getSuministro_id(), detalle.getCantidad());
+            return movDAO.restablecerMovimiento(id);
+        }
+
+    }
+
+
+
 
 
 

@@ -5,9 +5,10 @@ import datos.modelos.MovSuministro;
 import java.util.List;
 
 public interface MovSuministroDAO {
-    List<MovSuministro> listarSuministros();
+    List<MovSuministro> listarMovimientos();
     int registrarMovSuministro(MovSuministro movSuministro);
     boolean actualizarMovSuministro(MovSuministro movSuministro);
-    boolean eliminarMovSuministro(int movSuministro_id);
+    boolean cancelarMovimiento(int movSuministro_id);
+    boolean restablecerMovimiento(int movSuministro_id);
     MovSuministro getMovSuministro(int movSuministro_id);
 }

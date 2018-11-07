@@ -26,13 +26,7 @@ public class ProductoDAOImpl implements ProductoDAO {
         try {
             db.conectar();
 
-            String query ="SELECT " +
-                    "id, " +
-                    "nombre, " +
-                    "codigo, " +
-                    "descripcion, " +
-                    "categoria_id, " +
-                    "visible " +
+            String query ="SELECT * " +
                     "FROM " + TABLA  + " WHERE visible = true ";
 
             PreparedStatement ps = db.getConexion().prepareStatement(query);
@@ -96,7 +90,7 @@ public class ProductoDAOImpl implements ProductoDAO {
                     "nombre = ?, " +
                     "codigo = ?, " +
                     "descripcion = ?, " +
-                    "categoria_id = ?, " +
+                    "categoria_id = ? " +
                     "WHERE id = ?";
 
             PreparedStatement ps = db.getConexion().prepareStatement(query);
@@ -143,14 +137,7 @@ public class ProductoDAOImpl implements ProductoDAO {
         try {
             db.conectar();
 
-            String query ="SELECT " +
-                    "id, " +
-                    "nombre, " +
-                    "codigo, " +
-                    "descripcion, " +
-                    "categoria_id, " +
-                    "visible " +
-                    "FROM " + TABLA + " WHERE id = " + producto_id + " AND visible = true ";
+            String query ="SELECT * FROM " + TABLA + " WHERE id = " + producto_id + " AND visible = true ";
 
             PreparedStatement ps = db.getConexion().prepareStatement(query);
             ResultSet resultSet = ps.executeQuery();

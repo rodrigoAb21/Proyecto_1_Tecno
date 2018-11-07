@@ -22,18 +22,13 @@ public class MovSuministroDAOImpl implements MovSuministroDAO {
     }
 
     @Override
-    public List<MovSuministro> listarSuministros() {
+    public List<MovSuministro> listarMovimientos() {
         List<MovSuministro> movSuministros = new ArrayList<>();
 
         try {
             db.conectar();
 
-            String query ="SELECT " +
-                    "id, " +
-                    "tipo, " +
-                    "fecha, " +
-                    "visible " +
-                    "FROM " + TABLA;
+            String query ="SELECT * FROM " + TABLA;
 
             PreparedStatement ps = db.getConexion().prepareStatement(query);
             ResultSet resultSet = ps.executeQuery();
@@ -44,9 +39,12 @@ public class MovSuministroDAOImpl implements MovSuministroDAO {
 
                 MovSuministro movSuministro = new MovSuministro();
                 movSuministro.setId(resultSet.getInt("id"));
-                movSuministro.setTipo(resultSet.getString("tipo"));
                 movSuministro.setFecha(resultSet.getObject("fecha", LocalDate.class));
-                movSuministro.setVisible(resultSet.getBoolean("visible"));
+                movSuministro.setTipo(resultSet.getString("tipo"));
+                movSuministro.setDpto(resultSet.getString("dpto"));
+                movSuministro.setEncargado(resultSet.getString("encargado"));
+                movSuministro.setObservacion(resultSet.getString("observacion"));
+                movSuministro.setEstado(resultSet.getString("estado"));
 
                 movSuministros.add(movSuministro);
             }
@@ -63,10 +61,15 @@ public class MovSuministroDAOImpl implements MovSuministroDAO {
         try {
             db.conectar();
 
-            String query = "INSERT INTO " + TABLA +"(tipo, fecha) VALUES (?, ?)";
+            String query = "INSERT INTO " + TABLA +"(fecha, tipo, dpto, encargado, observacion, estado) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement ps = db.getConexion().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, movSuministro.getTipo());
-            ps.setObject(2, movSuministro.getFecha());
+            ps.setObject(1, movSuministro.getFecha());
+            ps.setString(2, movSuministro.getTipo());
+            ps.setString(3, movSuministro.getDpto());
+            ps.setString(4, movSuministro.getEncargado());
+            ps.setString(5, movSuministro.getObservacion());
+            ps.setString(6, movSuministro.getEstado());
+
 
             int i = ps.executeUpdate();
             db.desconectar();
@@ -89,14 +92,22 @@ public class MovSuministroDAOImpl implements MovSuministroDAO {
             db.conectar();
 
             String query ="UPDATE " + TABLA + " SET " +
+                    "fecha = ?, " +
                     "tipo = ? ," +
-                    "fecha = ? " +
+                    "dpto = ?, " +
+                    "encargado = ?, " +
+                    "observacion = ?, " +
+                    "estado = ? " +
                     "WHERE id = ?";
 
             PreparedStatement ps = db.getConexion().prepareStatement(query);
-            ps.setString(1, movSuministro.getTipo());
-            ps.setObject(2, movSuministro.getFecha());
-            ps.setInt(3, movSuministro.getId());
+            ps.setObject(1, movSuministro.getFecha());
+            ps.setString(2, movSuministro.getTipo());
+            ps.setString(3, movSuministro.getDpto());
+            ps.setString(4, movSuministro.getEncargado());
+            ps.setString(5, movSuministro.getObservacion());
+            ps.setString(6, movSuministro.getEstado());
+            ps.setInt(7, movSuministro.getId());
 
             int i = ps.executeUpdate();
 
@@ -111,11 +122,31 @@ public class MovSuministroDAOImpl implements MovSuministroDAO {
     }
 
     @Override
-    public boolean eliminarMovSuministro(int movSuministro_id) {
+    public boolean cancelarMovimiento(int movSuministro_id) {
         try {
             db.conectar();
 
-            String query ="UPDATE " + TABLA + " SET visible = false WHERE id = " + movSuministro_id;
+            String query ="UPDATE " + TABLA + " SET estado = 'Cancelado' WHERE id = " + movSuministro_id;
+
+            PreparedStatement ps = db.getConexion().prepareStatement(query);
+            int i = ps.executeUpdate();
+
+            db.desconectar();
+
+            return (i > 0);
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
+    @Override
+    public boolean restablecerMovimiento(int movSuministro_id) {
+        try {
+            db.conectar();
+
+            String query ="UPDATE " + TABLA + " SET estado = 'Realizado' WHERE id = " + movSuministro_id;
 
             PreparedStatement ps = db.getConexion().prepareStatement(query);
             int i = ps.executeUpdate();
@@ -137,11 +168,7 @@ public class MovSuministroDAOImpl implements MovSuministroDAO {
 
             MovSuministro movSuministro = new MovSuministro();
 
-            String query ="SELECT " +
-                    "tipo, " +
-                    "fecha, " +
-                    "visible " +
-                    "FROM " + TABLA +
+            String query ="SELECT * FROM " + TABLA +
                     " WHERE id = " + movSuministro_id;
 
             PreparedStatement ps = db.getConexion().prepareStatement(query);
@@ -151,10 +178,13 @@ public class MovSuministroDAOImpl implements MovSuministroDAO {
 
             if (resultSet.next()){
 
-                movSuministro.setId(movSuministro_id);
+                movSuministro.setId(resultSet.getInt("id"));
                 movSuministro.setTipo(resultSet.getString("tipo"));
                 movSuministro.setFecha(resultSet.getObject("fecha", LocalDate.class));
-                movSuministro.setVisible(resultSet.getBoolean("visible"));
+                movSuministro.setEstado(resultSet.getString("estado"));
+                movSuministro.setDpto(resultSet.getString("dpto"));
+                movSuministro.setEncargado(resultSet.getString("encargado"));
+                movSuministro.setObservacion(resultSet.getString("observacion"));
 
                 return movSuministro;
             }

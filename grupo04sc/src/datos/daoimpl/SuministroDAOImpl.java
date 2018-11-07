@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,19 +22,19 @@ public class SuministroDAOImpl implements SuministroDAO {
     }
 
     @Override
-    public List<Suministro> listarSuministros() {
-        List<Suministro> suministros = new ArrayList<>();
+    public List<String> listarSuministros() {
+        List<String> lista = new ArrayList<>();
 
         try {
             db.conectar();
 
-            String query ="SELECT " +
-                    "id, " +
-                    "stock_minimo, " +
-                    "stock_maximo, " +
-                    "producto_id, " +
-                    "visible " +
-                    "FROM " + TABLA;
+            String query ="select movimiento_suministro.id as id, movimiento_suministro.fecha as fecha, producto.nombre as producto," +
+                    "  detalle_suministrar.cantidad as cantidad, unidad_medida.nombre as unidad, movimiento_suministro.dpto as dpto," +
+                    "  movimiento_suministro.encargado as encargado" +
+                    " from movimiento_suministro, detalle_suministrar, suministro, producto, unidad_medida" +
+                    " where suministro.producto_id = producto.id and suministro.unidad_medida_id = unidad_medida.id" +
+                    "  and detalle_suministrar.suministro_id = suministro.id" +
+                    "  and detalle_suministrar.movimiento_suministro_id = movimiento_suministro.id";
 
             PreparedStatement ps = db.getConexion().prepareStatement(query);
             ResultSet resultSet = ps.executeQuery();
@@ -42,21 +43,19 @@ public class SuministroDAOImpl implements SuministroDAO {
 
             while (resultSet.next()){
 
-                Suministro suministro = new Suministro();
-                suministro.setId(resultSet.getInt("id"));
-                suministro.setStock_minimo(resultSet.getInt("stock_minimo"));
-                suministro.setStock_maximo(resultSet.getInt("stock_maximo"));
-                suministro.setProducto_id(resultSet.getInt("producto_id"));
-                suministro.setVisible(resultSet.getBoolean("visible"));
+                String fila = "ID: " + resultSet.getInt("id") +", Fecha: " +resultSet.getObject("fecha",
+                        LocalDate.class) + ", Suministro: " + resultSet.getString("producto") + ", Cant: " +
+                        resultSet.getInt("cantidad") + ", UM: " + resultSet.getString("unidad") +
+                        ", Dpto: " + resultSet.getString("dpto") + ", Encargado: " + resultSet.getString("encargado") ;
 
-                suministros.add(suministro);
+                lista.add(fila);
             }
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
 
-        return suministros;
+        return lista;
     }
 
     @Override
@@ -64,11 +63,12 @@ public class SuministroDAOImpl implements SuministroDAO {
         try {
             db.conectar();
 
-            String query = "INSERT INTO " + TABLA +"(stock_minimo, stock_maximo, producto_id) VALUES (?, ?, ?)";
+            String query = "INSERT INTO " + TABLA +"(stock_minimo, stock_maximo, stock, producto_id) VALUES (?, ?, ?, ?)";
             PreparedStatement ps = db.getConexion().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, suministro.getStock_minimo());
             ps.setInt(2, suministro.getStock_maximo());
-            ps.setInt(3, suministro.getProducto_id());
+            ps.setInt(3, suministro.getStock());
+            ps.setInt(4, suministro.getProducto_id());
 
             int i = ps.executeUpdate();
             db.desconectar();
@@ -93,14 +93,16 @@ public class SuministroDAOImpl implements SuministroDAO {
             String query ="UPDATE " + TABLA + " SET " +
                     "stock_minimo = ?, " +
                     "stock_maximo = ?, " +
-                    "producto_id = ?, " +
+                    "stock = ?, " +
+                    "producto_id = ? " +
                     "WHERE id = ?";
 
             PreparedStatement ps = db.getConexion().prepareStatement(query);
             ps.setInt(1, suministro.getStock_minimo());
             ps.setInt(2, suministro.getStock_maximo());
-            ps.setInt(3, suministro.getProducto_id());
-            ps.setInt(4, suministro.getId());
+            ps.setInt(3, suministro.getStock());
+            ps.setInt(4, suministro.getProducto_id());
+            ps.setInt(5, suministro.getId());
 
             int i = ps.executeUpdate();
 
@@ -139,14 +141,7 @@ public class SuministroDAOImpl implements SuministroDAO {
         try {
             db.conectar();
 
-            String query ="SELECT " +
-                    "id, " +
-                    "nombre, " +
-                    "tipo, " +
-                    "codigo, " +
-                    "cantidad, " +
-                    "visible " +
-                    "FROM " + TABLA + " WHERE id = " + suministro_id;
+            String query ="SELECT * FROM " + TABLA + " WHERE id = " + suministro_id;
 
             PreparedStatement ps = db.getConexion().prepareStatement(query);
             ResultSet resultSet = ps.executeQuery();
@@ -159,6 +154,7 @@ public class SuministroDAOImpl implements SuministroDAO {
                 suministro.setId(resultSet.getInt("id"));
                 suministro.setStock_minimo(resultSet.getInt("stock_minimo"));
                 suministro.setStock_maximo(resultSet.getInt("stock_maximo"));
+                suministro.setStock(resultSet.getInt("stock"));
                 suministro.setProducto_id(resultSet.getInt("producto_id"));
                 suministro.setVisible(resultSet.getBoolean("visible"));
 

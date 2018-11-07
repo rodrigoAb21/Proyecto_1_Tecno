@@ -3,9 +3,6 @@ package datos.modelos;
 public class DetalleSuministrar {
     private int id;
     private int cantidad;
-    private String dpto;
-    private String encargado;
-    private String observacion;
     private int suministro_id;
     private int movimiento_suministro_id;
 
@@ -26,30 +23,6 @@ public class DetalleSuministrar {
 
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
-    }
-
-    public String getDpto() {
-        return dpto;
-    }
-
-    public void setDpto(String dpto) {
-        this.dpto = dpto;
-    }
-
-    public String getEncargado() {
-        return encargado;
-    }
-
-    public void setEncargado(String encargado) {
-        this.encargado = encargado;
-    }
-
-    public String getObservacion() {
-        return observacion;
-    }
-
-    public void setObservacion(String observacion) {
-        this.observacion = observacion;
     }
 
     public int getSuministro_id() {

@@ -18,7 +18,10 @@ create table movimiento_suministro (
 	id serial primary key,
 	fecha date not null,
 	tipo varchar(50) not null,
-	visible boolean not null default true
+	dpto varchar(50),
+  encargado varchar(50),
+  observacion varchar(255),
+	estado varchar(255) not null default 'Realizado'
 );
 
 create table movimiento_activo (
@@ -62,12 +65,8 @@ create table suministro (
 create table detalle_suministrar(
   id serial primary key,
   cantidad int not null,
-  dpto varchar(50),
-  encargado varchar(50),
-  observacion varchar(255),
   suministro_id int not null,
   movimiento_suministro_id int not null,
-  visible boolean not null default true,
   foreign key (suministro_id) references suministro(id) on delete cascade on update cascade,
   foreign key (movimiento_suministro_id) references movimiento_suministro(id) on delete cascade on update cascade
 );
@@ -91,5 +90,21 @@ create table revaluo (
 	visible boolean not null default true,
 	foreign key (activo_fijo_id) references activo_fijo(id) on delete cascade on update cascade
 );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
