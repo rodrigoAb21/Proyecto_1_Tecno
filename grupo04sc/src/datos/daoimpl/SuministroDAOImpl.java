@@ -22,7 +22,7 @@ public class SuministroDAOImpl implements SuministroDAO {
     }
 
     @Override
-    public List<String> listarSuministros() {
+    public List<String> listarSuministrosRealizados() {
         List<String> lista = new ArrayList<>();
 
         try {
@@ -30,11 +30,11 @@ public class SuministroDAOImpl implements SuministroDAO {
 
             String query ="select movimiento_suministro.id as id, movimiento_suministro.fecha as fecha, producto.nombre as producto," +
                     "  detalle_suministrar.cantidad as cantidad, unidad_medida.nombre as unidad, movimiento_suministro.dpto as dpto," +
-                    "  movimiento_suministro.encargado as encargado" +
+                    "  movimiento_suministro.encargado as encargado, movimiento_suministro.tipo as tipo" +
                     " from movimiento_suministro, detalle_suministrar, suministro, producto, unidad_medida" +
                     " where suministro.producto_id = producto.id and suministro.unidad_medida_id = unidad_medida.id" +
                     "  and detalle_suministrar.suministro_id = suministro.id" +
-                    "  and detalle_suministrar.movimiento_suministro_id = movimiento_suministro.id";
+                    "  and detalle_suministrar.movimiento_suministro_id = movimiento_suministro.id and movimiento_suministro.estado = 'Realizado'";
 
             PreparedStatement ps = db.getConexion().prepareStatement(query);
             ResultSet resultSet = ps.executeQuery();
@@ -43,7 +43,44 @@ public class SuministroDAOImpl implements SuministroDAO {
 
             while (resultSet.next()){
 
-                String fila = "ID: " + resultSet.getInt("id") +", Fecha: " +resultSet.getObject("fecha",
+                String fila = "ID: " + resultSet.getInt("id") + ",Tipo: " + resultSet.getString("tipo") + ",  Fecha: " +resultSet.getObject("fecha",
+                        LocalDate.class) + ", Suministro: " + resultSet.getString("producto") + ", Cant: " +
+                        resultSet.getInt("cantidad") + ", UM: " + resultSet.getString("unidad") +
+                        ", Dpto: " + resultSet.getString("dpto") + ", Encargado: " + resultSet.getString("encargado") ;
+
+                lista.add(fila);
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return lista;
+    }
+
+    @Override
+    public List<String> listarSuministrosCancelados() {
+        List<String> lista = new ArrayList<>();
+
+        try {
+            db.conectar();
+
+            String query ="select movimiento_suministro.id as id, movimiento_suministro.fecha as fecha, producto.nombre as producto," +
+                    "  detalle_suministrar.cantidad as cantidad, unidad_medida.nombre as unidad, movimiento_suministro.dpto as dpto," +
+                    "  movimiento_suministro.encargado as encargado, movimiento_suministro.tipo as tipo" +
+                    " from movimiento_suministro, detalle_suministrar, suministro, producto, unidad_medida" +
+                    " where suministro.producto_id = producto.id and suministro.unidad_medida_id = unidad_medida.id" +
+                    "  and detalle_suministrar.suministro_id = suministro.id" +
+                    "  and detalle_suministrar.movimiento_suministro_id = movimiento_suministro.id and movimiento_suministro.estado = 'Cancelado'";
+
+            PreparedStatement ps = db.getConexion().prepareStatement(query);
+            ResultSet resultSet = ps.executeQuery();
+
+            db.desconectar();
+
+            while (resultSet.next()){
+
+                String fila = "ID: " + resultSet.getInt("id") + ",Tipo: " + resultSet.getString("tipo") + ",  Fecha: " +resultSet.getObject("fecha",
                         LocalDate.class) + ", Suministro: " + resultSet.getString("producto") + ", Cant: " +
                         resultSet.getInt("cantidad") + ", UM: " + resultSet.getString("unidad") +
                         ", Dpto: " + resultSet.getString("dpto") + ", Encargado: " + resultSet.getString("encargado") ;
@@ -63,12 +100,13 @@ public class SuministroDAOImpl implements SuministroDAO {
         try {
             db.conectar();
 
-            String query = "INSERT INTO " + TABLA +"(stock_minimo, stock_maximo, stock, producto_id) VALUES (?, ?, ?, ?)";
+            String query = "INSERT INTO " + TABLA +"(stock_minimo, stock_maximo, stock, producto_id, unidad_medida_id) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement ps = db.getConexion().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, suministro.getStock_minimo());
             ps.setInt(2, suministro.getStock_maximo());
             ps.setInt(3, suministro.getStock());
             ps.setInt(4, suministro.getProducto_id());
+            ps.setInt(5, suministro.getUnidad_medida_id());
 
             int i = ps.executeUpdate();
             db.desconectar();
@@ -167,4 +205,30 @@ public class SuministroDAOImpl implements SuministroDAO {
 
         return null;
     }
+    
+    
+    
+    
+    
+    
+    
+    public static void main(String[] args) {
+        
+        Suministro sum = new Suministro();
+        
+        sum.setId(2);
+        sum.setStock_minimo(20);
+        sum.setStock_maximo(1000);
+        sum.setStock(0);
+        sum.setUnidad_medida_id(1);
+        sum.setProducto_id(2);
+        
+        System.out.println(new SuministroDAOImpl().listarSuministrosRealizados());
+    }
+    
+    
+    
+    
+    
+    
 }

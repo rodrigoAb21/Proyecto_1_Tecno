@@ -19,9 +19,9 @@ create table movimiento_suministro (
 	fecha date not null,
 	tipo varchar(50) not null,
 	dpto varchar(50),
-  encargado varchar(50),
-  observacion varchar(255),
-	estado varchar(255) not null default 'Realizado'
+        encargado varchar(50),
+        observacion varchar(255),
+	estado varchar(255) not null default "Realizado"
 );
 
 create table movimiento_activo (

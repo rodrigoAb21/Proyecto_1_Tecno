@@ -168,7 +168,12 @@ public class SuministroController {
 
 
     List<String> listarMovimientos(){
-        List<String> lista = sumiDAO.listarSuministros();
+        List<String> lista = sumiDAO.listarSuministrosRealizados();
+        return lista;
+    }
+
+    List<String> listarMovimientosCancelados(){
+        List<String> lista = sumiDAO.listarSuministrosCancelados();
         return lista;
     }
 

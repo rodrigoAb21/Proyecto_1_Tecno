@@ -61,14 +61,14 @@ public class MovSuministroDAOImpl implements MovSuministroDAO {
         try {
             db.conectar();
 
-            String query = "INSERT INTO " + TABLA +"(fecha, tipo, dpto, encargado, observacion, estado) VALUES (?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO " + TABLA +"(fecha, tipo, dpto, encargado, observacion) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement ps = db.getConexion().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.setObject(1, movSuministro.getFecha());
             ps.setString(2, movSuministro.getTipo());
             ps.setString(3, movSuministro.getDpto());
             ps.setString(4, movSuministro.getEncargado());
             ps.setString(5, movSuministro.getObservacion());
-            ps.setString(6, movSuministro.getEstado());
+            
 
 
             int i = ps.executeUpdate();
@@ -195,4 +195,13 @@ public class MovSuministroDAOImpl implements MovSuministroDAO {
         return null;
     }
 
+    
+    
+    public static void main(String[] args) {
+        MovSuministro mov = new MovSuministro();
+        mov.setTipo("Ingreso");
+        mov.setFecha(LocalDate.now());
+        
+        System.out.println(new MovSuministroDAOImpl().registrarMovSuministro(mov));
+    }
 }
