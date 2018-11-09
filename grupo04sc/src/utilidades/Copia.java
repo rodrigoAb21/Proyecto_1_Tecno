@@ -1,8 +1,12 @@
 package utilidades;
 
+import datos.daoimpl.MovSuministroDAOImpl;
+import datos.daoimpl.SuministroDAOImpl;
 import datos.modelos.UnidadMedida;
 import datos.modelos.Usuario;
 import java.util.List;
+
+import negocio.controladores.suministros.SuministroController;
 import negocio.controladores.suministros.UnidadMedidaController;
 import negocio.controladores.usuarios.UsuarioController;
 
@@ -104,9 +108,11 @@ public class Copia {
                     List<UnidadMedida> unidadMedidas = new UnidadMedidaController().listarUnidades();
                     respuesta.setAsunto("Lista de unidades de medida.");
                     if (unidadMedidas.size() > 0 ){
-                        respuesta.setMensaje(Respuesta.listaUnidadMedida(unidadMedidas));
+//                        respuesta.setMensaje(Respuesta.listaUnidadMedida(unidadMedidas));
+                        System.out.println(Respuesta.listaUnidadMedida(unidadMedidas));
                     }else {
-                        respuesta.setMensaje("Lista vacia.");
+//                        respuesta.setMensaje("Lista vacia.");
+                        System.out.println("Lista vacia");
                     }
 
                     break;
@@ -234,21 +240,181 @@ public class Copia {
 
 
                 case("IngresoNuevoSuministro"):
+                    parametroC = texto + "//" + texto + "//" + numero + "//" + numero + "//" + numero + "//" + numero
+                            + "//" + numero + "//";
+                    if (Pattern.matches(parametroC, parametroI)) {
+                        String[] parametros = parametroI.split("[//]");
+                        String nombre = parametros[0];
+                        String desc = parametros[2];
+                        int um_id = Integer.parseInt(parametros[4]);
+                        int cat_id = Integer.parseInt(parametros[6]);
+                        int min = Integer.parseInt(parametros[8]);
+                        int max = Integer.parseInt(parametros[10]);
+                        int cant = Integer.parseInt(parametros[12]);
+
+                        int id = new SuministroController().ingresoNuevo(nombre, desc, um_id, cat_id, min, max, cant);
+                        if (id > 0){
+                            respuesta.setAsunto("Se registro un ingreso de un nuevo suministro");
+                            respuesta.setMensaje(new MovSuministroDAOImpl().getMovSuministroString(id));
+                        }else {
+                            respuesta.setAsunto("No se pudo realizar el ingreso del nuevo suministro.");
+                        }
+                    }else{
+                        respuesta.setAsunto("Parametros incorrectos al ingresar un nuevo suministro.");
+                        respuesta.setMensaje(Ejemplo.IngresoNuevoSuministro);
+                    }
+                    new CorreoGmail().enviar(respuesta);
                     break;
 
                 case("IngresoSuministro"):
+                    parametroC = numero + "//" + numero + "//";
+                    if (Pattern.matches(parametroC, parametroI)) {
+                        String[] parametros = parametroI.split("[//]");
+                        int sum_id = Integer.parseInt(parametros[0]);
+                        int cant = Integer.parseInt(parametros[2]);
+
+                        int id = new SuministroController().ingreso(sum_id, cant);
+                        if (id > 0){
+                            respuesta.setAsunto("Se registro un ingreso de un suministro");
+                            respuesta.setMensaje(new MovSuministroDAOImpl().getMovSuministroString(id));
+                        }else {
+                            respuesta.setAsunto("No se pudo realizar el ingreso del suministro.");
+                        }
+                    }else{
+                        respuesta.setAsunto("Parametros incorrectos al ingresar un suministro.");
+                        respuesta.setMensaje(Ejemplo.IngresoSuministro);
+                    }
+                    new CorreoGmail().enviar(respuesta);
                     break;
 
                 case("SalidaSuministro"):
+                    parametroC = numero + "//" + numero + "//" + texto + "//" + texto + "//" + texto + "//";
+                    if (Pattern.matches(parametroC, parametroI)) {
+                        String[] parametros = parametroI.split("[//]");
+                        int sum_id = Integer.parseInt(parametros[0]);
+                        int cant = Integer.parseInt(parametros[2]);
+                        String encargado = parametros[4];
+                        String dpto = parametros[6];
+                        String obs = parametros[8];
+
+                        int id = new SuministroController().salida(sum_id, cant, encargado, dpto, obs);
+                        if (id > 0){
+                            respuesta.setAsunto("Se registro una salida de un nuevo suministro");
+                            respuesta.setMensaje(new MovSuministroDAOImpl().getMovSuministroString(id));
+                        }else {
+                            respuesta.setAsunto("No se pudo realizar la salida del suministro.");
+                        }
+                    }else{
+                        respuesta.setAsunto("Parametros incorrectos al realizar la salida suministro.");
+                        respuesta.setMensaje(Ejemplo.SalidaSuministro);
+                    }
+                    new CorreoGmail().enviar(respuesta);
                     break;
 
                 case("DevolucionSuministro"):
+                    parametroC = numero + "//" + numero + "//" + texto + "//" + texto + "//" + texto + "//";
+                    if (Pattern.matches(parametroC, parametroI)) {
+                        String[] parametros = parametroI.split("[//]");
+                        int sum_id = Integer.parseInt(parametros[0]);
+                        int cant = Integer.parseInt(parametros[2]);
+                        String encargado = parametros[4];
+                        String dpto = parametros[6];
+                        String obs = parametros[8];
+
+                        int id = new SuministroController().devolucion(sum_id, cant, encargado, dpto, obs);
+                        if (id > 0){
+                            respuesta.setAsunto("Se registro una devolucion de un nuevo suministro");
+                            respuesta.setMensaje(new MovSuministroDAOImpl().getMovSuministroString(id));
+                        }else {
+                            respuesta.setAsunto("No se pudo realizar la devolucion del suministro.");
+                        }
+                    }else{
+                        respuesta.setAsunto("Parametros incorrectos al realizar la devolucion suministro.");
+                        respuesta.setMensaje(Ejemplo.SalidaSuministro);
+                    }
+                    new CorreoGmail().enviar(respuesta);
                     break;
 
                 case("EditarSuministro"):
+                    parametroC = numero + "//" + texto + "//" + texto + "//" + texto + "//" + texto + "//" + texto +
+                            "//" + texto + "//";
+                    if (Pattern.matches(parametroC, parametroI)) {
+                        String[] parametros = parametroI.split("[//]");
+                        int id_sum = Integer.parseInt(parametros[0]);
+                        String nombre = parametros[2];
+                        String descr = parametros[4];
+                        String um_id = parametros[6];
+                        String cat_id = parametros[8];
+                        String min = parametros[10];
+                        String max = parametros[12];
+
+                        if (new SuministroController().editarSuministro(id_sum, nombre, descr, um_id, cat_id, min, max)){
+                            respuesta.setAsunto("Se edito al suministro");
+                            respuesta.setMensaje(Respuesta.suministro(new SuministroDAOImpl().getSuministro(id_sum)));
+                        }else {
+                            respuesta.setAsunto("No se pudo realizar la edicion del suministro.");
+                        }
+                    }else{
+                        respuesta.setAsunto("Parametros incorrectos al editar un suministro.");
+                        respuesta.setMensaje(Ejemplo.EditarSuministro);
+                    }
+                    new CorreoGmail().enviar(respuesta);
                     break;
 
                 case("EliminarSuministro"):
+                    parametroC = numero + "//";
+                    if (Pattern.matches(parametroC, parametroI)) {
+                        String[] parametros = parametroI.split("[//]");
+                        int id_sum = Integer.parseInt(parametros[0]);
+
+                        if (new SuministroController().eliminarSuministro(id_sum)){
+                            respuesta.setAsunto("Se elimino al suministro");
+                            respuesta.setMensaje(new MovSuministroDAOImpl().getMovSuministroString(id_sum));
+                        }else {
+                            respuesta.setAsunto("No se pudo eliminar al suministro.");
+                        }
+                    }else{
+                        respuesta.setAsunto("Parametros incorrectos al eliminar un suministro.");
+                        respuesta.setMensaje(Ejemplo.EliminarSuministro);
+                    }
+                    new CorreoGmail().enviar(respuesta);
+                    break;
+
+                case("CancelarMovimiento"):
+                    parametroC = numero + "//";
+                    if (Pattern.matches(parametroC, parametroI)) {
+                        String[] parametros = parametroI.split("[//]");
+                        int id_mov = Integer.parseInt(parametros[0]);
+
+                        if (new SuministroController().cancelarMovimiento(id_mov)){
+                            respuesta.setAsunto("Se cancelo el movimiento");
+                        }else {
+                            respuesta.setAsunto("No se pudo cancelar al movimiento.");
+                        }
+                    }else{
+                        respuesta.setAsunto("Parametros incorrectos al cancelar al movimiento.");
+                        respuesta.setMensaje(Ejemplo.CancelarMovimiento);
+                    }
+                    new CorreoGmail().enviar(respuesta);
+                    break;
+
+                case("RestablecerMovimiento"):
+                    parametroC = numero + "//";
+                    if (Pattern.matches(parametroC, parametroI)) {
+                        String[] parametros = parametroI.split("[//]");
+                        int id_mov = Integer.parseInt(parametros[0]);
+
+                        if (new SuministroController().cancelarMovimiento(id_mov)){
+                            respuesta.setAsunto("Se restablecio el movimiento");
+                            respuesta.setMensaje(new MovSuministroDAOImpl().getMovSuministroString(id_mov));
+                        }else {
+                            respuesta.setAsunto("No se pudo restablecer al movimiento.");
+                        }
+                    }else{
+                        respuesta.setAsunto("Parametros incorrectos al restablecer al movimiento.");
+                        respuesta.setMensaje(Ejemplo.RestablecerMovimiento);
+                    }
+                    new CorreoGmail().enviar(respuesta);
                     break;
 
                 case("InventarioSuministro"):
@@ -273,7 +439,7 @@ public class Copia {
         Copia c = new Copia();
         Mensaje m = new Mensaje();
         m.setCuenta("rodrigo.abasto21@gmail.com");
-        m.setAsunto("registrarusuario:Mateo//Kuljkis//8181035//mateo@gmail.com//");
+        m.setAsunto("listarunidadmedida:");
         c.procesar(m);
     }
 }

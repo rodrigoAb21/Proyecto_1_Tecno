@@ -1,5 +1,6 @@
 package utilidades;
 
+import datos.modelos.Suministro;
 import datos.modelos.UnidadMedida;
 import datos.modelos.Usuario;
 
@@ -32,5 +33,7 @@ public class Respuesta {
         return respuesta;
     }
 
-
+    public static String suministro(Suministro suministro) {
+        return null;
+    }
 }

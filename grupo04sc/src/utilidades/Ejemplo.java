@@ -2,6 +2,7 @@ package utilidades;
 
 public class Ejemplo {
 
+
     // ---------------------------------- UNIDAD DE MEDIDA ------------------------------------------
 
     public static String RegistrarUnidadMedida = "RegistrarUnidadMedida:nombre// " +
@@ -35,5 +36,20 @@ public class Ejemplo {
 
     public static String ListarUsuario = "ListarUsuario:" +
             "\nEjemplo -> ListarUsuario:";
+
+
+    // ---------------------------------- MOV SUMI ------------------------------------------
+
+    public static final String IngresoNuevoSuministro = "";
+    public static final String IngresoSuministro = "";
+    public static final String SalidaSuministro = "";
+    public static final String DevolucionSuministro = "";
+    public static final String ListarMovimientos = "";
+    public static final String ListarMovimientosCancelados = "";
+    public static final String CancelarMovimiento = "";
+    public static final String RestablecerMovimiento = "";
+    public static final String EliminarSuministro = "";
+    public static final String EditarSuministro = "";
+
 
 }

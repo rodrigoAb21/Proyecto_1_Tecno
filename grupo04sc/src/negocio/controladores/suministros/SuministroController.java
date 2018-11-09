@@ -178,7 +178,7 @@ public class SuministroController {
     }
 
 
-    public boolean eliminarMovimiento(int id){
+    public boolean cancelarMovimiento(int id){
         MovSuministro movimiento = movDAO.getMovSuministro(id);
         DetalleSuministrar detalle = detaDAO.getDetalle(id);
         if (movimiento.getTipo().equals("Salida")){
@@ -234,11 +234,8 @@ public class SuministroController {
     }
 
 
+    public Suministro getSuministro(int id) {
+        return sumiDAO.getSuministro(id);
 
-
-
-
-
-
-
+    }
 }

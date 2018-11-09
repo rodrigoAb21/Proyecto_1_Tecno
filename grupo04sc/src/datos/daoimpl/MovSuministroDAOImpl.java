@@ -195,13 +195,38 @@ public class MovSuministroDAOImpl implements MovSuministroDAO {
         return null;
     }
 
-    
-    
-    public static void main(String[] args) {
-        MovSuministro mov = new MovSuministro();
-        mov.setTipo("Ingreso");
-        mov.setFecha(LocalDate.now());
-        
-        System.out.println(new MovSuministroDAOImpl().registrarMovSuministro(mov));
+    @Override
+    public String getMovSuministroString(int movSuministro_id) {
+        try {
+            db.conectar();
+
+            String query ="select movimiento_suministro.id as id, movimiento_suministro.fecha as fecha, producto.nombre as producto," +
+                    "  detalle_suministrar.cantidad as cantidad, unidad_medida.nombre as unidad, movimiento_suministro.dpto as dpto," +
+                    "  movimiento_suministro.encargado as encargado, movimiento_suministro.tipo as tipo" +
+                    " from movimiento_suministro, detalle_suministrar, suministro, producto, unidad_medida" +
+                    " where suministro.producto_id = producto.id and suministro.unidad_medida_id = unidad_medida.id" +
+                    "  and detalle_suministrar.suministro_id = suministro.id" +
+                    "  and detalle_suministrar.movimiento_suministro_id = movimiento_suministro.id and movimiento_suministro.estado = 'Realizado'" +
+                    " and movimiento_suministro.id = " + movSuministro_id;
+
+            PreparedStatement ps = db.getConexion().prepareStatement(query);
+            ResultSet resultSet = ps.executeQuery();
+
+            db.desconectar();
+
+            if (resultSet.next()){
+
+                return "ID: " + resultSet.getInt("id") + ",Tipo: " + resultSet.getString("tipo") + ",  Fecha: " +resultSet.getObject("fecha",
+                        LocalDate.class) + ", Suministro: " + resultSet.getString("producto") + ", Cant: " +
+                        resultSet.getInt("cantidad") + ", UM: " + resultSet.getString("unidad") +
+                        ", Dpto: " + resultSet.getString("dpto") + ", Encargado: " + resultSet.getString("encargado") ;
+
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return null;
     }
 }

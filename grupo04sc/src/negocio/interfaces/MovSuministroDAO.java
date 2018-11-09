@@ -11,4 +11,5 @@ public interface MovSuministroDAO {
     boolean cancelarMovimiento(int movSuministro_id);
     boolean restablecerMovimiento(int movSuministro_id);
     MovSuministro getMovSuministro(int movSuministro_id);
+    String getMovSuministroString(int movSuministro_id);
 }

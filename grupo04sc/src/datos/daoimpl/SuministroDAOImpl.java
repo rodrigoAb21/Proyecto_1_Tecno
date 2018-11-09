@@ -207,24 +207,7 @@ public class SuministroDAOImpl implements SuministroDAO {
     }
     
     
-    
-    
-    
-    
-    
-    public static void main(String[] args) {
-        
-        Suministro sum = new Suministro();
-        
-        sum.setId(2);
-        sum.setStock_minimo(20);
-        sum.setStock_maximo(1000);
-        sum.setStock(0);
-        sum.setUnidad_medida_id(1);
-        sum.setProducto_id(2);
-        
-        System.out.println(new SuministroDAOImpl().listarSuministrosRealizados());
-    }
+
     
     
     
