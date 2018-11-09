@@ -21,7 +21,7 @@ create table movimiento_suministro (
 	dpto varchar(50),
         encargado varchar(50),
         observacion varchar(255),
-	estado varchar(255) not null default "Realizado"
+	estado varchar(255) not null default 'Realizado'
 );
 
 create table movimiento_activo (

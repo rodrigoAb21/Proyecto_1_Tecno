@@ -106,7 +106,7 @@ public class SuministroController {
     }
 
 
-    int salida(int suministro_id, int cantidad, String encargado, String dpto, String observacion){
+    public int salida(int suministro_id, int cantidad, String encargado, String dpto, String observacion){
         MovSuministro movimiento = new MovSuministro();
         movimiento.setTipo("Salida");
         movimiento.setFecha(LocalDate.now());
@@ -132,7 +132,7 @@ public class SuministroController {
     }
 
 
-    int devolucion(int suministro_id, int cantidad, String encargado, String dpto, String observacion){
+    public int devolucion(int suministro_id, int cantidad, String encargado, String dpto, String observacion){
         MovSuministro movimiento = new MovSuministro();
         movimiento.setTipo("Devolucion");
         movimiento.setFecha(LocalDate.now());
@@ -156,7 +156,7 @@ public class SuministroController {
         return -1;
     }
 
-    boolean actualizarStock(int suministro_id, int cantidad){
+    public boolean actualizarStock(int suministro_id, int cantidad){
         Suministro suministro = sumiDAO.getSuministro(suministro_id);
         int nuevo = suministro.getStock() + cantidad;
         suministro.setStock(nuevo);
@@ -167,18 +167,18 @@ public class SuministroController {
     }
 
 
-    List<String> listarMovimientos(){
+    public List<String> listarMovimientos(){
         List<String> lista = sumiDAO.listarSuministrosRealizados();
         return lista;
     }
 
-    List<String> listarMovimientosCancelados(){
+    public List<String> listarMovimientosCancelados(){
         List<String> lista = sumiDAO.listarSuministrosCancelados();
         return lista;
     }
 
 
-    boolean eliminarMovimiento(int id){
+    public boolean eliminarMovimiento(int id){
         MovSuministro movimiento = movDAO.getMovSuministro(id);
         DetalleSuministrar detalle = detaDAO.getDetalle(id);
         if (movimiento.getTipo().equals("Salida")){
@@ -191,7 +191,7 @@ public class SuministroController {
 
     }
 
-    boolean restablecerMovimiento(int id){
+    public boolean restablecerMovimiento(int id){
         MovSuministro movimiento = movDAO.getMovSuministro(id);
         DetalleSuministrar detalle = detaDAO.getDetalle(id);
         if (movimiento.getTipo().equals("Salida")){
@@ -204,6 +204,18 @@ public class SuministroController {
 
     }
 
+
+    public boolean eliminarSuministro(int id){
+        Suministro suministro = sumiDAO.getSuministro(id);
+        if (sumiDAO.eliminarSuministro(id)){
+            return prodDAO.eliminarProducto(suministro.getProducto_id());
+        }
+        return false;
+    }
+
+    public boolean editarSuministro(int id,){
+        return false;
+    }
 
 
 
