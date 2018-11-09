@@ -370,7 +370,6 @@ public class Copia {
 
                         if (new SuministroController().eliminarSuministro(id_sum)){
                             respuesta.setAsunto("Se elimino al suministro");
-                            respuesta.setMensaje(new MovSuministroDAOImpl().getMovSuministroString(id_sum));
                         }else {
                             respuesta.setAsunto("No se pudo eliminar al suministro.");
                         }
