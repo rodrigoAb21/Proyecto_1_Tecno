@@ -75,14 +75,6 @@ public class DetalleSuministrarDAOImpl implements DetalleSuministrarDAO {
 
         return null;
     }
-    
-    public static void main(String[] args) {
-        DetalleSuministrar d =  new DetalleSuministrar();
-        d.setCantidad(100);
-        d.setMovimiento_suministro_id(2);
-        d.setSuministro_id(2);
-        
-        System.out.println(new DetalleSuministrarDAOImpl().registrarDetalle(d));
-    }
+
     
 }

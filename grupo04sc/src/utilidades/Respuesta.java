@@ -36,4 +36,20 @@ public class Respuesta {
     public static String suministro(Suministro suministro) {
         return null;
     }
+
+    public static String listaMovimientos(List<String> mov) {
+        String respuesta = "";
+        for (String fila : mov){
+            respuesta = respuesta + fila + "\n";
+        }
+        return respuesta;
+    }
+
+    public static String listaSuministros(List<String> sum) {
+        String respuesta = "";
+        for (String fila : sum){
+            respuesta = respuesta + fila + "\n";
+        }
+        return respuesta;
+    }
 }

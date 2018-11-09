@@ -168,12 +168,12 @@ public class SuministroController {
 
 
     public List<String> listarMovimientos(){
-        List<String> lista = sumiDAO.listarSuministrosRealizados();
+        List<String> lista = sumiDAO.listarMovimientosRealizados();
         return lista;
     }
 
     public List<String> listarMovimientosCancelados(){
-        List<String> lista = sumiDAO.listarSuministrosCancelados();
+        List<String> lista = sumiDAO.listarMovimientosCancelados();
         return lista;
     }
 
@@ -234,8 +234,19 @@ public class SuministroController {
     }
 
 
-    public Suministro getSuministro(int id) {
-        return sumiDAO.getSuministro(id);
+    public String getSuministro(int id) {
+        return sumiDAO.getSumiString(id);
 
     }
+
+    public String getMovString(int id) {
+        return sumiDAO.getMovString(id);
+
+    }
+
+    public List<String> listarSuministros() {
+        return sumiDAO.listarSuministros();
+    }
+
+
 }

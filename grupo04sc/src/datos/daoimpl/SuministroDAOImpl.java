@@ -22,7 +22,7 @@ public class SuministroDAOImpl implements SuministroDAO {
     }
 
     @Override
-    public List<String> listarSuministrosRealizados() {
+    public List<String> listarMovimientosRealizados() {
         List<String> lista = new ArrayList<>();
 
         try {
@@ -59,7 +59,7 @@ public class SuministroDAOImpl implements SuministroDAO {
     }
 
     @Override
-    public List<String> listarSuministrosCancelados() {
+    public List<String> listarMovimientosCancelados() {
         List<String> lista = new ArrayList<>();
 
         try {
@@ -181,6 +181,7 @@ public class SuministroDAOImpl implements SuministroDAO {
 
             String query ="SELECT * FROM " + TABLA + " WHERE id = " + suministro_id;
 
+
             PreparedStatement ps = db.getConexion().prepareStatement(query);
             ResultSet resultSet = ps.executeQuery();
 
@@ -205,13 +206,116 @@ public class SuministroDAOImpl implements SuministroDAO {
 
         return null;
     }
-    
-    
 
-    
-    
-    
-    
-    
-    
+    @Override
+    public String getSumiString(int sum_id) {
+        try {
+            db.conectar();
+
+            String query ="SELECT suministro.id as id, producto.nombre as nombre, suministro.stock as stock, " +
+                    "suministro.stock_minimo as minimo,suministro.stock_maximo  as maximo, unidad_medida.nombre " +
+                    "as unidad, categoria.nombre as categoria, producto.descripcion as descripcion " +
+                    "FROM producto,suministro, categoria, unidad_medida  " +
+                    "WHERE suministro.id = "+ sum_id +" and suministro.producto_id = producto.id and suministro.unidad_medida_id = unidad_medida.id " +
+                    "and producto.categoria_id = categoria.id";
+
+            PreparedStatement ps = db.getConexion().prepareStatement(query);
+            ResultSet resultSet = ps.executeQuery();
+
+            db.desconectar();
+
+            if (resultSet.next()){
+
+                return "ID: " + resultSet.getInt("id") +
+                        "\nNombre: " + resultSet.getString("nombre") +
+                        "\nStock: "+resultSet.getInt("stock") +
+                        "\nMin: " + resultSet.getInt("minimo") +
+                        "\nMax: " + resultSet.getInt("maximo") +
+                        "\nUM: " + resultSet.getString("unidad") +
+                        "\nCategoria: " + resultSet.getString("categoria") +
+                        "\nDescripcion: " + resultSet.getString("descripcion");
+
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return null;
+    }
+
+    @Override
+    public List<String> listarSuministros() {
+        List<String> lista = new ArrayList<>();
+
+        try {
+            db.conectar();
+
+            String query ="SELECT suministro.id as id, producto.nombre as nombre, suministro.stock as stock, " +
+                    "suministro.stock_minimo as minimo,suministro.stock_maximo  as maximo, unidad_medida.nombre " +
+                    "as unidad, categoria.nombre as categoria " +
+                    "FROM producto,suministro, categoria, unidad_medida  " +
+                    "WHERE suministro.producto_id = producto.id and suministro.unidad_medida_id = unidad_medida.id " +
+                    "and producto.categoria_id = categoria.id";
+
+            PreparedStatement ps = db.getConexion().prepareStatement(query);
+            ResultSet resultSet = ps.executeQuery();
+
+            db.desconectar();
+
+            while (resultSet.next()){
+
+                String fila = "ID: " + resultSet.getInt("id") + ",Nombre: " + resultSet.getString("nombre") + ",  Stock: "
+                        +resultSet.getInt("stock") + ", Min: " + resultSet.getInt("minimo") + ", Max: " +
+                        resultSet.getInt("maximo") + ", UM: " + resultSet.getString("unidad") +
+                        ", Categoria: " + resultSet.getString("categoria");
+
+                lista.add(fila);
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return lista;
+    }
+
+    @Override
+    public String getMovString(int mov_id) {
+        try {
+            db.conectar();
+
+            String query ="select movimiento_suministro.id as id, movimiento_suministro.fecha as fecha, producto.nombre as producto," +
+                    "  detalle_suministrar.cantidad as cantidad, unidad_medida.nombre as unidad, movimiento_suministro.dpto as dpto," +
+                    "  movimiento_suministro.encargado as encargado, movimiento_suministro.tipo as tipo, movimiento_suministro.observacion as observacion" +
+                    " from movimiento_suministro, detalle_suministrar, suministro, producto, unidad_medida" +
+                    " where suministro.producto_id = producto.id and suministro.unidad_medida_id = unidad_medida.id" +
+                    "  and detalle_suministrar.suministro_id = suministro.id" +
+                    "  and detalle_suministrar.movimiento_suministro_id = movimiento_suministro.id";
+
+            PreparedStatement ps = db.getConexion().prepareStatement(query);
+            ResultSet resultSet = ps.executeQuery();
+
+            db.desconectar();
+
+            if (resultSet.next()){
+
+                return "ID: " + resultSet.getInt("id") +
+                        "\nFecha: "+resultSet.getObject("fecha",LocalDate.class) +
+                        "\nTipo: " + resultSet.getString("tipo") +
+                        "\nSuministro: " + resultSet.getString("nombre") +
+                        "\nCantidad: " + resultSet.getInt("cantidad") +
+                        "\nUM: " + resultSet.getString("unidad") +
+                        "\nDpto: " + resultSet.getString("dpto") +
+                        "\nEncargado: " + resultSet.getString("encargado") +
+                        "\nObservacion: " + resultSet.getString("observacion");
+
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return null;
+    }
 }

@@ -2,6 +2,7 @@ package utilidades;
 
 import datos.daoimpl.MovSuministroDAOImpl;
 import datos.daoimpl.SuministroDAOImpl;
+import datos.modelos.MovSuministro;
 import datos.modelos.UnidadMedida;
 import datos.modelos.Usuario;
 import java.util.List;
@@ -33,7 +34,7 @@ public class Copia {
 
         if(Pattern.matches(textoLetras+":.*", mensajeI)){
             System.out.println("entro");
-            String comandoI = mensajeI.substring(0,mensajeI.indexOf(":")).toLowerCase().trim();
+            String comandoI = mensajeI.substring(0,mensajeI.indexOf(":")).trim();
             String parametroI = mensajeI.substring(mensajeI.indexOf(":")+1);
 
             String parametroC;
@@ -104,7 +105,7 @@ public class Copia {
                     new ClienteMail().enviar(respuesta);
                     break;
 
-                case ("listarunidadmedida"):
+                case ("ListarUnidadMedida"):
                     List<UnidadMedida> unidadMedidas = new UnidadMedidaController().listarUnidades();
                     respuesta.setAsunto("Lista de unidades de medida.");
                     if (unidadMedidas.size() > 0 ){
@@ -330,7 +331,7 @@ public class Copia {
                         }
                     }else{
                         respuesta.setAsunto("Parametros incorrectos al realizar la devolucion suministro.");
-                        respuesta.setMensaje(Ejemplo.SalidaSuministro);
+                        respuesta.setMensaje(Ejemplo.DevolucionSuministro);
                     }
                     new CorreoGmail().enviar(respuesta);
                     break;
@@ -417,7 +418,77 @@ public class Copia {
                     new CorreoGmail().enviar(respuesta);
                     break;
 
+
+
+                case("ListarMovimientos"):
+                    List<String> mov = new SuministroController().listarMovimientos();
+                    respuesta.setAsunto("Lista de movimientos");
+                    if (mov.size() > 0) {
+                        respuesta.setMensaje(Respuesta.listaMovimientos(mov));
+                    }else{
+                        respuesta.setMensaje("Lista vacia.");
+                    }
+
+                    break;
+
+                case("ListarMovimientosCancelados"):
+                    List<String> movC = new SuministroController().listarMovimientosCancelados();
+                    respuesta.setAsunto("Lista de movimientos cancelados");
+                    if (movC.size() > 0) {
+                        respuesta.setMensaje(Respuesta.listaMovimientos(movC));
+                    }else{
+                        respuesta.setMensaje("Lista vacia.");
+                    }
+
+                    break;
+
                 case("InventarioSuministro"):
+                    List<String> sum = new SuministroController().listarSuministros();
+                    respuesta.setAsunto("Lista de movimientos");
+                    if (sum.size() > 0) {
+                        respuesta.setMensaje(Respuesta.listaSuministros(sum));
+                    }else{
+                        respuesta.setMensaje("Lista vacia.");
+                    }
+                    break;
+
+                case("VerSuministro"):
+                    parametroC = numero + "//";
+                    if (Pattern.matches(parametroC, parametroI)) {
+                        String[] parametros = parametroI.split("[//]");
+                        int id_sum = Integer.parseInt(parametros[0]);
+
+                        if (new SuministroController().cancelarMovimiento(id_sum)){
+                            respuesta.setAsunto("Ver Suministro");
+                            respuesta.setMensaje(new SuministroController().getMovString(id_sum));
+
+                        }else {
+                            respuesta.setAsunto("No se pudo mostrar el suministro.");
+                        }
+                    }else{
+                        respuesta.setAsunto("Parametros incorrectos al mostrar el suministro.");
+                        respuesta.setMensaje(Ejemplo.VerSuministro);
+                    }
+                    new CorreoGmail().enviar(respuesta);
+                    break;
+
+                case("VerMovimiento"):
+                    parametroC = numero + "//";
+                    if (Pattern.matches(parametroC, parametroI)) {
+                        String[] parametros = parametroI.split("[//]");
+                        int id_mov = Integer.parseInt(parametros[0]);
+
+                        if (new SuministroController().cancelarMovimiento(id_mov)){
+                            respuesta.setAsunto("Ver Movimiento");
+                            respuesta.setMensaje(new SuministroController().getMovString(id_mov));
+                        }else {
+                            respuesta.setAsunto("No se pudo mostrar el movimiento.");
+                        }
+                    }else{
+                        respuesta.setAsunto("Parametros incorrectos al mostrar el movimiento.");
+                        respuesta.setMensaje(Ejemplo.VerMovimiento);
+                    }
+                    new CorreoGmail().enviar(respuesta);
                     break;
 
                 default:
@@ -439,7 +510,7 @@ public class Copia {
         Copia c = new Copia();
         Mensaje m = new Mensaje();
         m.setCuenta("rodrigo.abasto21@gmail.com");
-        m.setAsunto("listarunidadmedida:");
+        m.setAsunto("ListarUnidadMedida:");
         c.procesar(m);
     }
 }
