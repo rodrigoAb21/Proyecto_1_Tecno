@@ -213,7 +213,23 @@ public class SuministroController {
         return false;
     }
 
-    public boolean editarSuministro(int id,){
+    public boolean editarSuministro(int id, String nombre, String descripcion, String um_id, String cat_id
+            , String min, String max){
+        Suministro suministro = sumiDAO.getSuministro(id);
+        if (suministro != null){
+            if (!min.equals("_")) suministro.setStock_minimo(Integer.parseInt(min));
+            if (!max.equals("_")) suministro.setStock_maximo(Integer.parseInt(max));
+            if (!um_id.equals("_")) suministro.setUnidad_medida_id(Integer.parseInt(max));
+                if (sumiDAO.actualizarSuministro(suministro)){
+                    Producto producto = prodDAO.getProducto(suministro.getProducto_id());
+                    if (producto != null){
+                        if(!nombre.equals("_")) producto.setNombre(nombre);
+                        if(!descripcion.equals("_")) producto.setDescripcion(descripcion);
+                        if(!cat_id.equals("_")) producto.setCategoria_id(Integer.parseInt(cat_id));
+                        return prodDAO.actualizarProducto(producto);
+                    }
+                }
+            }
         return false;
     }
 

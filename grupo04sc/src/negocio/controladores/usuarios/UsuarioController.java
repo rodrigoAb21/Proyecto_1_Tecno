@@ -63,9 +63,4 @@ public class UsuarioController {
 
 
 
-    public static void main(String[] args) {
-        System.out.println(new UsuarioController().getUsuario(1));
-    }
-
-
 }
