@@ -137,13 +137,6 @@ public class ClienteMail {
         return cadena;
 
     }
-    
-    public static void main(String[] args) {
-        Mensaje mensaje = new Mensaje();
-        mensaje.setCuenta("rodrigo.abasto21@yahoo.com");
-        mensaje.setAsunto("Pruebita");
-        mensaje.setMensaje("creo q funciona normal");
-        System.out.println(new ClienteMail().obtemerPrimerMensaje().getCuenta());
-    }
+   
     
 }

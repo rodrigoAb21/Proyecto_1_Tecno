@@ -215,6 +215,11 @@ public class MovSuministroDAOImpl implements MovSuministroDAO {
             db.desconectar();
 
             if (resultSet.next()){
+                String encargado = "-----";
+                String dpto = "-----";
+                
+                if (resultSet.getString("encargado") != null) encargado = resultSet.getString("encargado");
+                if (resultSet.getString("dpto") != null) dpto = resultSet.getString("dpto");
 
                 return "ID: " + resultSet.getInt("id") +
                         "\nTipo: " + resultSet.getString("tipo") +
@@ -222,8 +227,8 @@ public class MovSuministroDAOImpl implements MovSuministroDAO {
                         "\nSuministro: " + resultSet.getString("producto") +
                         "\nCant: " +resultSet.getInt("cantidad") +
                         "\nUM: " + resultSet.getString("unidad") +
-                        "\nDpto: " + resultSet.getString("dpto") +
-                        "\nEncargado: " + resultSet.getString("encargado") ;
+                        "\nDpto: " + dpto +
+                        "\nEncargado: " + encargado;
 
             }
 

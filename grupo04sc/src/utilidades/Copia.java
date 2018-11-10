@@ -147,8 +147,11 @@ public class Copia {
 
                 case ("EditarUsuario"):
                     parametroC = numero + "//" + texto + "//" + texto + "//" + texto + "//" + texto + "//" ;
+                    
+                    
                     if (Pattern.matches(parametroC, parametroI)) {
                         String[] parametros = parametroI.split("[//]");
+
                         int id = Integer.parseInt(parametros[0]);
                         String nombre = parametros[2];
                         String apellido = parametros[4];
@@ -236,10 +239,9 @@ public class Copia {
 
                 //-------------------------------- SUMINISTRO ----------------------------------------------
 
-
                 case("IngresoNuevoSuministro"):
-                    parametroC = texto + "//" + texto + "//" + numero + "//" + numero + "//" + numero + "//" + numero
-                            + "//" + numero + "//";
+                    parametroC = texto + "//" + texto + "//" + numeroM1 + "//" + numeroM1 + "//" + numero + "//" + numeroM1
+                            + "//" + numeroM1 + "//";
                     if (Pattern.matches(parametroC, parametroI)) {
                         String[] parametros = parametroI.split("[//]");
                         String nombre = parametros[0];
@@ -265,7 +267,7 @@ public class Copia {
                     break;
 
                 case("IngresoSuministro"):
-                    parametroC = numero + "//" + numero + "//";
+                    parametroC = numeroM1 + "//" + numeroM1 + "//";
                     if (Pattern.matches(parametroC, parametroI)) {
                         String[] parametros = parametroI.split("[//]");
                         int sum_id = Integer.parseInt(parametros[0]);
@@ -286,7 +288,7 @@ public class Copia {
                     break;
 
                 case("SalidaSuministro"):
-                    parametroC = numero + "//" + numero + "//" + texto + "//" + texto + "//" + texto + "//";
+                    parametroC = numeroM1 + "//" + numeroM1 + "//" + texto + "//" + texto + "//" + texto + "//";
                     if (Pattern.matches(parametroC, parametroI)) {
                         String[] parametros = parametroI.split("[//]");
                         int sum_id = Integer.parseInt(parametros[0]);
@@ -310,7 +312,7 @@ public class Copia {
                     break;
 
                 case("DevolucionSuministro"):
-                    parametroC = numero + "//" + numero + "//" + texto + "//" + texto + "//" + texto + "//";
+                    parametroC = numeroM1 + "//" + numeroM1 + "//" + texto + "//" + texto + "//" + texto + "//";
                     if (Pattern.matches(parametroC, parametroI)) {
                         String[] parametros = parametroI.split("[//]");
                         int sum_id = Integer.parseInt(parametros[0]);
@@ -385,11 +387,8 @@ public class Copia {
 
                         if (new SuministroController().cancelarMovimiento(id_mov)){
                             respuesta.setAsunto("Se cancelo el movimiento");
-                            respuesta.setMensaje("");
                         }else {
-                            System.out.println("Prr!");
                             respuesta.setAsunto("No se pudo cancelar al movimiento.");
-                            respuesta.setMensaje("");
                         }
                     }else{
                         respuesta.setAsunto("Parametros incorrectos al cancelar al movimiento.");
@@ -511,9 +510,7 @@ public class Copia {
         Copia c = new Copia();
         Mensaje m = new Mensaje();
         m.setCuenta("rodrigo.abasto21@gmail.com");
-        m.setAsunto("ListarMovimientos:");
+        m.setAsunto("CancelarMovimiento:7//");
         c.procesar(m);
-//        m.setAsunto("InventarioSuministro:");
-//        c.procesar(m);
     }
 }

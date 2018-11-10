@@ -38,7 +38,7 @@ public class SuministroController {
                 producto.setNombre(nombre);
                 producto.setDescripcion(descripcion);
                 producto.setCategoria_id(categoria_id);
-                producto.setCodigo(codigo);
+                producto.setCodigo(codigo.toUpperCase());
 
                 int producto_id = prodDAO.registrarProducto(producto);
                 if (producto_id > 0){
