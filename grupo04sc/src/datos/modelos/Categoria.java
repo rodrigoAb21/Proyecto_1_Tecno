@@ -46,7 +46,11 @@ public class Categoria {
     }
 
     public void setCategoria_sup(int categoria_sup) {
+        if(categoria_sup!=-1){
         this.categoria_sup = categoria_sup;
+        return;
+        }
+        this.categoria_sup = 0;
     }
 
     public boolean isVisible() {

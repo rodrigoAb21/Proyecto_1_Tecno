@@ -21,12 +21,17 @@ create table movimiento_suministro (
 	dpto varchar(50),
         encargado varchar(50),
         observacion varchar(255),
-	estado varchar(255) not null default "Realizado"
+	estado varchar(255) not null default 'Realizado'
 );
 
 create table movimiento_activo (
 	id serial primary key,
 	fecha date not null,
+        tipo varchar(500 not null),
+        observacion varchar(50),
+        departamento varchar(50), 
+        encargado varchar(50),
+        sucursal varchar(50),
 	visible boolean not null default true
 );
 
@@ -77,6 +82,8 @@ create table activo_fijo (
 	disponible boolean not null,
 	codigo varchar(50) not null,
 	producto_id int not null,
+        nroFactura varchar(50) not null,
+        costo int not null,
 	visible boolean not null default true,
 	foreign key (producto_id) references producto(id) on delete cascade on update cascade
 );
@@ -86,6 +93,7 @@ create table revaluo (
 	detalle varchar(50) not null,
 	fecha date not null,
 	tipo varchar(50) not null,
+        monto int not null,
 	activo_fijo_id int not null,
 	visible boolean not null default true,
 	foreign key (activo_fijo_id) references activo_fijo(id) on delete cascade on update cascade

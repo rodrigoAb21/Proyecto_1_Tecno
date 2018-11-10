@@ -7,6 +7,7 @@ import negocio.interfaces.ActivoFijoDAO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,27 +61,34 @@ public class ActivoFijoDAOImpl implements ActivoFijoDAO {
     }
 
     @Override
-    public boolean registrarActivoFijo(ActivoFijo activoFijo) {
+    public int registrarActivoFijo(ActivoFijo activoFijo) {
         try {
             db.conectar();
 
-            String query = "INSERT INTO " + TABLA +"(estado, disponible, codigo, producto_id) VALUES (?, ?, ?, ?)";
-            PreparedStatement ps = db.getConexion().prepareStatement(query);
+            String query = "INSERT INTO " + TABLA +"(estado, disponible, codigo, producto_id, nro_factura, costo) VALUES (?, ?, ?, ?, ?, ?)";
+            PreparedStatement ps = db.getConexion().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, activoFijo.getEstado());
             ps.setBoolean(2, activoFijo.isDisponible());
             ps.setString(3, activoFijo.getCodigo());
             ps.setInt(4, activoFijo.getProducto_id());
+            ps.setString(5, activoFijo.getNroFactura());
+            ps.setInt(6,activoFijo.getCosto());
+            ps.setString(5, TABLA);
 
             int i = ps.executeUpdate();
 
             db.desconectar();
-
-            return (i > 0);
+            if (i > 0){
+                ResultSet generateKeys = ps.getGeneratedKeys();
+                if (generateKeys.next()) {
+                    return generateKeys.getInt(1);
+                }
+            }
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return false;
+        return -1;
     }
 
     @Override

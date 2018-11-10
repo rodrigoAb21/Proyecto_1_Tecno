@@ -7,6 +7,7 @@ import negocio.interfaces.CategoriaDAO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,40 +60,47 @@ public class CategoriaDAOImpl implements CategoriaDAO {
     }
 
     @Override
-    public boolean registrarCategoria(Categoria categoria) {
+    public int registrarCategoria(Categoria categoria) {
         try {
             db.conectar();
 
             if (categoria.getCategoria_sup() > 0){
                 String query = "INSERT INTO " + TABLA +"(nombre, codigo, categoria_sup) VALUES (?, ?, ?)";
-                PreparedStatement ps = db.getConexion().prepareStatement(query);
+                PreparedStatement ps = db.getConexion().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
                 ps.setString(1, categoria.getNombre());
                 ps.setString(2, categoria.getCodigo());
                 ps.setInt(3, categoria.getCategoria_sup());
 
                 int i = ps.executeUpdate();
-
-                db.desconectar();
-
-                return (i > 0);
+            db.desconectar();
+            if (i > 0){
+                ResultSet generateKeys = ps.getGeneratedKeys();
+                if (generateKeys.next()) {
+                    return generateKeys.getInt(1);
+                }
+            }
+                
             }else {
+                
                 String query = "INSERT INTO " + TABLA +"(nombre, codigo) VALUES (?, ?)";
-                PreparedStatement ps = db.getConexion().prepareStatement(query);
+                PreparedStatement ps = db.getConexion().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
                 ps.setString(1, categoria.getNombre());
                 ps.setString(2, categoria.getCodigo());
-
-                int i = ps.executeUpdate();
-
-                db.desconectar();
-
-                return (i > 0);
+ int i = ps.executeUpdate();
+            db.desconectar();
+            if (i > 0){
+                ResultSet generateKeys = ps.getGeneratedKeys();
+                if (generateKeys.next()) {
+                    return generateKeys.getInt(1);
+                }
+            }
             }
 
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return false;
+        return -1;
     }
 
     @Override
@@ -121,6 +129,7 @@ public class CategoriaDAOImpl implements CategoriaDAO {
             } else {
                 String query ="UPDATE " + TABLA + " SET " +
                         "nombre = ?, " +
+                        "categoria_sup = null, " +
                         "codigo = ? " +
                         "WHERE id = ?";
 
