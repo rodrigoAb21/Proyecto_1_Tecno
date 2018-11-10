@@ -33,10 +33,6 @@ public class Respuesta {
         return respuesta;
     }
 
-    public static String suministro(Suministro suministro) {
-        return null;
-    }
-
     public static String listaMovimientos(List<String> mov) {
         String respuesta = "";
         for (String fila : mov){

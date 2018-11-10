@@ -31,14 +31,13 @@ public class Copia {
 
         Mensaje respuesta = new Mensaje();
         respuesta.setCuenta(mensaje.getCuenta());
+        respuesta.setMensaje("...");
 
         if(Pattern.matches(textoLetras+":.*", mensajeI)){
-            System.out.println("entro");
             String comandoI = mensajeI.substring(0,mensajeI.indexOf(":")).trim();
             String parametroI = mensajeI.substring(mensajeI.indexOf(":")+1);
 
             String parametroC;
-            System.out.println(comandoI);
             switch (comandoI) {
 
                 //-------------------------------- UNIDAD DE MEDIDA ----------------------------------------------
@@ -351,7 +350,7 @@ public class Copia {
 
                         if (new SuministroController().editarSuministro(id_sum, nombre, descr, um_id, cat_id, min, max)){
                             respuesta.setAsunto("Se edito al suministro");
-                            respuesta.setMensaje(Respuesta.suministro(new SuministroDAOImpl().getSuministro(id_sum)));
+                            respuesta.setMensaje(new SuministroController().getSuministro(id_sum));
                         }else {
                             respuesta.setAsunto("No se pudo realizar la edicion del suministro.");
                         }
@@ -388,8 +387,11 @@ public class Copia {
 
                         if (new SuministroController().cancelarMovimiento(id_mov)){
                             respuesta.setAsunto("Se cancelo el movimiento");
+                            respuesta.setMensaje("");
                         }else {
+                            System.out.println("Prr!");
                             respuesta.setAsunto("No se pudo cancelar al movimiento.");
+                            respuesta.setMensaje("");
                         }
                     }else{
                         respuesta.setAsunto("Parametros incorrectos al cancelar al movimiento.");
@@ -404,7 +406,7 @@ public class Copia {
                         String[] parametros = parametroI.split("[//]");
                         int id_mov = Integer.parseInt(parametros[0]);
 
-                        if (new SuministroController().cancelarMovimiento(id_mov)){
+                        if (new SuministroController().restablecerMovimiento(id_mov)){
                             respuesta.setAsunto("Se restablecio el movimiento");
                             respuesta.setMensaje(new MovSuministroDAOImpl().getMovSuministroString(id_mov));
                         }else {
@@ -427,7 +429,7 @@ public class Copia {
                     }else{
                         respuesta.setMensaje("Lista vacia.");
                     }
-
+                    new CorreoGmail().enviar(respuesta);
                     break;
 
                 case("ListarMovimientosCancelados"):
@@ -438,7 +440,7 @@ public class Copia {
                     }else{
                         respuesta.setMensaje("Lista vacia.");
                     }
-
+                    new CorreoGmail().enviar(respuesta);
                     break;
 
                 case("InventarioSuministro"):
@@ -446,9 +448,11 @@ public class Copia {
                     respuesta.setAsunto("Lista de movimientos");
                     if (sum.size() > 0) {
                         respuesta.setMensaje(Respuesta.listaSuministros(sum));
+
                     }else{
                         respuesta.setMensaje("Lista vacia.");
                     }
+                    new CorreoGmail().enviar(respuesta);
                     break;
 
                 case("VerSuministro"):
@@ -456,10 +460,10 @@ public class Copia {
                     if (Pattern.matches(parametroC, parametroI)) {
                         String[] parametros = parametroI.split("[//]");
                         int id_sum = Integer.parseInt(parametros[0]);
-
-                        if (new SuministroController().cancelarMovimiento(id_sum)){
+                        String xx = new SuministroController().getSuministro(id_sum);
+                        if (xx != null){
                             respuesta.setAsunto("Ver Suministro");
-                            respuesta.setMensaje(new SuministroController().getMovString(id_sum));
+                            respuesta.setMensaje(xx);
 
                         }else {
                             respuesta.setAsunto("No se pudo mostrar el suministro.");
@@ -476,10 +480,10 @@ public class Copia {
                     if (Pattern.matches(parametroC, parametroI)) {
                         String[] parametros = parametroI.split("[//]");
                         int id_mov = Integer.parseInt(parametros[0]);
-
-                        if (new SuministroController().cancelarMovimiento(id_mov)){
+                        String yy = new SuministroController().getMovString(id_mov);
+                        if (yy != null){
                             respuesta.setAsunto("Ver Movimiento");
-                            respuesta.setMensaje(new SuministroController().getMovString(id_mov));
+                            respuesta.setMensaje(yy);
                         }else {
                             respuesta.setAsunto("No se pudo mostrar el movimiento.");
                         }
@@ -508,8 +512,10 @@ public class Copia {
     public static void main(String[] args) {
         Copia c = new Copia();
         Mensaje m = new Mensaje();
-        m.setCuenta("rodrigo.abasto21@gmail.com");
-        m.setAsunto("ListarUnidadMedida:");
+        m.setCuenta("rodrigo.abasto21@yahoo.com");
+        m.setAsunto("VerMovimiento:9//");
         c.procesar(m);
+//        m.setAsunto("InventarioSuministro:");
+//        c.procesar(m);
     }
 }

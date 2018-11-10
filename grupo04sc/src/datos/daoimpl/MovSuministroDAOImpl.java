@@ -136,7 +136,7 @@ public class MovSuministroDAOImpl implements MovSuministroDAO {
             return (i > 0);
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("getMovSuministro" + e.getMessage());
         }
         return false;
     }
@@ -190,7 +190,7 @@ public class MovSuministroDAOImpl implements MovSuministroDAO {
             }
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("getMovSuministro" + e.getMessage());
         }
         return null;
     }

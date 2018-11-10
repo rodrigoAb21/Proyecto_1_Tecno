@@ -160,10 +160,7 @@ public class SuministroController {
         Suministro suministro = sumiDAO.getSuministro(suministro_id);
         int nuevo = suministro.getStock() + cantidad;
         suministro.setStock(nuevo);
-        if (sumiDAO.actualizarSuministro(suministro)){
-            return true;
-        }
-        return false;
+        return sumiDAO.actualizarSuministro(suministro);
     }
 
 
@@ -236,7 +233,6 @@ public class SuministroController {
 
     public String getSuministro(int id) {
         return sumiDAO.getSumiString(id);
-
     }
 
     public String getMovString(int id) {

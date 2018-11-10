@@ -149,7 +149,7 @@ public class SuministroDAOImpl implements SuministroDAO {
             return (i > 0);
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("actualizarSuministro" + e.getMessage());
         }
         return false;
     }
@@ -201,7 +201,7 @@ public class SuministroDAOImpl implements SuministroDAO {
             }
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("getSuministro" + e.getMessage());
         }
 
         return null;
@@ -256,7 +256,7 @@ public class SuministroDAOImpl implements SuministroDAO {
                     "as unidad, categoria.nombre as categoria " +
                     "FROM producto,suministro, categoria, unidad_medida  " +
                     "WHERE suministro.producto_id = producto.id and suministro.unidad_medida_id = unidad_medida.id " +
-                    "and producto.categoria_id = categoria.id";
+                    "and producto.categoria_id = categoria.id and suministro.visible = true";
 
             PreparedStatement ps = db.getConexion().prepareStatement(query);
             ResultSet resultSet = ps.executeQuery();
@@ -287,9 +287,9 @@ public class SuministroDAOImpl implements SuministroDAO {
 
             String query ="select movimiento_suministro.id as id, movimiento_suministro.fecha as fecha, producto.nombre as producto," +
                     "  detalle_suministrar.cantidad as cantidad, unidad_medida.nombre as unidad, movimiento_suministro.dpto as dpto," +
-                    "  movimiento_suministro.encargado as encargado, movimiento_suministro.tipo as tipo, movimiento_suministro.observacion as observacion" +
+                    "  movimiento_suministro.encargado as encargado, movimiento_suministro.tipo as tipo, movimiento_suministro.observacion as observacion, movimiento_suministro.estado as estado" +
                     " from movimiento_suministro, detalle_suministrar, suministro, producto, unidad_medida" +
-                    " where suministro.producto_id = producto.id and suministro.unidad_medida_id = unidad_medida.id" +
+                    " where movimiento_suministro.id = " + mov_id +" and suministro.producto_id = producto.id and suministro.unidad_medida_id = unidad_medida.id" +
                     "  and detalle_suministrar.suministro_id = suministro.id" +
                     "  and detalle_suministrar.movimiento_suministro_id = movimiento_suministro.id";
 
@@ -303,11 +303,12 @@ public class SuministroDAOImpl implements SuministroDAO {
                 return "ID: " + resultSet.getInt("id") +
                         "\nFecha: "+resultSet.getObject("fecha",LocalDate.class) +
                         "\nTipo: " + resultSet.getString("tipo") +
-                        "\nSuministro: " + resultSet.getString("nombre") +
+                        "\nSuministro: " + resultSet.getString("producto") +
                         "\nCantidad: " + resultSet.getInt("cantidad") +
                         "\nUM: " + resultSet.getString("unidad") +
                         "\nDpto: " + resultSet.getString("dpto") +
                         "\nEncargado: " + resultSet.getString("encargado") +
+                        "\nEstado: " + resultSet.getString("estado") +
                         "\nObservacion: " + resultSet.getString("observacion");
 
             }

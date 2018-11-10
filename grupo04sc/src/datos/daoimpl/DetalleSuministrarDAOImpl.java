@@ -70,7 +70,7 @@ public class DetalleSuministrarDAOImpl implements DetalleSuministrarDAO {
             }
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("getDetalle " + e.getMessage());
         }
 
         return null;
