@@ -1,8 +1,6 @@
 package utilidades;
 
 import datos.daoimpl.MovSuministroDAOImpl;
-import datos.daoimpl.SuministroDAOImpl;
-import datos.modelos.MovSuministro;
 import datos.modelos.UnidadMedida;
 import datos.modelos.Usuario;
 import java.util.List;
@@ -512,8 +510,8 @@ public class Copia {
     public static void main(String[] args) {
         Copia c = new Copia();
         Mensaje m = new Mensaje();
-        m.setCuenta("rodrigo.abasto21@yahoo.com");
-        m.setAsunto("VerMovimiento:9//");
+        m.setCuenta("rodrigo.abasto21@gmail.com");
+        m.setAsunto("ListarMovimientos:");
         c.procesar(m);
 //        m.setAsunto("InventarioSuministro:");
 //        c.procesar(m);

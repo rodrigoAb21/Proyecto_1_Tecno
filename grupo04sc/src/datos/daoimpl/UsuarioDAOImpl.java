@@ -42,7 +42,8 @@ public class UsuarioDAOImpl implements UsuarioDAO{
                     "ci, " +
                     "email, " +
                     "visible " +
-                    "FROM " + TABLA + " WHERE visible = true ";
+                    "FROM " + TABLA + " WHERE visible = true " +
+                    "ORDER BY (id) asc";
 
             PreparedStatement ps = db.getConexion().prepareStatement(query);
             ResultSet resultSet = ps.executeQuery();
@@ -83,7 +84,8 @@ public class UsuarioDAOImpl implements UsuarioDAO{
                     "ci, " +
                     "email, " +
                     "visible " +
-                    "FROM " + TABLA + " WHERE visible = false";
+                    "FROM " + TABLA + " WHERE visible = false " +
+                    "ORDER BY (id) asc";
 
             PreparedStatement ps = db.getConexion().prepareStatement(query);
             ResultSet resultSet = ps.executeQuery();

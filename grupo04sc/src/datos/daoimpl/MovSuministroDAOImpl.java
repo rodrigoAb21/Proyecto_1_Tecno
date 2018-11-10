@@ -28,7 +28,7 @@ public class MovSuministroDAOImpl implements MovSuministroDAO {
         try {
             db.conectar();
 
-            String query ="SELECT * FROM " + TABLA;
+            String query ="SELECT * FROM " + TABLA + " ORDER BY (id) asc";
 
             PreparedStatement ps = db.getConexion().prepareStatement(query);
             ResultSet resultSet = ps.executeQuery();
@@ -216,10 +216,14 @@ public class MovSuministroDAOImpl implements MovSuministroDAO {
 
             if (resultSet.next()){
 
-                return "ID: " + resultSet.getInt("id") + ",Tipo: " + resultSet.getString("tipo") + ",  Fecha: " +resultSet.getObject("fecha",
-                        LocalDate.class) + ", Suministro: " + resultSet.getString("producto") + ", Cant: " +
-                        resultSet.getInt("cantidad") + ", UM: " + resultSet.getString("unidad") +
-                        ", Dpto: " + resultSet.getString("dpto") + ", Encargado: " + resultSet.getString("encargado") ;
+                return "ID: " + resultSet.getInt("id") +
+                        "\nTipo: " + resultSet.getString("tipo") +
+                        "\nFecha: " +resultSet.getObject("fecha",LocalDate.class) +
+                        "\nSuministro: " + resultSet.getString("producto") +
+                        "\nCant: " +resultSet.getInt("cantidad") +
+                        "\nUM: " + resultSet.getString("unidad") +
+                        "\nDpto: " + resultSet.getString("dpto") +
+                        "\nEncargado: " + resultSet.getString("encargado") ;
 
             }
 

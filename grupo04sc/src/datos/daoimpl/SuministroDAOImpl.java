@@ -34,7 +34,8 @@ public class SuministroDAOImpl implements SuministroDAO {
                     " from movimiento_suministro, detalle_suministrar, suministro, producto, unidad_medida" +
                     " where suministro.producto_id = producto.id and suministro.unidad_medida_id = unidad_medida.id" +
                     "  and detalle_suministrar.suministro_id = suministro.id" +
-                    "  and detalle_suministrar.movimiento_suministro_id = movimiento_suministro.id and movimiento_suministro.estado = 'Realizado'";
+                    "  and detalle_suministrar.movimiento_suministro_id = movimiento_suministro.id and movimiento_suministro.estado = 'Realizado'" +
+                    " ORDER BY (movimiento_suministro.id) asc";
 
             PreparedStatement ps = db.getConexion().prepareStatement(query);
             ResultSet resultSet = ps.executeQuery();
@@ -42,11 +43,17 @@ public class SuministroDAOImpl implements SuministroDAO {
             db.desconectar();
 
             while (resultSet.next()){
+                String encargado = "-----";
+                String dpto = "-----";
 
-                String fila = "ID: " + resultSet.getInt("id") + ",Tipo: " + resultSet.getString("tipo") + ",  Fecha: " +resultSet.getObject("fecha",
+                if (resultSet.getString("encargado") != null) encargado = resultSet.getString("encargado");
+                if (resultSet.getString("dpto") != null) dpto = resultSet.getString("encargado");
+
+
+                String fila = "ID: " + resultSet.getInt("id") + ",  Tipo: " + resultSet.getString("tipo") + ",  Fecha: " +resultSet.getObject("fecha",
                         LocalDate.class) + ", Suministro: " + resultSet.getString("producto") + ", Cant: " +
                         resultSet.getInt("cantidad") + ", UM: " + resultSet.getString("unidad") +
-                        ", Dpto: " + resultSet.getString("dpto") + ", Encargado: " + resultSet.getString("encargado") ;
+                        ", Dpto: " + dpto + ", Encargado: " + encargado ;
 
                 lista.add(fila);
             }
@@ -71,7 +78,8 @@ public class SuministroDAOImpl implements SuministroDAO {
                     " from movimiento_suministro, detalle_suministrar, suministro, producto, unidad_medida" +
                     " where suministro.producto_id = producto.id and suministro.unidad_medida_id = unidad_medida.id" +
                     "  and detalle_suministrar.suministro_id = suministro.id" +
-                    "  and detalle_suministrar.movimiento_suministro_id = movimiento_suministro.id and movimiento_suministro.estado = 'Cancelado'";
+                    "  and detalle_suministrar.movimiento_suministro_id = movimiento_suministro.id and movimiento_suministro.estado = 'Cancelado' " +
+                    " ORDER BY (movimiento_suministro.id) asc ";
 
             PreparedStatement ps = db.getConexion().prepareStatement(query);
             ResultSet resultSet = ps.executeQuery();
@@ -80,10 +88,16 @@ public class SuministroDAOImpl implements SuministroDAO {
 
             while (resultSet.next()){
 
+                String encargado = "-----";
+                String dpto = "-----";
+
+                if (resultSet.getString("encargado") != null) encargado = resultSet.getString("encargado");
+                if (resultSet.getString("dpto") != null) dpto = resultSet.getString("dpto");
+
                 String fila = "ID: " + resultSet.getInt("id") + ",Tipo: " + resultSet.getString("tipo") + ",  Fecha: " +resultSet.getObject("fecha",
                         LocalDate.class) + ", Suministro: " + resultSet.getString("producto") + ", Cant: " +
                         resultSet.getInt("cantidad") + ", UM: " + resultSet.getString("unidad") +
-                        ", Dpto: " + resultSet.getString("dpto") + ", Encargado: " + resultSet.getString("encargado") ;
+                        ", Dpto: " + dpto + ", Encargado: " + encargado;
 
                 lista.add(fila);
             }
@@ -256,7 +270,8 @@ public class SuministroDAOImpl implements SuministroDAO {
                     "as unidad, categoria.nombre as categoria " +
                     "FROM producto,suministro, categoria, unidad_medida  " +
                     "WHERE suministro.producto_id = producto.id and suministro.unidad_medida_id = unidad_medida.id " +
-                    "and producto.categoria_id = categoria.id and suministro.visible = true";
+                    "and producto.categoria_id = categoria.id and suministro.visible = true " +
+                    "ORDER BY (suministro.id) asc ";
 
             PreparedStatement ps = db.getConexion().prepareStatement(query);
             ResultSet resultSet = ps.executeQuery();
@@ -299,6 +314,13 @@ public class SuministroDAOImpl implements SuministroDAO {
             db.desconectar();
 
             if (resultSet.next()){
+                String obs = "-----";
+                String encargado = "-----";
+                String dpto = "-----";
+
+                if (resultSet.getString("observacion") != null) obs = resultSet.getString("observacion");
+                if (resultSet.getString("encargado") != null) encargado = resultSet.getString("encargado");
+                if (resultSet.getString("dpto") != null) dpto = resultSet.getString("dpto");
 
                 return "ID: " + resultSet.getInt("id") +
                         "\nFecha: "+resultSet.getObject("fecha",LocalDate.class) +
@@ -306,10 +328,10 @@ public class SuministroDAOImpl implements SuministroDAO {
                         "\nSuministro: " + resultSet.getString("producto") +
                         "\nCantidad: " + resultSet.getInt("cantidad") +
                         "\nUM: " + resultSet.getString("unidad") +
-                        "\nDpto: " + resultSet.getString("dpto") +
-                        "\nEncargado: " + resultSet.getString("encargado") +
+                        "\nDpto: " + dpto +
+                        "\nEncargado: " + encargado +
                         "\nEstado: " + resultSet.getString("estado") +
-                        "\nObservacion: " + resultSet.getString("observacion");
+                        "\nObservacion: " + obs;
 
             }
 
