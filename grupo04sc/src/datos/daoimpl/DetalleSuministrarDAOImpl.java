@@ -70,19 +70,11 @@ public class DetalleSuministrarDAOImpl implements DetalleSuministrarDAO {
             }
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("getDetalle " + e.getMessage());
         }
 
         return null;
     }
-    
-    public static void main(String[] args) {
-        DetalleSuministrar d =  new DetalleSuministrar();
-        d.setCantidad(100);
-        d.setMovimiento_suministro_id(2);
-        d.setSuministro_id(2);
-        
-        System.out.println(new DetalleSuministrarDAOImpl().registrarDetalle(d));
-    }
+
     
 }

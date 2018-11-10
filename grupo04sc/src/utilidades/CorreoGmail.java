@@ -114,7 +114,7 @@ public class CorreoGmail {
            System.out.println("message send successfully");
         }catch(Exception ex)
         {
-            System.out.println(ex);
+            System.out.println("Error al enviar mensaje: " + ex);
         }
     }
     

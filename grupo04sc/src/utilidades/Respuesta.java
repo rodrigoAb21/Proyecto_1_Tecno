@@ -1,5 +1,6 @@
 package utilidades;
 
+import datos.modelos.Suministro;
 import datos.modelos.UnidadMedida;
 import datos.modelos.Usuario;
 
@@ -32,5 +33,19 @@ public class Respuesta {
         return respuesta;
     }
 
+    public static String listaMovimientos(List<String> mov) {
+        String respuesta = "";
+        for (String fila : mov){
+            respuesta = respuesta + fila + "\n";
+        }
+        return respuesta;
+    }
 
+    public static String listaSuministros(List<String> sum) {
+        String respuesta = "";
+        for (String fila : sum){
+            respuesta = respuesta + fila + "\n";
+        }
+        return respuesta;
+    }
 }

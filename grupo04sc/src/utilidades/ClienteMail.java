@@ -91,10 +91,11 @@ public class ClienteMail {
             Properties props = new Properties();
 
             props.put("mail.smtp.host", host);
-            props.put("mail.smtp.port", "25");
+            props.put("mail.smtp.port", 25);
+            props.put("mail.smtp.starttls.enable", "true");
+            
 
             java.security.Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
-//            Session mailSession = Session.getDefaultInstance(props);
             Session mailSession = Session.getInstance(props);
             mailSession.setDebug(sessionDebug);
             Message msg = new MimeMessage(mailSession);
@@ -136,6 +137,6 @@ public class ClienteMail {
         return cadena;
 
     }
+   
     
-
 }

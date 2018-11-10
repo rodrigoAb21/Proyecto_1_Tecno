@@ -28,7 +28,7 @@ public class MovSuministroDAOImpl implements MovSuministroDAO {
         try {
             db.conectar();
 
-            String query ="SELECT * FROM " + TABLA;
+            String query ="SELECT * FROM " + TABLA + " ORDER BY (id) asc";
 
             PreparedStatement ps = db.getConexion().prepareStatement(query);
             ResultSet resultSet = ps.executeQuery();
@@ -136,7 +136,7 @@ public class MovSuministroDAOImpl implements MovSuministroDAO {
             return (i > 0);
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("getMovSuministro" + e.getMessage());
         }
         return false;
     }
@@ -190,18 +190,52 @@ public class MovSuministroDAOImpl implements MovSuministroDAO {
             }
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("getMovSuministro" + e.getMessage());
         }
         return null;
     }
 
-    
-    
-    public static void main(String[] args) {
-        MovSuministro mov = new MovSuministro();
-        mov.setTipo("Ingreso");
-        mov.setFecha(LocalDate.now());
-        
-        System.out.println(new MovSuministroDAOImpl().registrarMovSuministro(mov));
+    @Override
+    public String getMovSuministroString(int movSuministro_id) {
+        try {
+            db.conectar();
+
+            String query ="select movimiento_suministro.id as id, movimiento_suministro.fecha as fecha, producto.nombre as producto," +
+                    "  detalle_suministrar.cantidad as cantidad, unidad_medida.nombre as unidad, movimiento_suministro.dpto as dpto," +
+                    "  movimiento_suministro.encargado as encargado, movimiento_suministro.tipo as tipo" +
+                    " from movimiento_suministro, detalle_suministrar, suministro, producto, unidad_medida" +
+                    " where suministro.producto_id = producto.id and suministro.unidad_medida_id = unidad_medida.id" +
+                    "  and detalle_suministrar.suministro_id = suministro.id" +
+                    "  and detalle_suministrar.movimiento_suministro_id = movimiento_suministro.id and movimiento_suministro.estado = 'Realizado'" +
+                    " and movimiento_suministro.id = " + movSuministro_id;
+
+            PreparedStatement ps = db.getConexion().prepareStatement(query);
+            ResultSet resultSet = ps.executeQuery();
+
+            db.desconectar();
+
+            if (resultSet.next()){
+                String encargado = "-----";
+                String dpto = "-----";
+                
+                if (resultSet.getString("encargado") != null) encargado = resultSet.getString("encargado");
+                if (resultSet.getString("dpto") != null) dpto = resultSet.getString("dpto");
+
+                return "ID: " + resultSet.getInt("id") +
+                        "\nTipo: " + resultSet.getString("tipo") +
+                        "\nFecha: " +resultSet.getObject("fecha",LocalDate.class) +
+                        "\nSuministro: " + resultSet.getString("producto") +
+                        "\nCant: " +resultSet.getInt("cantidad") +
+                        "\nUM: " + resultSet.getString("unidad") +
+                        "\nDpto: " + dpto +
+                        "\nEncargado: " + encargado;
+
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return null;
     }
 }
