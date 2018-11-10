@@ -107,28 +107,36 @@ public class SuministroController {
 
 
     public int salida(int suministro_id, int cantidad, String encargado, String dpto, String observacion){
-        MovSuministro movimiento = new MovSuministro();
-        movimiento.setTipo("Salida");
-        movimiento.setFecha(LocalDate.now());
-        movimiento.setEncargado(encargado);
-        movimiento.setDpto(dpto);
-        movimiento.setObservacion(observacion);
-        int mov_id = movDAO.registrarMovSuministro(movimiento);
-        if (mov_id > 0){
-            //si se creo bien el movimiento proseguimos en crear el detalle y retornamos su id
-            DetalleSuministrar detalle = new DetalleSuministrar();
-            detalle.setCantidad(cantidad);
-            detalle.setSuministro_id(suministro_id);
-            detalle.setMovimiento_suministro_id(mov_id);
+        if (verificarSalida(suministro_id, cantidad)){
+            MovSuministro movimiento = new MovSuministro();
+            movimiento.setTipo("Salida");
+            movimiento.setFecha(LocalDate.now());
+            movimiento.setEncargado(encargado);
+            movimiento.setDpto(dpto);
+            movimiento.setObservacion(observacion);
+
+            int mov_id = movDAO.registrarMovSuministro(movimiento);
+            if (mov_id > 0){
+                //si se creo bien el movimiento proseguimos en crear el detalle y retornamos su id
+                DetalleSuministrar detalle = new DetalleSuministrar();
+                detalle.setCantidad(cantidad);
+                detalle.setSuministro_id(suministro_id);
+                detalle.setMovimiento_suministro_id(mov_id);
 
 
-            int detalle_id = detaDAO.registrarDetalle(detalle);
-            if (detalle_id > 0){
-                if (actualizarStock(suministro_id, (cantidad * -1)))
-                    return mov_id;
+                int detalle_id = detaDAO.registrarDetalle(detalle);
+                if (detalle_id > 0){
+                    if (actualizarStock(suministro_id, (cantidad * -1)))
+                        return mov_id;
+                }
             }
         }
         return -1;
+    }
+
+    public boolean verificarSalida(int sum_id, int cant){
+        Suministro suministro = sumiDAO.getSuministro(sum_id);
+        return (suministro.getStock() >= cant);
     }
 
 
@@ -177,28 +185,32 @@ public class SuministroController {
 
     public boolean cancelarMovimiento(int id){
         MovSuministro movimiento = movDAO.getMovSuministro(id);
-        DetalleSuministrar detalle = detaDAO.getDetalle(id);
-        if (movimiento.getTipo().equals("Salida")){
-            actualizarStock(detalle.getSuministro_id(), detalle.getCantidad());
-            return movDAO.cancelarMovimiento(id);
-        }else{
-            actualizarStock(detalle.getSuministro_id(), detalle.getCantidad() * -1);
-            return movDAO.cancelarMovimiento(id);
+        if (movimiento.getEstado().equals("Realizado")){
+            DetalleSuministrar detalle = detaDAO.getDetalle(id);
+            if (movimiento.getTipo().equals("Salida")){
+                actualizarStock(detalle.getSuministro_id(), detalle.getCantidad());
+                return movDAO.cancelarMovimiento(id);
+            }else{
+                actualizarStock(detalle.getSuministro_id(), detalle.getCantidad() * -1);
+                return movDAO.cancelarMovimiento(id);
+            }
         }
-
+        return false;
     }
 
     public boolean restablecerMovimiento(int id){
         MovSuministro movimiento = movDAO.getMovSuministro(id);
-        DetalleSuministrar detalle = detaDAO.getDetalle(id);
-        if (movimiento.getTipo().equals("Salida")){
-            actualizarStock(detalle.getSuministro_id(), detalle.getCantidad() * -1);
-            return movDAO.restablecerMovimiento(id);
-        }else{
-            actualizarStock(detalle.getSuministro_id(), detalle.getCantidad());
-            return movDAO.restablecerMovimiento(id);
+        if (movimiento.getEstado().equals("Cancelado")){
+            DetalleSuministrar detalle = detaDAO.getDetalle(id);
+            if (movimiento.getTipo().equals("Salida")){
+                actualizarStock(detalle.getSuministro_id(), detalle.getCantidad() * -1);
+                return movDAO.restablecerMovimiento(id);
+            }else{
+                actualizarStock(detalle.getSuministro_id(), detalle.getCantidad());
+                return movDAO.restablecerMovimiento(id);
+            }
         }
-
+        return false;
     }
 
 

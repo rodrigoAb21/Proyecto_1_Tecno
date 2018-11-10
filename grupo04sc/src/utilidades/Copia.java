@@ -441,7 +441,7 @@ public class Copia {
                     new CorreoGmail().enviar(respuesta);
                     break;
 
-                case("InventarioSuministro"):
+                case("InventarioSuministros"):
                     List<String> sum = new SuministroController().listarSuministros();
                     respuesta.setAsunto("Lista de movimientos");
                     if (sum.size() > 0) {
