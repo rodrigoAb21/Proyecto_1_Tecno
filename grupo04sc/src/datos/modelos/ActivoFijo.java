@@ -6,16 +6,20 @@ public class ActivoFijo {
     private boolean disponible;
     private String codigo;
     private int producto_id;
+    private String nroFactura;
+    private int costo;
     private boolean visible;
 
     public ActivoFijo() {
     }
 
-    public ActivoFijo(String estado, boolean disponible, String codigo, int producto_id) {
+    public ActivoFijo(String estado, boolean disponible, String codigo, int producto_id, String nroFactura, int costo) {
         this.estado = estado;
         this.disponible = disponible;
         this.codigo = codigo;
         this.producto_id = producto_id;
+        this.nroFactura = nroFactura;
+        this.costo = costo;
     }
 
     public int getId() {
@@ -65,4 +69,21 @@ public class ActivoFijo {
     public void setVisible(boolean visible) {
         this.visible = visible;
     }
+    
+    public void setNroFactura(String nroFactura){
+        this.nroFactura = nroFactura;
+    }
+    
+    public String getNroFactura(){
+        return this.nroFactura;
+    }
+    
+    public void setCosto(int costo){
+        this.costo = costo;
+    }
+    
+    public int getCosto(){
+        return this.costo;
+    }
+    
 }

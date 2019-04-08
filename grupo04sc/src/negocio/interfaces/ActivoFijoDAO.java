@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ActivoFijoDAO {
     List<ActivoFijo> listarActivoFijos();
-    boolean registrarActivoFijo(ActivoFijo activoFijo);
+    int registrarActivoFijo(ActivoFijo activoFijo);
     boolean actualizarActivoFijo(ActivoFijo activoFijo);
     boolean eliminarActivoFijo(int activoFijo_id);
     ActivoFijo getActivoFijo(int activoFijo_id);
