@@ -13,6 +13,55 @@ public class CorreoGmail {
 
     }
 
+    public Mensaje obtenerPrimerMensaje()
+    {
+        // Se obtiene la Session
+        Properties prop = new Properties();
+        prop.setProperty("mail.pop3.starttls.enable", "false");
+        prop.setProperty("mail.pop3.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        prop.setProperty("mail.pop3.socketFactory.fallback", "false");
+        prop.setProperty("mail.pop3.port", "995");
+        prop.setProperty("mail.pop3.socketFactory.port", "995");
+        Session sesion = Session.getInstance(prop);
+        // sesion.setDebug(true);
+
+        try
+        {
+            Store store = sesion.getStore("pop3");
+            store.connect("pop.gmail.com", "tecnowebgrupo04@gmail.com", "grupo04grupo04");
+            Folder folder = store.getFolder("INBOX");
+            folder.open(Folder.READ_WRITE);
+
+            // Se obtienen los mensajes.
+            Message[] messages = folder.getMessages();
+            boolean sw = true;
+            Mensaje mensaje = new Mensaje();
+            if (messages.length > 0){
+                String correo = getCuenta(""+messages[0].getFrom()[0]);
+                mensaje.setCuenta(correo);
+                mensaje.setAsunto(messages[0].getSubject());
+                messages[0].setFlag(Flags.Flag.DELETED, true);
+            }else {
+                sw = false;
+            }
+
+            // expunges the folder to remove messages which are marked deleted
+            folder.close(true);
+            store.close();
+            
+            
+            
+            if (sw) return mensaje;
+            else return null;
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    
     public void obternerMensajes(){
         // Se obtiene la Session
         Properties prop = new Properties();
@@ -118,6 +167,11 @@ public class CorreoGmail {
         }
     }
     
+    
+    public static void main(String[] args) {
+        CorreoGmail c = new CorreoGmail();
+        c.obternerMensajes();
+    }
     
 
 }

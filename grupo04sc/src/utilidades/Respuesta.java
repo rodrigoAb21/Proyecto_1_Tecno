@@ -1,12 +1,28 @@
 package utilidades;
 
-import datos.modelos.Suministro;
+import datos.modelos.Categoria;
 import datos.modelos.UnidadMedida;
 import datos.modelos.Usuario;
 
 import java.util.List;
 
 public class Respuesta {
+    public static String categoria(Categoria categoria){
+        return "ID: " + categoria.getId() + "\nNombre: " + categoria.getNombre() + "\nCodigo: " + categoria.getCodigo()
+                + "\nCat_Superior: " + categoria.getCategoria_sup();
+    }
+
+    public static String listaCategoria(List<Categoria> categorias){
+        String respuesta = "";
+        for (Categoria categoria : categorias){
+            respuesta = respuesta + "ID: " + categoria.getId() + ", Nombre: " + categoria.getNombre() + ", Codigo: " + categoria.getCodigo()
+                + ", Cat_Superior: " + categoria.getCategoria_sup() + " \n";
+        }
+        return respuesta;
+    }
+    
+    
+    
     public static String unidadMedida(UnidadMedida unidadMedida){
         return "ID: " + unidadMedida.getId() + "\nNombre: " + unidadMedida.getNombre();
     }

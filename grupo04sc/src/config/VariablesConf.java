@@ -12,10 +12,16 @@ package config;
 public class VariablesConf {
     /* ----------- Variables de configuracion Base de datos ------------- */
     
-    public static final String DB_NOMBRE = "db_grupo04sc";
-    public static final String DB_HOST = "localhost";
-    public static final String DB_USUARIO = "postgres";
-    public static final String DB_CONTRASENA = "rodrigo";
+//    public static final String DB_NOMBRE = "correo";
+//    public static final String DB_HOST = "localhost";
+//    public static final String DB_USUARIO = "postgres";
+//    public static final String DB_CONTRASENA = "rodrigo";
+//    
+    public static final String DB_NOMBRE = "db_grupo05sc";
+    public static final String DB_HOST = "mail.ficct.uagrm.edu.bo";
+    public static final String DB_USUARIO = "grupo05sc";
+    public static final String DB_CONTRASENA = "grupo05grupo05";
+    
     
     
     /* --------- Variables de configuracion del cliente Correo ----------- */

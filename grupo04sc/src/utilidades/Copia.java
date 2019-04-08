@@ -1,6 +1,7 @@
 package utilidades;
 
 import datos.daoimpl.MovSuministroDAOImpl;
+import datos.modelos.Categoria;
 import datos.modelos.UnidadMedida;
 import datos.modelos.Usuario;
 import java.util.List;
@@ -10,6 +11,7 @@ import negocio.controladores.suministros.UnidadMedidaController;
 import negocio.controladores.usuarios.UsuarioController;
 
 import java.util.regex.Pattern;
+import negocio.controladores.activosfijos.CategoriaController;
 
 public class Copia {
 
@@ -22,9 +24,7 @@ public class Copia {
         String textoLetras =  "\\s*[a-zA-Z]+\\s*";
         String numero = "\\s*[0-9]+\\s*";
         String numeroM1 = "\\s*[1-9][0-9]*\\s*";
-        String correo = "\\s*[^@_\\s]+@[^@]+\\.[a-zA-Z]{2,}\\s*";
-        String esp = "\\s*";
-
+       
         String mensajeI = mensaje.getAsunto();
 
         Mensaje respuesta = new Mensaje();
@@ -38,6 +38,88 @@ public class Copia {
             String parametroC;
             switch (comandoI) {
 
+                //-------------------------------- CATEGORIA ----------------------------------------------
+
+                case ("RegistrarCategoria"):
+                    parametroC = texto + "//" + texto + "//";
+                    if (Pattern.matches(parametroC, parametroI)) {
+                        String[] parametros = parametroI.split("[//]");
+                        String nombre = parametros[0];
+                        int cat_sup = 0;
+                        if(!parametros[2].equals("_")){
+                            cat_sup = Integer.parseInt(parametros[2]);
+                        }
+                        int id = new CategoriaController().registrar(nombre, cat_sup);
+                        if (id > 0){
+                            respuesta.setAsunto("Se registro la categoria.");
+                            respuesta.setMensaje(Respuesta.categoria(new CategoriaController()
+                                    .getCategoria(id)));
+                        }else {
+                            respuesta.setAsunto("No se pudo registrar la Categoria.");
+                        }
+                    }else{
+                        respuesta.setAsunto("Parametros incorrectos al registrar la categoria.");
+                        respuesta.setMensaje(Ejemplo.RegistrarCategoria);
+                    }
+                    new CorreoGmail().enviar(respuesta);
+                    break;
+
+                case ("EditarCategoria"):
+                    parametroC = numero + "//" + texto + "//" + texto + "//";
+                    if (Pattern.matches(parametroC, parametroI)) {
+                        String[] parametros = parametroI.split("[//]");
+                        int id = Integer.parseInt(parametros[0]);
+                        String nuevo = parametros[2];
+                        int cat_sup = 0;
+                        if(!parametros[4].equals("_")){
+                            cat_sup = Integer.parseInt(parametros[4]);
+                        }
+
+                        if (new CategoriaController().editar(id, nuevo, cat_sup)){
+                            respuesta.setAsunto("Se edito la categoria.");
+                            respuesta.setMensaje(Respuesta.categoria(new CategoriaController()
+                                    .getCategoria(id)));
+                        }else {
+                            respuesta.setAsunto("No se pudo editar la categoria");
+                        }
+
+                    }else{
+                        respuesta.setAsunto("Parametros incorrectos al editar la categoria.");
+                        respuesta.setMensaje(Ejemplo.EditarCategoria);
+                    }
+                    new CorreoGmail().enviar(respuesta);
+                    break;
+
+                case ("EliminarCategoria"):
+                    parametroC = numero + "//";
+                    if (Pattern.matches(parametroC, parametroI)) {
+                        String[] parametros = parametroI.split("[//]");
+                        int id = Integer.parseInt(parametros[0]);
+
+                        if (new CategoriaController().eliminar(id)){
+                            respuesta.setAsunto("Se elimino la categoria.");
+                        }else {
+                            respuesta.setAsunto("No se pudo eliminar la categoria.");
+                        }
+                    }else{
+                        respuesta.setAsunto("Parametros incorrectos al eliminar la categoria.");
+                        respuesta.setMensaje(Ejemplo.EliminarCategoria);
+                    }
+
+                    new CorreoGmail().enviar(respuesta);
+                    break;
+
+                case ("ListarCategorias"):
+                    List<Categoria> categorias = new CategoriaController().listarCategorias();
+                    respuesta.setAsunto("Lista de categorias.");
+                    if (categorias.size() > 0 ){
+                        respuesta.setMensaje(Respuesta.listaCategoria(categorias));
+                    }else {
+                        respuesta.setMensaje("Lista vacia.");
+                    }
+
+                    break;
+                
                 //-------------------------------- UNIDAD DE MEDIDA ----------------------------------------------
 
                 case ("RegistrarUnidadMedida"):
@@ -57,7 +139,7 @@ public class Copia {
                         respuesta.setAsunto("Parametros incorrectos al registrar la unidad de medida.");
                         respuesta.setMensaje(Ejemplo.RegistrarUnidadMedida);
                     }
-                    new ClienteMail().enviar(respuesta);
+                    new CorreoGmail().enviar(respuesta);
                     break;
 
                 case ("EditarUnidadMedida"):
@@ -80,7 +162,7 @@ public class Copia {
                         respuesta.setAsunto("Parametros incorrectos al editar la unidad de medida.");
                         respuesta.setMensaje(Ejemplo.EditarUnidadMedida);
                     }
-                    new ClienteMail().enviar(respuesta);
+                    new CorreoGmail().enviar(respuesta);
                     break;
 
                 case ("EliminarUnidadMedida"):
@@ -99,18 +181,17 @@ public class Copia {
                         respuesta.setMensaje(Ejemplo.EliminarUnidadMedida);
                     }
 
-                    new ClienteMail().enviar(respuesta);
+                    new CorreoGmail().enviar(respuesta);
                     break;
 
                 case ("ListarUnidadMedida"):
                     List<UnidadMedida> unidadMedidas = new UnidadMedidaController().listarUnidades();
                     respuesta.setAsunto("Lista de unidades de medida.");
                     if (unidadMedidas.size() > 0 ){
-//                        respuesta.setMensaje(Respuesta.listaUnidadMedida(unidadMedidas));
-                        System.out.println(Respuesta.listaUnidadMedida(unidadMedidas));
+                        respuesta.setMensaje(Respuesta.listaUnidadMedida(unidadMedidas));
+                        
                     }else {
-//                        respuesta.setMensaje("Lista vacia.");
-                        System.out.println("Lista vacia");
+                        respuesta.setMensaje("Lista vacia.");
                     }
 
                     break;
@@ -505,12 +586,11 @@ public class Copia {
 
 
     }
-    
     public static void main(String[] args) {
         Copia c = new Copia();
         Mensaje m = new Mensaje();
         m.setCuenta("rodrigo.abasto21@gmail.com");
-        m.setAsunto("CancelarMovimiento:7//");
+        m.setAsunto("EditarUsuario:1//Juan//Perez//3342342//rodrigo.abasto21@gmail.com//");
         c.procesar(m);
     }
 }

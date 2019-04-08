@@ -94,12 +94,13 @@ public class ClienteMail {
             props.put("mail.smtp.port", 25);
             props.put("mail.smtp.starttls.enable", "true");
             
-
             java.security.Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
             Session mailSession = Session.getInstance(props);
             mailSession.setDebug(sessionDebug);
+            
             Message msg = new MimeMessage(mailSession);
             msg.setFrom(new InternetAddress(cuenta));
+            
             InternetAddress[] address = {new InternetAddress(mensaje.getCuenta())};
             msg.setRecipients(Message.RecipientType.TO, address);
             msg.setSubject(subject); msg.setSentDate(new Date());

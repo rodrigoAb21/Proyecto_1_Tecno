@@ -1,25 +1,25 @@
 create table usuario (
 	id serial primary key,
-	nombre varchar(50) not null,
-	apellido varchar(50) not null,
-	ci varchar(20) not null,
-	email varchar(50) unique not null,
+	nombre varchar(255) not null,
+	apellido varchar(255) not null,
+	ci varchar(255) not null,
+	email varchar(255) unique not null,
 	password varchar(255) not null,
 	visible boolean not null default true
 );
 
 create table unidad_medida (
 	id serial primary key,
-	nombre varchar(50) not null,
+	nombre varchar(255) not null,
 	visible boolean not null default true
 );
 
 create table movimiento_suministro (
 	id serial primary key,
 	fecha date not null,
-	tipo varchar(50) not null,
-	dpto varchar(50),
-        encargado varchar(50),
+	tipo varchar(255) not null,
+	dpto varchar(255),
+        encargado varchar(255),
         observacion varchar(255),
 	estado varchar(255) not null default 'Realizado'
 );
@@ -32,8 +32,8 @@ create table movimiento_activo (
 
 create table categoria (
 	id serial primary key,
-	nombre varchar(50) not null,
-	codigo varchar(50) not null,
+	nombre varchar(255) not null,
+	codigo varchar(255) not null,
 	categoria_sup int,
 	visible boolean not null default true
 );
@@ -42,8 +42,8 @@ alter table categoria add constraint fk_categoria foreign key (categoria_sup) re
 
 create table producto (
 	id serial primary key,
-	nombre varchar(50) not null,
-	codigo varchar(50) not null,
+	nombre varchar(255) not null,
+	codigo varchar(255) not null,
 	descripcion varchar(255),
 	categoria_id int not null,
 	visible boolean not null default true,
@@ -73,9 +73,9 @@ create table detalle_suministrar(
 
 create table activo_fijo (
 	id serial primary key,
-	estado varchar(50) not null,
+	estado varchar(255) not null,
 	disponible boolean not null,
-	codigo varchar(50) not null,
+	codigo varchar(255) not null,
 	producto_id int not null,
 	visible boolean not null default true,
 	foreign key (producto_id) references producto(id) on delete cascade on update cascade
@@ -83,9 +83,9 @@ create table activo_fijo (
 
 create table revaluo (
 	id serial primary key,
-	detalle varchar(50) not null,
+	detalle varchar(255) not null,
 	fecha date not null,
-	tipo varchar(50) not null,
+	tipo varchar(255) not null,
 	activo_fijo_id int not null,
 	visible boolean not null default true,
 	foreign key (activo_fijo_id) references activo_fijo(id) on delete cascade on update cascade

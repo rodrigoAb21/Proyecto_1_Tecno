@@ -11,8 +11,12 @@ public class HiloAtencion extends Thread{
 
     @Override
     public void run() {
-        if (esValido(mensaje.getCuenta()))
+        System.out.println(mensaje.getCuenta());
+            System.out.println(mensaje.getAsunto());
+            System.out.println(mensaje.getMensaje());
+        if (esValido(mensaje.getCuenta())){
             new ProcesadorMensaje().procesar(mensaje);
+        }
         else
             System.out.println("correo invalido");
 
